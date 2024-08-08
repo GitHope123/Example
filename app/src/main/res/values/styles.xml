@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Estilo para los elementos del menú -->
+    <style name="MenuItemText" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#FF000000</item> <!-- Color del texto -->
+        <item name="android:letterSpacing">0.05</item>
+    </style>
+
+    <!-- Estilo personalizado para NavigationView -->
+    <style name="CustomNavigationView">
+        <item name="android:textAppearance">@style/MenuItemText</item>
+    </style>
+</resources>
+

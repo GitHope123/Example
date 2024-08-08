@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="Primary_black">#FF000000</color>
+    <color name="Primary_blue">#0080ff</color>
+    <color name="Primary_blue_sky">#00ffff</color>
+    <color name="Primary_blue_black">#001b57</color>
+    <color name="Primary_white">#ffffff</color>
+    <color name="Primary_yellow">#ffc107</color>
+    <color name="Secondary_brown">#343434</color>
+    <color name="Transparent_color">#2CFFFFFF</color>
+    <color name="Primary_transparent_blue_black">#E402268A</color>
+</resources>

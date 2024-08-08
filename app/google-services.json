@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "281614136749",
+    "project_id": "textmess-43f57",
+    "storage_bucket": "textmess-43f57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281614136749:android:4065be9cd6dcf5789c5d24",
+        "android_client_info": {
+          "package_name": "com.example.example"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK8COD0LrTTH1G1mRO06JBvQDq1kv5PmY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
