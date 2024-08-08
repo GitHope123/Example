@@ -7,5 +7,5 @@ data class Estudiante(
     val grado: Int = 0,
     val id: String = "",
     val seccion: String = ""
-): Serializable
+)
 
