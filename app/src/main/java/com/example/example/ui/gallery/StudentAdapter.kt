@@ -9,7 +9,7 @@ class StudentAdapter(private val estudiantes: MutableList<Estudiante>) : Recycle
 
     inner class StudentViewHolder(private val binding: ItemStudentBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(estudiante: Estudiante) {
-            binding.studentNameTextView.text = estudiante.estudiante
+            binding.studentNameTextView.text = estudiante.estudiante// Cambié "estudiante" por "nombre"
             binding.studentIdTextView.text = estudiante.id
             binding.studentGradeTextView.text = estudiante.grado.toString()
             binding.studentSectionTextView.text = estudiante.seccion
@@ -31,5 +31,11 @@ class StudentAdapter(private val estudiantes: MutableList<Estudiante>) : Recycle
         val startPosition = estudiantes.size
         estudiantes.addAll(newEstudiantes)
         notifyItemRangeInserted(startPosition, newEstudiantes.size)
+    }
+
+    fun updateList(newEstudiantes: List<Estudiante>) {
+        estudiantes.clear()
+        estudiantes.addAll(newEstudiantes)
+        notifyDataSetChanged()
     }
 }

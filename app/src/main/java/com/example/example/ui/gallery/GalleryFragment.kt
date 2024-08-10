@@ -7,12 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.databinding.FragmentGalleryBinding
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.Query
 import androidx.appcompat.widget.SearchView
-import androidx.core.widget.addTextChangedListener
 
 class GalleryFragment : Fragment() {
 
@@ -22,117 +19,95 @@ class GalleryFragment : Fragment() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var studentAdapter: StudentAdapter
     private val estudiantes = mutableListOf<Estudiante>()
-    private var lastVisible: DocumentSnapshot? = null
-    private val pageSize = 20
-    private var isLoading = false
+    private val fullEstudiantesList = mutableListOf<Estudiante>() // To keep the original list
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         firestore = FirebaseFirestore.getInstance()
-        studentAdapter = StudentAdapter(estudiantes)
-        binding.recyclerView.apply {
-            adapter = studentAdapter
-            layoutManager = LinearLayoutManager(context)
-            addOnScrollListener(createScrollListener())
-        }
 
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        setupRecyclerView()
+        setupSearchView()
+        setupSpinner()
+        fetchEstudiantes()
+    }
+
+    private fun setupRecyclerView() {
+        studentAdapter = StudentAdapter(estudiantes)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = studentAdapter
+    }
+
+    private fun setupSearchView() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { searchStudents(it) }
-                return true
+                // Not used but can be implemented if needed
+                return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { searchStudents(it) }
+                // Filter the list based on the updated query text
+                filterEstudiantes(newText)
                 return true
             }
         })
-
-        loadStudents()
-
-        return root
     }
 
-    private fun createScrollListener() = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-            val visibleItemCount = layoutManager.childCount
-            val totalItemCount = layoutManager.itemCount
-            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-
-            if (!isLoading && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
-                isLoading = true
-                loadMoreStudents()
-            }
-        }
+    private fun setupSpinner() {
+        // Implement spinner setup if needed
     }
 
-    private fun loadStudents() {
+    private fun fetchEstudiantes() {
+        showProgressBar(true) // Show ProgressBar before fetching data
+
         firestore.collection("Estudiante")
-            .limit(pageSize.toLong())
-            .get()
-            .addOnSuccessListener { result ->
-                handleStudentLoadResult(result)
-            }
-            .addOnFailureListener { exception ->
-                handleLoadError(exception)
-            }
-    }
+            .orderBy("estudiante", Query.Direction.ASCENDING)
+            .addSnapshotListener { snapshot, e ->
+                showProgressBar(false) // Hide ProgressBar when data is fetched
 
-    private fun loadMoreStudents() {
-        lastVisible?.let { lastDoc ->
-            firestore.collection("Estudiante")
-                .startAfter(lastDoc)
-                .limit(pageSize.toLong())
-                .get()
-                .addOnSuccessListener { result ->
-                    handleStudentLoadResult(result)
+                if (e != null) {
+                    // Handle the error (e.g., show a message to the user or log the error)
+                    return@addSnapshotListener
                 }
-                .addOnFailureListener { exception ->
-                    handleLoadError(exception)
+
+                snapshot?.let {
+                    val newEstudiantes = it.documents.mapNotNull { document ->
+                        document.toObject(Estudiante::class.java)
+                    }
+                    estudiantes.clear()
+                    estudiantes.addAll(newEstudiantes)
+                    fullEstudiantesList.clear()
+                    fullEstudiantesList.addAll(newEstudiantes)
+                    studentAdapter.notifyDataSetChanged()
                 }
-        }
-    }
-
-    private fun searchStudents(query: String) {
-        firestore.collection("Estudiante")
-            .whereGreaterThanOrEqualTo("estudiante", query)
-            .whereLessThanOrEqualTo("estudiante", query + '\uf8ff')
-            .get()
-            .addOnSuccessListener { result ->
-                handleStudentLoadResult(result)
-            }
-            .addOnFailureListener { exception ->
-                handleLoadError(exception)
             }
     }
 
-    private fun handleStudentLoadResult(result: QuerySnapshot) {
-        val newEstudiantes = result.documents.mapNotNull { document ->
-            document.toObject(Estudiante::class.java)
+    private fun filterEstudiantes(query: String?) {
+        val queryLower = query?.lowercase().orEmpty() // Convert query to lowercase for case-insensitive matching
+        val filteredEstudiantes = if (queryLower.isEmpty()) {
+            fullEstudiantesList // Use the full list if the query is empty
+        } else {
+            fullEstudiantesList.filter { estudiante ->
+                estudiante.estudiante.lowercase().contains(queryLower)
+            }
         }
-
         estudiantes.clear()
-        estudiantes.addAll(newEstudiantes)
+        estudiantes.addAll(filteredEstudiantes)
         studentAdapter.notifyDataSetChanged()
-
-        if (result.documents.isNotEmpty()) {
-            lastVisible = result.documents.last()
-        }
-        isLoading = false
     }
 
-    private fun handleLoadError(exception: Exception) {
-        // Manejo de errores, por ejemplo, mostrando un mensaje al usuario
-        // Toast.makeText(context, "Error al cargar datos: $exception", Toast.LENGTH_SHORT).show()
-        println("Error getting documents: $exception")
-        isLoading = false
+    private fun showProgressBar(show: Boolean) {
+        binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     override fun onDestroyView() {
@@ -140,6 +115,3 @@ class GalleryFragment : Fragment() {
         _binding = null
     }
 }
-
-
-

@@ -1,34 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_primary_blue"
+    android:orientation="vertical"
+    android:padding="10dp"
     tools:context=".ui.gallery.GalleryFragment">
+
     <!-- SearchView for filtering the estudiante list -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10sp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
 
-        <androidx.appcompat.widget.SearchView
+        <SearchView
             android:id="@+id/searchView"
-            android:layout_width="match_parent"
-            android:layout_height="60sp"
-            android:queryHint="Buscar estudiante"
-            android:layout_margin="5sp"
-           android:background="@drawable/search_view_query_background"
-            app:iconifiedByDefault="false"/>
+            android:layout_width="200dp"
+            android:layout_height="50sp"
+            android:layout_weight="1"
+            android:background="@drawable/search_view_query_background"
+            app:iconifiedByDefault="false"
+            app:showAsAction="always" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/spinnerGrado"
+            android:layout_width="70sp"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_student" />
+            android:background="@drawable/search_view_query_background" />
     </LinearLayout>
 
-    <!-- RecyclerView for displaying the list of students -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
 
-</ScrollView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:listitem="@layout/item_student" />
+</LinearLayout>
