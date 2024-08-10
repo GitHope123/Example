@@ -47,7 +47,7 @@
             android:fontFamily="@font/montserrat"
             android:inputType="text"
             android:padding="10sp"
-            android:text="Username@gmail.com"
+            android:text="Username@undc.edu.pe"
             android:textColor="@color/Primary_white"
             android:textSize="14sp" />
         <EditText

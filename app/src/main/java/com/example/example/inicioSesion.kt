@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,6 +15,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.GoogleAuthProvider
 
 class inicioSesion : AppCompatActivity() {
@@ -51,17 +54,48 @@ class inicioSesion : AppCompatActivity() {
             }
         }
 
+
         val iniciarSesion = findViewById<Button>(R.id.buttonIniciarSesion)
         iniciarSesion.setOnClickListener {
-            // Verifica si el usuario está autenticado antes de iniciar la nueva actividad
-            val currentUser = auth.currentUser
-            if (currentUser != null) {
-                val intent = Intent(this, barraLateral::class.java)
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "Debes iniciar sesión primero.", Toast.LENGTH_SHORT).show()
+            // Obtén los valores ingresados por el usuario
+            val email = findViewById<EditText>(R.id.editTextUsername).text.toString()
+            val password = findViewById<EditText>(R.id.editTextPassword).text.toString()
+
+            // Valida los campos de entrada
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Por favor, ingrese todos los campos.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            // Autentica al usuario con correo y contraseña
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // La autenticación fue exitosa
+                        val user = auth.currentUser
+                        if (user != null && email.endsWith("@undc.edu.pe")) {
+                            // El correo electrónico tiene el dominio correcto, permitir acceso
+                            val intent = Intent(this, barraLateral::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            // El correo electrónico no tiene el dominio correcto
+                            handleSignOut()
+                        }
+                    } else {
+                        // Manejo de errores específicos de Firebase
+                        val exception = task.exception
+                        val errorMessage = when (exception) {
+                            is FirebaseAuthInvalidCredentialsException -> "Credenciales inválidas. Verifique el correo electrónico y la contraseña."
+                            is FirebaseAuthInvalidUserException -> "Usuario no registrado. Verifique el correo electrónico."
+                            else -> "Error al iniciar sesión. Inténtelo de nuevo."
+                        }
+                        Log.e("InicioSesion", errorMessage, exception)
+                        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+                    }
+                }
         }
+
 
         val iniciarSesionGoogle = findViewById<Button>(R.id.buttonGoogle)
         iniciarSesionGoogle.setOnClickListener {
@@ -119,7 +153,7 @@ class inicioSesion : AppCompatActivity() {
         // Cierra sesión del usuario y muestra un mensaje
         auth.signOut()
         googleSignInClient.signOut()
-        Toast.makeText(this, "Acceso restringido o error al iniciar sesión. Inténtelo de nuevo.", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Acceso restringido. Inténtelo de nuevo.", Toast.LENGTH_LONG).show()
     }
 
 }
