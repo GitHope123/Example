@@ -33,4 +33,3 @@ class StudentAdapter(private val estudiantes: MutableList<Estudiante>) : Recycle
         notifyItemRangeInserted(startPosition, newEstudiantes.size)
     }
 }
-
