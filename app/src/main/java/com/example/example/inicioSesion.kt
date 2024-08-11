@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.GoogleAuthProvider
 
 class inicioSesion : AppCompatActivity() {
+
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var signInLauncher: ActivityResultLauncher<Intent>
@@ -54,36 +55,28 @@ class inicioSesion : AppCompatActivity() {
             }
         }
 
-
         val iniciarSesion = findViewById<Button>(R.id.buttonIniciarSesion)
         iniciarSesion.setOnClickListener {
-            // Obtén los valores ingresados por el usuario
             val email = findViewById<EditText>(R.id.editTextUsername).text.toString()
             val password = findViewById<EditText>(R.id.editTextPassword).text.toString()
 
-            // Valida los campos de entrada
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Por favor, ingrese todos los campos.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Autentica al usuario con correo y contraseña
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        // La autenticación fue exitosa
                         val user = auth.currentUser
                         if (user != null && email.endsWith("@undc.edu.pe")) {
-                            // El correo electrónico tiene el dominio correcto, permitir acceso
-                            val intent = Intent(this, barraLateral::class.java)
+                            val intent = Intent(this, BarraLateral::class.java)
                             startActivity(intent)
                             finish()
                         } else {
-                            // El correo electrónico no tiene el dominio correcto
                             handleSignOut()
                         }
                     } else {
-                        // Manejo de errores específicos de Firebase
                         val exception = task.exception
                         val errorMessage = when (exception) {
                             is FirebaseAuthInvalidCredentialsException -> "Credenciales inválidas. Verifique el correo electrónico y la contraseña."
@@ -95,7 +88,6 @@ class inicioSesion : AppCompatActivity() {
                     }
                 }
         }
-
 
         val iniciarSesionGoogle = findViewById<Button>(R.id.buttonGoogle)
         iniciarSesionGoogle.setOnClickListener {
@@ -109,9 +101,7 @@ class inicioSesion : AppCompatActivity() {
     }
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
-        val idToken = account.idToken
-        if (idToken == null) {
-            // Maneja el caso en el que el token es nulo
+        val idToken = account.idToken ?: run {
             Toast.makeText(this, "Error al obtener el token de Google.", Toast.LENGTH_LONG).show()
             return
         }
@@ -120,23 +110,17 @@ class inicioSesion : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // La autenticación con Firebase fue exitosa
                     val user = auth.currentUser
                     val email = user?.email
 
                     if (email != null && email.endsWith("@undc.edu.pe")) {
-                        // El correo electrónico tiene el dominio correcto, permitir acceso
-                        val intent = Intent(this, barraLateral::class.java)
+                        val intent = Intent(this, BarraLateral::class.java)
                         startActivity(intent)
-                        auth.signOut()
-                        googleSignInClient.signOut()
                         finish()
                     } else {
-                        // El correo electrónico no tiene el dominio correcto, mostrar mensaje de error
                         handleSignOut()
                     }
                 } else {
-                    // Manejo de errores específicos de Firebase
                     val exception = task.exception
                     val errorMessage = when (exception) {
                         is ApiException -> "Error de autenticación de Google: ${exception.statusCode}"
@@ -150,10 +134,8 @@ class inicioSesion : AppCompatActivity() {
     }
 
     private fun handleSignOut() {
-        // Cierra sesión del usuario y muestra un mensaje
         auth.signOut()
         googleSignInClient.signOut()
         Toast.makeText(this, "Acceso restringido. Inténtelo de nuevo.", Toast.LENGTH_LONG).show()
     }
-
 }

@@ -1,9 +1,9 @@
 package com.example.example
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.widget.TextView
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -16,40 +16,75 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.example.databinding.ActivityBarraLateralBinding
 import com.google.firebase.auth.FirebaseAuth
 
-class barraLateral : AppCompatActivity() {
+class BarraLateral : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityBarraLateralBinding
     private lateinit var auth: FirebaseAuth
+
+    private val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+        val user = firebaseAuth.currentUser
+        if (user != null) {
+            // Obtén el nombre del usuario si está disponible
+            val userName = user.displayName ?: "Usuario"
+            val email = user.email ?: "No disponible"
+
+            // Registra la información en el log
+            Log.d("BarraLateral", "Correo electrónico del usuario: $email")
+
+            // Configura las vistas del header en el NavigationView
+            val navView: NavigationView = binding.navView
+            val headerView = navView.getHeaderView(0)
+            val userWelcome = headerView.findViewById<TextView>(R.id.textViewUser)
+            val emailTextView = headerView.findViewById<TextView>(R.id.textViewEmail)
+
+            val formattedText = userName
+                .toLowerCase()
+                .split(" ")
+                .take(2)
+                .joinToString(" ") { it.capitalize() }
+            // Actualiza los textos en el header
+            userWelcome.text = "Bienvenido, $formattedText!"
+            emailTextView.text = email
+        } else {
+            Log.d("BarraLateral", "No hay usuario autenticado")
+            // Manejo cuando no hay usuario autenticado, posiblemente redirigir a pantalla de login
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityBarraLateralBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        auth = FirebaseAuth.getInstance()
+
+        // Configura el AuthStateListener
+        auth.addAuthStateListener(authStateListener)
+
+        // Configura la barra de acción
         setSupportActionBar(binding.appBarBarraLateral.toolbar)
 
+        // Configura el FloatingActionButton
         binding.appBarBarraLateral.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
-                .setAnchorView(R.id.fab).show()
+                .show()
         }
+
+        // Configura el Navigation Drawer
         val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_barra_lateral)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_principal, R.id.nav_gallery, R.id.nav_slideshow
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        binding.navView.setupWithNavController(navController)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.barra_lateral, menu)
         return true
     }
@@ -57,5 +92,11 @@ class barraLateral : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_barra_lateral)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Elimina el AuthStateListener
+        auth.removeAuthStateListener(authStateListener)
     }
 }

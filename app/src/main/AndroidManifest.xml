@@ -28,7 +28,7 @@
 
         <!-- Actividad secundaria -->
         <activity
-            android:name=".barraLateral"
+            android:name=".BarraLateral"
             android:exported="false"
             android:label="@string/title_activity_barra_lateral"
             android:theme="@style/Theme.Example.NoActionBar" />
