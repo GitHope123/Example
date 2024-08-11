@@ -22,14 +22,14 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="160dp"
-            app:srcCompat="@drawable/background_logo_primary" />
+            app:srcCompat="@drawable/icon_login_primary" />
         <TextView
             android:id="@+id/textViewEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_bold"
             android:letterSpacing="0.3"
-            android:text="TEXTMESS"
+            android:text="MESSBOOK"
             android:layout_marginBottom="30sp"
             android:textAlignment="center"
             android:textColor="@color/Primary_white"
