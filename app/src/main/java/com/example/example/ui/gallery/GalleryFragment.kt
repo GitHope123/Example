@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.databinding.FragmentGalleryBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import androidx.appcompat.widget.SearchView
+import com.example.example.R
 
 class GalleryFragment : Fragment() {
 
@@ -63,8 +67,8 @@ class GalleryFragment : Fragment() {
     }
 
     private fun setupSpinner() {
-        // Implement spinner setup if needed
     }
+
 
     private fun fetchEstudiantes() {
         showProgressBar(true) // Show ProgressBar before fetching data

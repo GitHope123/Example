@@ -24,11 +24,9 @@
             android:background="@drawable/search_view_query_background"
             app:iconifiedByDefault="false"
             app:showAsAction="always" />
-
         <Space
             android:layout_width="10dp"
             android:layout_height="wrap_content" />
-
         <Spinner
             android:id="@+id/spinnerGrado"
             android:layout_width="70sp"

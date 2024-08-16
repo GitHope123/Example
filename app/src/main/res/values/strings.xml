@@ -13,4 +13,19 @@
     <string name="menu_principal">Principal</string>
     <string name="menu_seccion1">Seccion 1</string>
     <string name="menu_seccion2">Seccion 2</string>
+
+        <string-array name="grados_array">
+            <item>1</item>
+            <item>2</item>
+            <item>3</item>
+            <item>4</item>
+            <item>5</item>
+        </string-array>
+        <string-array name="secciones_array">
+            <item>A</item>
+            <item>B</item>
+            <item>C</item>
+            <item>D</item>
+        </string-array>
+
 </resources>
