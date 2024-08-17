@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.databinding.FragmentProfesorBinding
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,7 +29,6 @@ class ProfesorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfesorBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
         // Initialize RecyclerView and Adapter
         profesorAdapter = ProfesorAdapter(profesorList)
@@ -41,7 +40,7 @@ class ProfesorFragment : Fragment() {
         // Fetch data from Firestore
         fetchProfesores()
 
-        return root
+        return binding.root
     }
 
     private fun fetchProfesores() {
@@ -50,16 +49,45 @@ class ProfesorFragment : Fragment() {
             .addOnSuccessListener { result ->
                 profesorList.clear() // Clear existing data
                 for (document in result) {
-                    val profesor = document.toObject<Profesor>()
-                    profesorList.add(profesor)
+                    val data = document.data // Get the map of data
+                    val profesor = data.mapToProfesor() // Convert the map to a Profesor object
+
+                    if (profesor != null) { // Only add the profesor if it's valid
+                        profesorList.add(profesor)
+                    }
                 }
-                profesorAdapter.notifyDataSetChanged() // Notify adapter of data changes
+                profesorAdapter.notifyDataSetChanged() // Notify adapter that data has changed
             }
             .addOnFailureListener { exception ->
-                // Handle any errors
+                Toast.makeText(context, "Error al cargar los profesores: ${exception.message}", Toast.LENGTH_LONG).show()
                 exception.printStackTrace()
-                // You might want to show an error message to the user here
             }
+    }
+
+    // Extension function to convert a Map<String, Any> to a Profesor object
+    private fun Map<String, Any>.mapToProfesor(): Profesor? {
+        return try {
+            val apellidos = this["apellidos"] as? String ?: return null
+            val nombres = this["nombres"] as? String ?: return null
+            val domicilio = this["domicilio"] as? String ?: return null
+            val celular = this["celular"] as? String ?: return null
+            val materia = this["materia"] as? String ?: return null
+            val seccion = this["seccion"] as? String ?: return null
+            val grado = this["grado"] as? String ?: return null
+
+            Profesor(
+                apellidos = apellidos,
+                nombres = nombres,
+                domicilio = domicilio,
+                celular = celular,
+                materia = materia,
+                seccion = seccion,
+                grado = grado
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null // Return null if there's an error during mapping
+        }
     }
 
     override fun onDestroyView() {
