@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.credentials.webauthn.Cbor
 import com.example.example.databinding.ActivityBarraLateralBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -37,7 +38,6 @@ class BarraLateral : AppCompatActivity() {
             val headerView = navView.getHeaderView(0)
             val userWelcome = headerView.findViewById<TextView>(R.id.textViewUser)
             val emailTextView = headerView.findViewById<TextView>(R.id.textViewEmail)
-
             val formattedText = userName
                 .toLowerCase()
                 .split(" ")
@@ -65,19 +65,18 @@ class BarraLateral : AppCompatActivity() {
         // Configura la barra de acción
         setSupportActionBar(binding.appBarBarraLateral.toolbar)
 
-        // Configura el FloatingActionButton
-        binding.appBarBarraLateral.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show()
-        }
 
         // Configura el Navigation Drawer
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navController = findNavController(R.id.nav_host_fragment_content_barra_lateral)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_principal, R.id.nav_profesor, R.id.nav_estudiantes, R.id.nav_tutor, R.id.nav_incidencia, R.id.nav_reporte
+                R.id.nav_principal,
+                R.id.nav_profesor,
+                R.id.nav_estudiantes,
+                R.id.nav_tutor,
+                R.id.nav_incidencia,
+                R.id.nav_reporte
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -86,6 +85,7 @@ class BarraLateral : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.barra_lateral, menu)
+
         return true
     }
 
