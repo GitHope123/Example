@@ -31,7 +31,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_fecha"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
@@ -72,7 +72,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_estudiante"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
@@ -100,7 +100,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_grado"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
@@ -123,7 +123,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_seccion"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
@@ -152,7 +152,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_estado"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
@@ -182,7 +182,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_tipo"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
@@ -211,7 +211,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_gravedad"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
@@ -234,7 +234,7 @@
             android:fontFamily="@font/montserrat_bold"
             android:padding="10dp"
             android:text="@string/hint_detalle"
-            android:textColor="@color/Primary_white"
+            android:textColor="@color/Primary_blue_sky"
             android:textSize="14sp" />
 
         <TextView
