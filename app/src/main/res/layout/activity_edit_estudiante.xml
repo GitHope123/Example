@@ -188,6 +188,7 @@
             android:layout_marginTop="10dp"
             android:backgroundTint="@color/Secondary_red"
             android:fontFamily="@font/montserrat_bold"
+            android:textSize="14sp"
             android:text="Eliminar"
             android:textColor="@color/Primary_white" />
 
