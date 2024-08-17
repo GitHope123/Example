@@ -154,6 +154,7 @@
 
             <EditText
                 android:id="@+id/etMultiLine"
+                android:padding="15sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_text_transparent"
@@ -182,7 +183,7 @@
             <ImageButton
                 android:id="@+id/imageButtonEvidencia"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="180dp"
                 android:layout_gravity="center"
                 android:background="@drawable/background_text_transparent"
                 android:padding="30dp"
@@ -196,7 +197,7 @@
             android:id="@+id/btnRegistrarIncidencia"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/background_yellow_buttom"
             android:drawableLeft="@drawable/ic_upload"
             android:drawableTint="@color/Secondary_brown"
