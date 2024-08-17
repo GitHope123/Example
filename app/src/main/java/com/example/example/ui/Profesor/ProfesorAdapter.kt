@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
 
 class ProfesorAdapter(
-    private val profesores: List<Profesor>
+    private val profesores: List<Profesor>,
+    private val onEditClickListener: (Profesor) -> Unit
 ) : RecyclerView.Adapter<ProfesorAdapter.ProfesorViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfesorViewHolder {
@@ -28,21 +29,22 @@ class ProfesorAdapter(
     }
 
     inner class ProfesorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val textViewNombreCompletos: TextView = itemView.findViewById(R.id.textViewNombreCompletos)
+        private val textViewNombreCompleto: TextView = itemView.findViewById(R.id.textViewNombreCompletos)
         private val textViewTelefono: TextView = itemView.findViewById(R.id.textViewTelefono)
         private val textViewDomicilio: TextView = itemView.findViewById(R.id.textViewDomicilio)
-        private val imageButtonEdit: ImageButton = itemView.findViewById(R.id.imageButtonEdit)
+        private val editButton: ImageButton = itemView.findViewById(R.id.imageButtonEdit)
 
         fun bind(profesor: Profesor) {
             // Concatenate first and last names
             val nombreCompleto = "${profesor.nombres} ${profesor.apellidos}"
-            textViewNombreCompletos.text = nombreCompleto
+            textViewNombreCompleto.text = nombreCompleto
             textViewTelefono.text = profesor.celular
             textViewDomicilio.text = profesor.domicilio
-            imageButtonEdit.setOnClickListener {
-                // Handle edit action for the professor
+
+            editButton.setOnClickListener {
+                // Notify the click listener with the current profesor
+                onEditClickListener(profesor)
             }
         }
     }
 }
-
