@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_primary_blue"
     android:padding="10dp"
-    tools:context=".ui.Estudiante.AddEstudiante">
+    tools:context=".ui.Estudiante.EditEstudiante">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -170,24 +170,14 @@
             android:layout_height="10sp" />
 
         <Button
-            android:id="@+id/buttonModificar"
-            android:layout_width="match_parent"
-            android:layout_height="70sp"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/background_yellow_buttom"
-            android:fontFamily="@font/montserrat_bold"
-            android:text="Modificar"
-            android:textColor="@color/Secondary_brown" />
-        <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="70sp"
             android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/color_red"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/background_yellow_buttom"
             android:fontFamily="@font/montserrat_bold"
-            android:text="Eliminar"
+            android:text="Agregar"
             android:textColor="@color/Secondary_brown" />
 
 

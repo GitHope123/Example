@@ -30,6 +30,9 @@
             android:name=".ui.Tutor.addTutor"
             android:exported="false" />
         <activity
+            android:name=".ui.Estudiante.EditEstudiante"
+            android:exported="false" />
+        <activity
             android:name=".inicioSesion"
             android:exported="true">
             <intent-filter>
