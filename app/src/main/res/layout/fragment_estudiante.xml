@@ -50,7 +50,7 @@
         <Button
             android:layout_width="100sp"
             android:layout_height="50sp"
-            android:text="@string/btn_estudiantes">
+            android:text="@string/btn_aceptar">
         </Button>
     </LinearLayout>
     <ProgressBar

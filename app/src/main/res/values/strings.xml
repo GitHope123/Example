@@ -31,5 +31,6 @@
         </string-array>
 //Estudiantes
     <string name="btn_aceptar">Aceptar</string>
+    <string name="action_bottom">Añadir estudiante</string>
 
 </resources>
