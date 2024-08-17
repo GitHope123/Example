@@ -5,6 +5,253 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_primary_blue"
+    android:padding="10sp"
     tools:context=".ui.Incidencia.DescripcionIncidencia">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20sp"
+        android:background="@color/Primary_blue_black"
+        android:padding="10sp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10sp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="@string/hint_fecha"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="24/08/2024"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvHora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="10:00 a.m."
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10sp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="@string/hint_estudiante"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="Maria Fernanda Quinteros Campos"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10sp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="@string/hint_grado"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvGrado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="3"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="@string/hint_seccion"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvSeccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="A"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10sp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="@string/hint_estado"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvEstado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_estado"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="pendiente"
+                android:textColor="@color/color_red"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10sp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="@string/hint_tipo"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvTipo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="Conductual"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10sp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="@string/hint_gravedad"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvGravedad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="Muy grave"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/montserrat_bold"
+            android:padding="10dp"
+            android:text="@string/hint_detalle"
+            android:textColor="@color/Primary_white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_bold"
+            android:padding="10dp"
+            android:text="Detalles aqui"
+            android:textColor="@color/Primary_white"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_text_transparent" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    android:background="@drawable/background_text_transparent"
-    android:backgroundTint="@color/Primary_transparent_blue_black">
+    android:layout_margin="5dp"
+    android:background="@drawable/background_white_element_full">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80sp"
+        android:layout_height="80dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -18,11 +18,11 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/icon_tutor"
-            android:backgroundTint="@color/Primary_blue_sky" />
+            android:src="@drawable/icon_tutor"
+            android:tint="@color/Primary_blue_sky" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
@@ -31,7 +31,7 @@
                 android:id="@+id/textViewTutorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
+                android:layout_marginStart="10dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="Tutor Name"
                 android:textColor="@color/Primary_blue_sky"
@@ -41,7 +41,7 @@
                 android:id="@+id/textViewTutorSubject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
+                android:layout_marginStart="10dp"
                 android:fontFamily="@font/montserrat"
                 android:text="Subject"
                 android:textColor="@color/Primary_blue_sky"
@@ -51,7 +51,7 @@
                 android:id="@+id/textViewTutorPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
+                android:layout_marginStart="10dp"
                 android:fontFamily="@font/montserrat"
                 android:text="Phone Number"
                 android:textColor="@color/Primary_blue_sky"
@@ -59,11 +59,12 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="30sp"
-            android:layout_height="30sp"
+            android:id="@+id/imageButtonEdit"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/background_white_element_full"
-            app:srcCompat="@drawable/icon_edit" />
+            android:src="@drawable/icon_edit"
+            app:tint="@color/Primary_blue_sky" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

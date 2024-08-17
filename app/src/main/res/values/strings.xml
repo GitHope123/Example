@@ -44,19 +44,6 @@
     <string name="hint_detalle">Detalle</string>
     <string name="hint_evidencia">Evidencia</string>
     <string name="hint_registrar_incidencia">Registrar Incidencia</string>
-    //Incidencia
-    <string name="item_incidence_date">13/08/2024</string>
-    <string name="item_incidence_hour">4:45pm</string>
-    <string name="item_incidence_name">Sebastian Rodrigo Torres Ramos</string>
-    <string name="item_incidence_degree_section">3 A</string>
-    <string name="item_incidence_level">Moderado</string>
-    <string name="item_incidence_observer">Pendiente</string>
-
-
-
-
-
-
 
 
 </resources>
