@@ -1,17 +1,19 @@
 package com.example.example.ui.Estudiante
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.databinding.FragmentEstudianteBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import androidx.appcompat.widget.SearchView
-import androidx.navigation.fragment.findNavController
 import com.example.example.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -19,12 +21,10 @@ class GalleryFragment : Fragment() {
 
     private var _binding: FragmentEstudianteBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var firestore: FirebaseFirestore
     private lateinit var studentAdapter: StudentAdapter
     private val estudiantes = mutableListOf<Estudiante>()
     private val fullEstudiantesList = mutableListOf<Estudiante>()
-    private lateinit var addButtom: FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +44,7 @@ class GalleryFragment : Fragment() {
         setupSpinner()
         fetchEstudiantes()
         addStudents()
+        editStudents()
     }
 
     private fun setupRecyclerView() {
@@ -99,7 +100,8 @@ class GalleryFragment : Fragment() {
     }
 
     private fun filterEstudiantes(query: String?) {
-        val queryLower = query?.lowercase().orEmpty() // Convert query to lowercase for case-insensitive matching
+        val queryLower =
+            query?.lowercase().orEmpty() // Convert query to lowercase for case-insensitive matching
         val filteredEstudiantes = if (queryLower.isEmpty()) {
             fullEstudiantesList // Use the full list if the query is empty
         } else {
@@ -120,11 +122,27 @@ class GalleryFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    private fun addStudents(){
-        addButtom = view?.findViewById(R.id.addButtom)!!
-        addButtom.setOnClickListener{
-            val intent= Intent(requireContext(),AddActivity::class.java)
-            startActivity(intent)
+
+    private fun addStudents() {
+        view?.findViewById<FloatingActionButton>(R.id.addButtom)?.let { addButton ->
+            addButton.setOnClickListener {
+                val intent = Intent(requireContext(), AddEstudiante::class.java)
+                startActivity(intent)
+            }
+        } ?: run {
+
         }
     }
+
+    private fun editStudents() {
+        view?.findViewById<ImageButton>(R.id.editStudents)?.let { buttonEditStudents ->
+            buttonEditStudents.setOnClickListener {
+                val intent = Intent(requireContext(), EditEstudiante::class.java)
+                startActivity(intent)
+            }
+        } ?: run {
+        }
+    }
+
+
 }
