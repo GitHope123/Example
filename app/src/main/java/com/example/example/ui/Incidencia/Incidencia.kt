@@ -1,7 +1,6 @@
 package com.example.example.ui.Incidencia
 
 import android.content.Intent
-import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.ViewPager
 import com.example.example.R
-import com.example.example.ui.Estudiante.AddActivity
 import com.example.example.ui.Incidencia.Estado.AdapterEstado
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
@@ -37,7 +35,7 @@ class Incidencia : Fragment() {
     }
     private fun init() {
         btnAgregar.setOnClickListener {
-            val intent= Intent(requireContext(), AgregarIncidencia::class.java)
+            val intent= Intent(requireContext(), AgregarEstudianteIncidencia::class.java)
             startActivity(intent)
         }
     }
