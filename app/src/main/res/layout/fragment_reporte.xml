@@ -3,11 +3,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_primary_blue"
     tools:context=".ui.Reporte.Reporte">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_margin="20sp"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/background_white_element_full"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginTop="50sp"
+                android:layout_width="180sp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/Secondary_brown"
+                android:background="@drawable/icon_report"
+                android:layout_height="180sp">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="301dp"
+                android:layout_height="176dp"
+                android:layout_gravity="center"
+                android:background="@drawable/icon_looker" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="match_parent"
+                android:layout_height="70sp"
+                android:layout_margin="50sp"
+               android:backgroundTint="@color/Primary_blue"
+
+                android:text="Acceder al sitio" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="316dp"
+            android:layout_marginTop="50sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:fontFamily="@font/montserrat"
+            android:textColor="@color/Primary_white"
+            android:text="Con Looker, tendrás acceso a un resumen detallado de la información de las incidencias incidentes." />
+
+
+    </LinearLayout>
 </FrameLayout>

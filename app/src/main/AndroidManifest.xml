@@ -18,8 +18,8 @@
             android:name=".ui.Estudiante.AddActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.Tutor"
-            android:exported="false" /> <!-- Actividad principal, configurada como el lanzador -->
+            android:name=".ui.Profesor.addProfesor"
+            android:exported="false" />
         <activity
             android:name=".inicioSesion"
             android:exported="true">
