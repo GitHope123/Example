@@ -6,25 +6,27 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
 
-class AdapterEstado (private val context: Context, fragmentManager: FragmentManager, internal val totalTabs: Int):
-    FragmentPagerAdapter(fragmentManager){
+class AdapterEstado(
+    fragmentManager: FragmentManager
+) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getCount(): Int {
         return 3
     }
 
     override fun getItem(position: Int): Fragment {
-        return when(position){
-            0-> Todo()
-            1-> Pendiente()
-            2-> Revisado()
+        return when (position) {
+            0 -> Todo()
+            1 -> Pendiente()
+            else -> Revisado()
         }
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return when(position){
-            0->"Todos"
-            1->"Pendientes"
-            2->"Revisados"
+        return when (position) {
+            0 -> "Todos"
+            1 -> "Pendientes"
+            else ->  "Revisados"
         }
 
+    }
 }
