@@ -45,6 +45,6 @@
         android:src="@drawable/icon_add_student"
         android:layout_gravity="bottom|end"
         android:layout_margin="20dp"
-        android:backgroundTint="@color/Primary_white"
+        android:backgroundTint="@color/Primary_yellow"
         tools:contentDescription="@string/action_bottom" />
 </FrameLayout>
