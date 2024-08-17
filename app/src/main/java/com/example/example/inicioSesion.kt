@@ -35,7 +35,7 @@ class inicioSesion : AppCompatActivity() {
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
         auth = FirebaseAuth.getInstance()
-//Sevitas
+//Sevitas el más pro:)
         // Registra el ActivityResultLauncher
         signInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
