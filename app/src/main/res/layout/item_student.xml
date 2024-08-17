@@ -82,8 +82,8 @@
 
     <ImageButton
         android:id="@+id/editStudents"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_gravity="top|end"
         android:src="@drawable/icon_edit"
         android:background="@drawable/background_text_transparent"
