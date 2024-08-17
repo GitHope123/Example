@@ -31,10 +31,11 @@
                     android:drawableLeft="@drawable/icon_docente"
                     android:drawableTint="@color/Primary_blue_sky"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:fontFamily="@font/montserrat_bold"
                     android:text="Nombre del Profesor"
                     android:textColor="@color/Primary_blue_sky"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <ImageButton
                     android:id="@+id/imageButton2"
@@ -56,7 +57,8 @@
                 android:fontFamily="@font/montserrat"
                 android:text="Teléfono"
                 android:textColor="@color/Primary_blue_sky"
-                android:textSize="14sp" />
+                android:gravity="center_vertical"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/textViewDomicilio"
@@ -68,8 +70,9 @@
                 android:drawablePadding="10sp"
                 android:drawableTint="@color/Primary_blue_sky"
                 android:text="Domicilio"
+                android:gravity="center_vertical"
                 android:textColor="@color/Primary_blue_sky"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 
