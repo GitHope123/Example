@@ -16,6 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:padding="10dp"
+            android:drawablePadding="10sp"
+            android:drawableLeft="@drawable/icon_student"
             android:hint="Nombres"
             android:textColorHint="@color/Primary_white"
             android:fontFamily="@font/montserrat"
