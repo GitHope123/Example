@@ -10,6 +10,7 @@ import com.example.example.R
 
 class Incidencia : Fragment() {
 
+
     companion object {
         fun newInstance() = Incidencia()
     }
