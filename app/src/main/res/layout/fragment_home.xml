@@ -5,4 +5,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_primary_blue"
-    tools:context=".ui.home.HomeFragment"/>
+    tools:context=".ui.home.HomeFragment">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="550dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_marginBottom="20sp"
+            android:src="@drawable/icon_user_barra_lateral" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_blue_transparent"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="center_vertical"
+            android:padding="10sp"
+            android:text="Nombre: Username"
+            android:textColor="@color/Primary_blue_sky" />
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_blue_transparent"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="center_vertical"
+            android:padding="10sp"
+            android:text="Apellidos: Apellido1 Aplellido2"
+            android:textColor="@color/Primary_blue_sky" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_blue_transparent"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="center_vertical"
+            android:padding="10sp"
+            android:text="Telefono: 987654321"
+            android:textColor="@color/Primary_blue_sky" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_blue_transparent"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="center_vertical"
+            android:padding="10sp"
+            android:text="Domicilio: Los Angeles-Cañete"
+            android:textColor="@color/Primary_blue_sky" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="70sp"
+            android:background="@drawable/background_yellow_buttom"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/Secondary_brown"
+            android:layout_marginTop="20sp"
+            android:text="Editar" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
