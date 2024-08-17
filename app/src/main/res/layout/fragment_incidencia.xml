@@ -55,11 +55,11 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addButtom"
+        android:id="@+id/btnAgregarIncidencia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="20sp"
+        android:layout_margin="20dp"
         android:backgroundTint="@color/Primary_yellow"
         android:src="@drawable/icon_add_student"
         app:fabSize="normal"
