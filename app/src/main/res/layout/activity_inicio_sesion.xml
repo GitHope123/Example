@@ -83,7 +83,7 @@
             style="@style/ButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_marginTop="20sp"
+            android:layout_marginTop="50sp"
             android:drawableRight="@drawable/icon_google"
             android:fontFamily="@font/montserrat"
             android:text="Continuar con google" />
