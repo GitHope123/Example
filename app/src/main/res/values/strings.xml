@@ -48,7 +48,7 @@
     <string name="hint_detalle">Detalle</string>
     <string name="hint_evidencia">Evidencia</string>
     <string name="hint_registrar_incidencia">Registrar Incidencia</string>
-    <string name="hint_fecha">Fecha del reporte</string>
+    <string name="hint_fecha">Fecha del reporte </string>
 
 
 </resources>
