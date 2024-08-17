@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="20sp"
+        android:background="@color/Primary_blue_black"
+        android:padding="10sp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -29,7 +31,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_fecha"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
@@ -70,16 +72,15 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_estudiante"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:fontFamily="@font/montserrat"
                 android:gravity="center_vertical"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:text="Maria Fernanda Quinteros Campos"
                 android:textColor="@color/Primary_white"
                 android:textSize="14sp" />
@@ -99,7 +100,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_grado"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
@@ -122,7 +123,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_seccion"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
@@ -151,7 +152,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_estado"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
@@ -181,7 +182,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_tipo"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
@@ -210,7 +211,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="@string/hint_gravedad"
-                android:textColor="@color/Primary_white"
+                android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
 
             <TextView
@@ -233,13 +234,13 @@
             android:fontFamily="@font/montserrat_bold"
             android:padding="10dp"
             android:text="@string/hint_detalle"
-            android:textColor="@color/Primary_white"
+            android:textColor="@color/Primary_blue_sky"
             android:textSize="14sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_bold"
+            android:fontFamily="@font/montserrat"
             android:padding="10dp"
             android:text="Detalles aqui"
             android:textColor="@color/Primary_white"
