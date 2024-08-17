@@ -1,23 +1,19 @@
-package com.example.example.ui.gallery
+package com.example.example.ui.Estudiante
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.example.databinding.FragmentGalleryBinding
+import com.example.example.databinding.FragmentEstudianteBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import androidx.appcompat.widget.SearchView
-import com.example.example.R
 
 class GalleryFragment : Fragment() {
 
-    private var _binding: FragmentGalleryBinding? = null
+    private var _binding: FragmentEstudianteBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var firestore: FirebaseFirestore
@@ -29,7 +25,7 @@ class GalleryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        _binding = FragmentEstudianteBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -79,6 +79,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.legacy.support.v4)
 
     // Unit testing library
     testImplementation(libs.junit)

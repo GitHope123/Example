@@ -77,7 +77,7 @@ class BarraLateral : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_barra_lateral)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_principal, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_principal, R.id.nav_profesor, R.id.nav_estudiantes, R.id.nav_tutor, R.id.nav_incidencia, R.id.nav_reporte
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

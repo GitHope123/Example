@@ -9,12 +9,25 @@
             android:icon="@drawable/icon_home"
             android:title="Principal" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/icon_notifications"
-            android:title="Sección 1" />
-        <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_profesor"
             android:icon="@drawable/icon_family"
-            android:title="Sección 2" />
+            android:title="Profesores" />
+        <item
+            android:id="@+id/nav_estudiantes"
+            android:icon="@drawable/icon_notifications"
+            android:title="Estudiantes" />
+        <item
+            android:id="@+id/nav_tutor"
+            android:icon="@drawable/icon_home"
+            android:title="Tutores" />
+        <item
+            android:id="@+id/nav_incidencia"
+            android:icon="@drawable/icon_family"
+            android:title="Incidencia" />
+        <item
+            android:id="@+id/nav_reporte"
+            android:icon="@drawable/icon_notifications"
+            android:title="Reporte" />
+
     </group>
 </menu>

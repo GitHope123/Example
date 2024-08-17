@@ -11,9 +11,11 @@
     <string name="default_web_client_id">281614136749-q1dhi52e83qoqtt8e1lrep83soj527i0.apps.googleusercontent.com</string>
 
     <string name="menu_principal">Principal</string>
-    <string name="menu_seccion1">Seccion 1</string>
-    <string name="menu_seccion2">Seccion 2</string>
-
+    <string name="menu_profesor">Profesores</string>
+    <string name="menu_estudiante">Estudiantes</string>
+    <string name="menu_tutores">Tutores</string>
+    <string name="menu_incidencia">Incidencias</string>
+    <string name="menu_reporte">Reporte</string>
         <string-array name="grados_array">
             <item>1</item>
             <item>2</item>

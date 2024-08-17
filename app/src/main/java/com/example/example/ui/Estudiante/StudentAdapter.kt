@@ -1,4 +1,4 @@
-package com.example.example.ui.gallery
+package com.example.example.ui.Estudiante
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

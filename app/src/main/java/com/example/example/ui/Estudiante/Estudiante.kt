@@ -1,4 +1,4 @@
-package com.example.example.ui.gallery
+package com.example.example.ui.Estudiante
 
 import java.io.Serializable
 
