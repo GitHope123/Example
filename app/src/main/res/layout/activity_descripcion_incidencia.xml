@@ -78,10 +78,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:fontFamily="@font/montserrat"
                 android:gravity="center_vertical"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:text="Maria Fernanda Quinteros Campos"
                 android:textColor="@color/Primary_white"
                 android:textSize="14sp" />
