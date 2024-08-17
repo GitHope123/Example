@@ -39,6 +39,11 @@
     <string name="hint_section">Seccion</string>
     <string name="hint_DNI">DNI</string>
     <string name="hint_date_of_birth">Fecha de nacimiento</string>
+    <string name="hint_gravedad">Gravedad</string>
+    <string name="hint_tipo">Tipo</string>
+    <string name="hint_detalle">Detalle</string>
+    <string name="hint_evidencia">Evidencia</string>
+    <string name="hint_registrar_incidencia">Registrar Incidencia</string>
 
 
 </resources>

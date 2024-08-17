@@ -35,7 +35,7 @@ class Incidencia : Fragment() {
     }
     private fun init() {
         btnAgregar.setOnClickListener {
-            val intent= Intent(requireContext(), AgregarIncidencia::class.java)
+            val intent= Intent(requireContext(), AgregarEstudianteIncidencia::class.java)
             startActivity(intent)
         }
     }
