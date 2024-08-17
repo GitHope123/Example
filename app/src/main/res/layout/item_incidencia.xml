@@ -8,18 +8,28 @@
     android:orientation="horizontal"
     android:padding="15dp">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="50sp"
             android:src="@drawable/icon_gravedad">
         </ImageView>
-    </FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/item_incidence_level"
+            android:gravity="center"
+            android:textColor="@color/Primary_white"
+            android:textSize="12sp"
+            android:fontFamily="@font/montserrat"
+            ></TextView>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,8 +45,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="13/08/2024"
-                android:textSize="14dp"></TextView>
+                android:text="@string/item_incidence_date"
+                android:textColor="@color/Primary_blue_sky"
+                android:textSize="14sp"
+                android:fontFamily="@font/montserrat_bold"
+                ></TextView>
 
             <Space
                 android:layout_width="40dp"
@@ -45,39 +58,59 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4:45pm"
-                android:textSize="14dp"></TextView>
+                android:text="@string/item_incidence_hour"
+                android:textColor="@color/Primary_blue_sky"
+                android:textSize="14sp"
+                android:fontFamily="@font/montserrat_bold"></TextView>
 
         </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="5dp"></Space>
+            android:layout_height="10dp"></Space>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sebastian Rodrigo Torres Ramos"
-            android:textSize="14dp"></TextView>
+            android:text="@string/item_incidence_name"
+            android:textColor="@color/Primary_white"
+            android:textSize="12sp"
+            android:fontFamily="@font/montserrat"></TextView>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="5dp"></Space>
+            android:layout_height="15dp"></Space>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="3 'A'"
-            android:textSize="14dp"></TextView>
+            android:text="@string/item_incidence_degree_section"
+            android:textSize="12sp"
+            android:fontFamily="@font/montserrat"
+            android:textColor="@color/Primary_white"
+            ></TextView>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
-
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50sp"></TextView>
+            android:layout_height="wrap_content"
+            android:text="@string/item_incidence_observer"
+            android:gravity="center"
+            android:textColor="@color/Primary_white"
+            android:textSize="12sp"
+            android:fontFamily="@font/montserrat"
+            ></TextView>
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_share"
+            android:padding="5dp">
+        </ImageButton>
     </LinearLayout>
 </LinearLayout>
