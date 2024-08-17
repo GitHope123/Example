@@ -40,10 +40,15 @@
     <string name="hint_DNI">DNI</string>
     <string name="hint_date_of_birth">Fecha de nacimiento</string>
     <string name="hint_gravedad">Gravedad</string>
+    <string name="hint_estudiante">Estudiante</string>
+    <string name="hint_grado">Grado</string>
+    <string name="hint_seccion">Seccion</string>
+    <string name="hint_estado">Estado</string>
     <string name="hint_tipo">Tipo</string>
     <string name="hint_detalle">Detalle</string>
     <string name="hint_evidencia">Evidencia</string>
     <string name="hint_registrar_incidencia">Registrar Incidencia</string>
+    <string name="hint_fecha">Fecha del reporte</string>
 
 
 </resources>
