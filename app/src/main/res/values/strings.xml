@@ -16,18 +16,20 @@
     <string name="menu_tutores">Tutores</string>
     <string name="menu_incidencia">Incidencias</string>
     <string name="menu_reporte">Reporte</string>
-        <string-array name="grados_array">
-            <item>1</item>
-            <item>2</item>
-            <item>3</item>
-            <item>4</item>
-            <item>5</item>
-        </string-array>
-        <string-array name="secciones_array">
-            <item>A</item>
-            <item>B</item>
-            <item>C</item>
-            <item>D</item>
-        </string-array>
+    <string-array name="grados_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="secciones_array">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
