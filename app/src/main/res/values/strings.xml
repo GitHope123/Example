@@ -32,5 +32,20 @@
     //Estudiantes
     <string name="btn_aceptar">Aceptar</string>
     <string name="action_bottom">Añadir estudiante</string>
+    <string name="hint_name">Nombres</string>
+    <string name="hint_lastName">Apellidos</string>
+    <string name="hint_phone">Telefono</string>
+    <string name="hint_degree">Grado</string>
+    <string name="hint_section">Seccion</string>
+    <string name="hint_DNI">DNI</string>
+    <string name="hint_date_of_birth">Fecha de nacimiento</string>
+
+
+
+
+
+
+
+
 
 </resources>
