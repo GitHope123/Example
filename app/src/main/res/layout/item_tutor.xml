@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="@drawable/background_text_transparent"
+    android:backgroundTint="@color/Primary_transparent_blue_black">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80sp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageViewTutor"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/icon_tutor"
+            android:backgroundTint="@color/Primary_blue_sky" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewTutorName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Tutor Name"
+                android:textColor="@color/Primary_blue_sky"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewTutorSubject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:fontFamily="@font/montserrat"
+                android:text="Subject"
+                android:textColor="@color/Primary_blue_sky"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textViewTutorPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:fontFamily="@font/montserrat"
+                android:text="Phone Number"
+                android:textColor="@color/Primary_blue_sky"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:background="@drawable/search_view_query_background"
+            app:srcCompat="@drawable/icon_edit" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

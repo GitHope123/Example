@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     android:background="@drawable/background_text_transparent"
-    android:backgroundTint="@color/Primary_transparent_blue_black"
-    android:layout_margin="5dp">
+    android:backgroundTint="@color/Primary_transparent_blue_black">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,18 +15,17 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5sp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/studentNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
                 android:drawableLeft="@drawable/icon_estudiante"
+                android:drawablePadding="10dp"
                 android:drawableTint="@color/Primary_blue_sky"
-                android:drawablePadding="10sp"
+                android:fontFamily="@font/montserrat_bold"
                 android:gravity="center_vertical"
                 android:text="Nombre del Estudiante"
                 android:textColor="@color/Primary_blue_sky"
@@ -37,17 +37,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:drawableLeft="@drawable/icon_code"
+                android:drawablePadding="10dp"
                 android:drawableTint="@color/Primary_blue_sky"
-                android:drawablePadding="10sp"
-                android:gravity="center_vertical"
                 android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
                 android:text="ID del Estudiante"
                 android:textColor="@color/Primary_blue_sky"
                 android:textSize="12sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -55,11 +55,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:fontFamily="@font/montserrat"
                     android:drawableLeft="@drawable/icon_class"
-                    android:drawablePadding="10sp"
-                    android:gravity="center_vertical"
+                    android:drawablePadding="10dp"
                     android:drawableTint="@color/Primary_blue_sky"
+                    android:fontFamily="@font/montserrat"
+                    android:gravity="center_vertical"
                     android:text="Grado"
                     android:textColor="@color/Primary_blue_sky"
                     android:textSize="12sp" />
@@ -70,8 +70,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/montserrat"
-                    android:text="Sección"
                     android:gravity="center_vertical"
+                    android:text="Sección"
                     android:textColor="@color/Primary_blue_sky"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -80,4 +80,14 @@
 
     </LinearLayout>
 
-</LinearLayout>
+    <ImageButton
+        android:id="@+id/editStudents"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="top|end"
+        android:src="@drawable/icon_edit"
+        android:background="@drawable/background_text_transparent"
+        android:backgroundTint="@color/Primary_transparent_blue_black"
+        android:padding="4dp"
+        android:layout_margin="10dp"/>
+</FrameLayout>

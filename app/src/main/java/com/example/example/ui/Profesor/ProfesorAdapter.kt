@@ -31,9 +31,6 @@ class ProfesorAdapter(
         private val textViewNombreCompletos: TextView = itemView.findViewById(R.id.textViewNombreCompletos)
         private val textViewTelefono: TextView = itemView.findViewById(R.id.textViewTelefono)
         private val textViewDomicilio: TextView = itemView.findViewById(R.id.textViewDomicilio)
-        private val textViewMateria: TextView = itemView.findViewById(R.id.textViewMateria)
-        private val textViewGrado: TextView = itemView.findViewById(R.id.textViewGrado)
-        private val textViewSeccion: TextView = itemView.findViewById(R.id.textViewSeccion)
         private val imageButtonEdit: ImageButton = itemView.findViewById(R.id.imageButtonEdit)
 
         fun bind(profesor: Profesor) {
@@ -42,10 +39,6 @@ class ProfesorAdapter(
             textViewNombreCompletos.text = nombreCompleto
             textViewTelefono.text = profesor.celular
             textViewDomicilio.text = profesor.domicilio
-            textViewMateria.text = profesor.materia
-            textViewGrado.text = "Grado: ${profesor.grado}"
-            textViewSeccion.text = "Sección: ${profesor.seccion}"
-
             imageButtonEdit.setOnClickListener {
                 // Handle edit action for the professor
             }

@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/nav_estudiantes"
-        android:name="com.example.example.ui.Estudiante.GalleryFragment"
+        android:name="com.example.example.ui.Estudiante.EstudianteFragment"
         android:label="@string/menu_estudiante"
         tools:layout="@layout/fragment_estudiante" />
     <fragment
