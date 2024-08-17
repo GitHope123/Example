@@ -37,6 +37,7 @@
             android:id="@+id/spinnerGrado"
             android:layout_width="70sp"
             android:layout_height="50sp"
+            android:layout_weight="1"
             android:background="@drawable/search_view_query_background" />
 
         <Space
@@ -46,15 +47,20 @@
         <Spinner
             android:id="@+id/spinnerSeccion"
             android:layout_width="70sp"
-            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_height="50sp"
             android:background="@drawable/search_view_query_background" />
         <Space
             android:layout_width="10dp"
             android:layout_height="wrap_content" />
         <Button
-            android:layout_width="100sp"
+            android:id="@+id/buttonAceptar"
+            android:layout_width="70sp"
             android:layout_height="50sp"
+            android:layout_weight="1"
             android:text="@string/btn_aceptar"
+            android:fontFamily="@font/montserrat"
+            android:background="@drawable/search_view_query_background"
             android:backgroundTint="@color/Primary_yellow">
         </Button>
     </LinearLayout>

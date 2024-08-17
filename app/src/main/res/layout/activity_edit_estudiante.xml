@@ -165,32 +165,42 @@
             android:textColorHint="@color/Primary_white"
             android:textSize="14sp"></EditText>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="10sp" />
-
-        <Button
-            android:id="@+id/buttonModificar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70sp"
-            android:layout_marginHorizontal="30dp"
-            android:background="@drawable/background_yellow_buttom"
-            android:fontFamily="@font/montserrat_bold"
-            android:text="Modificar"
-            android:textColor="@color/Secondary_brown" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="70sp"
-            style="@style/ButtonStyle"
-            android:letterSpacing="0"
-            android:layout_marginHorizontal="30dp"
-            android:backgroundTint="@color/Secondary_red"
-            android:fontFamily="@font/montserrat_bold"
-            android:textSize="14sp"
-            android:text="Eliminar"
-            android:textColor="@color/Primary_white" />
+            <Button
+                android:id="@+id/buttonModificar"
+                android:layout_width="100dp"
+                android:layout_height="70sp"
+                android:layout_weight="0.5"
+                android:drawableTint="@color/Secondary_brown"
+                android:background="@drawable/background_yellow_buttom"
+                android:drawableLeft="@drawable/icon_modificar"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Modificar"
+                android:textColor="@color/Secondary_brown" />
+
+            <Space
+                android:layout_width="10sp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/button2"
+                style="@style/ButtonStyle"
+                android:layout_width="100sp"
+                android:layout_height="70sp"
+                android:layout_weight="0.5"
+                android:backgroundTint="@color/Secondary_red"
+                android:drawableLeft="@drawable/icon_delete"
+                android:fontFamily="@font/montserrat_bold"
+                android:letterSpacing="0"
+                android:text="Eliminar"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+        </LinearLayout>
 
 
     </LinearLayout>
