@@ -1,5 +1,6 @@
 package com.example.example.ui.Profesor
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -19,6 +20,7 @@ class AddProfesor : AppCompatActivity() {
     private lateinit var buttonAgregar: Button
 
     private lateinit var db: FirebaseFirestore
+    private var isSaving = false  // Flag to prevent duplicate saves
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +40,10 @@ class AddProfesor : AppCompatActivity() {
 
         // Set click listener for the button
         buttonAgregar.setOnClickListener {
-            saveProfesorToFirebase()
+            if (!isSaving) {
+                isSaving = true
+                saveProfesorToFirebase()
+            }
         }
     }
 
@@ -51,15 +56,17 @@ class AddProfesor : AppCompatActivity() {
         val materia = editTextMateria.text.toString().trim()
         val correo = editTextCorreo.text.toString().trim()
 
-        // Validate input fields
+        // Validate inputs
         if (nombres.isEmpty() || apellidos.isEmpty() || domicilio.isEmpty() ||
             celular.isEmpty() || materia.isEmpty() || correo.isEmpty()) {
             Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
+            isSaving = false
             return
         }
 
-        // Create a Profesor object
+        // Create a Profesor object without ID
         val profesor = Profesor(
+            idProfesor = "", // Temporary empty ID
             nombres = nombres,
             apellidos = apellidos,
             domicilio = domicilio,
@@ -71,13 +78,27 @@ class AddProfesor : AppCompatActivity() {
         // Save the data to Firebase Firestore
         db.collection("Profesor")
             .add(profesor)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Profesor agregado con éxito", Toast.LENGTH_SHORT).show()
-                // Optionally, clear the input fields after saving
-                clearFields()
+            .addOnSuccessListener { documentReference ->
+                // Update the profesor object with the document ID
+                val updatedProfesor = profesor.copy(idProfesor = documentReference.id)
+
+                // Optionally, update the document with the ID (if needed)
+                documentReference.update("idProfesor", updatedProfesor.idProfesor)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Profesor agregado con éxito", Toast.LENGTH_SHORT).show()
+                        clearFields()
+
+                        // Navigate to ProfesorFragment
+                        navigateToProfesorFragment()
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Error al actualizar el ID del profesor: ${e.message}", Toast.LENGTH_SHORT).show()
+                        isSaving = false
+                    }
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Error al agregar profesor: ${e.message}", Toast.LENGTH_SHORT).show()
+                isSaving = false
             }
     }
 
@@ -88,5 +109,12 @@ class AddProfesor : AppCompatActivity() {
         editTextCelular.text.clear()
         editTextMateria.text.clear()
         editTextCorreo.text.clear()
+    }
+
+    private fun navigateToProfesorFragment() {
+        val intent = Intent(this,ProfesorFragment::class.java) // Replace MainActivity with your activity
+        intent.putExtra("navigateToFragment", "ProfesorFragment")
+        startActivity(intent)
+        finish()
     }
 }

@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.databinding.FragmentProfesorBinding
-import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ProfesorFragment : Fragment() {
@@ -39,7 +39,9 @@ class ProfesorFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        profesorAdapter = ProfesorAdapter(profesorList)
+        profesorAdapter = ProfesorAdapter(profesorList) { profesor ->
+            // Handle edit action for the professor here if needed
+        }
         binding.recyclerViewProfesores.apply {
             adapter = profesorAdapter
             layoutManager = LinearLayoutManager(context)
@@ -47,12 +49,12 @@ class ProfesorFragment : Fragment() {
     }
 
     private fun fetchProfesores() {
-        firestore.collection("Docente")
+        firestore.collection("Profesor")
             .get()
             .addOnSuccessListener { result ->
                 profesorList.clear()
                 result.documents.mapNotNull { document ->
-                    document.data?.mapToProfesor(document.reference)
+                    document.toProfesor()
                 }.also {
                     profesorList.addAll(it)
                 }
@@ -63,16 +65,16 @@ class ProfesorFragment : Fragment() {
             }
     }
 
-    private fun Map<String, Any>.mapToProfesor(documentRef: DocumentReference): Profesor? {
+    private fun DocumentSnapshot.toProfesor(): Profesor? {
         return try {
             Profesor(
-                idProfesor = documentRef, // Assign the DocumentReference
-                nombres = this["nombres"] as? String ?: "",
-                apellidos = this["apellidos"] as? String ?: "",
-                domicilio = this["domicilio"] as? String ?: "",
-                celular = this["celular"] as? String ?: "",
-                materia = this["materia"] as? String ?: "",
-                correo = this["correo"] as? String ?: ""
+                idProfesor = id, // Use the document ID as the idProfesor
+                nombres = getString("nombres") ?: "",
+                apellidos = getString("apellidos") ?: "",
+                domicilio = getString("domicilio") ?: "",
+                celular = getString("celular") ?: "",
+                materia = getString("materia") ?: "",
+                correo = getString("correo") ?: ""
             )
         } catch (e: Exception) {
             e.printStackTrace() // Print stack trace for debugging
