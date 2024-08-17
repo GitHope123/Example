@@ -10,24 +10,23 @@
             android:title="Principal" />
         <item
             android:id="@+id/nav_profesor"
-            android:icon="@drawable/icon_family"
+            android:icon="@drawable/icon_docente"
             android:title="Profesores" />
         <item
             android:id="@+id/nav_estudiantes"
-            android:icon="@drawable/icon_notifications"
+            android:icon="@drawable/icon_estudiante"
             android:title="Estudiantes" />
         <item
             android:id="@+id/nav_tutor"
-            android:icon="@drawable/icon_home"
+            android:icon="@drawable/icon_tutor"
             android:title="Tutores" />
         <item
             android:id="@+id/nav_incidencia"
-            android:icon="@drawable/icon_family"
+            android:icon="@drawable/icon_incidencia"
             android:title="Incidencia" />
         <item
             android:id="@+id/nav_reporte"
-            android:icon="@drawable/icon_notifications"
+            android:icon="@drawable/icon_report"
             android:title="Reporte" />
-
     </group>
 </menu>

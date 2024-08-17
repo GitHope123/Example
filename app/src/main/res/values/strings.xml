@@ -29,8 +29,5 @@
             <item>C</item>
             <item>D</item>
         </string-array>
-//Estudiantes
-    <string name="btn_estudiantes">Aceptar</string>
-
 
 </resources>
