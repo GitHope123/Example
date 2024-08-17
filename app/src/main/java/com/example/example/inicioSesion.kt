@@ -28,7 +28,6 @@ class inicioSesion : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inicio_sesion)
-//codigo de adrian
         // Configura Google Sign-In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -36,7 +35,7 @@ class inicioSesion : AppCompatActivity() {
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
         auth = FirebaseAuth.getInstance()
-//TÚ ERES EL MÁS CAPITOOOOOOOOO
+//Sevitas el más pro:)
         // Registra el ActivityResultLauncher
         signInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
