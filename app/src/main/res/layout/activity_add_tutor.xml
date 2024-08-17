@@ -40,7 +40,7 @@
                 android:id="@+id/imageViewGrado"
                 android:layout_width="30sp"
                 android:layout_height="30sp"
-                android:layout_weight="0.5"
+                android:layout_weight="0.2"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/icon_grado" />
             <Space
@@ -57,12 +57,11 @@
             android:layout_height="50dp"
             android:background="@drawable/background_text_transparent"
             android:orientation="horizontal">
-
             <ImageView
                 android:id="@+id/imageViewSeccion"
                 android:layout_width="30sp"
                 android:layout_height="30sp"
-                android:layout_weight="0.5"
+                android:layout_weight="0.2"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/icon_seccion" />
             <Space
@@ -77,16 +76,17 @@
         </LinearLayout>
 
 
-
         <Button
             android:id="@+id/button4"
             android:layout_width="match_parent"
             android:layout_height="70sp"
-            android:layout_marginHorizontal="20sp"
+            android:layout_marginHorizontal="70sp"
             android:background="@drawable/background_yellow_buttom"
+            android:drawableLeft="@drawable/ic_upload"
+            android:drawableTint="@color/Secondary_brown"
             android:fontFamily="@font/montserrat_bold"
-            android:textColor="@color/Secondary_brown"
-            android:text="Agregar" />
+            android:text="Agregar"
+            android:textColor="@color/Secondary_brown" />
 
     </LinearLayout>
 
