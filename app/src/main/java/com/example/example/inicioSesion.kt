@@ -34,10 +34,9 @@ class inicioSesion : AppCompatActivity() {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-// Tú eres el más capito
         googleSignInClient = GoogleSignIn.getClient(this, gso)
         auth = FirebaseAuth.getInstance()
-
+//TÚ ERES EL MÁS CAPITOOOOOOOOO
         // Registra el ActivityResultLauncher
         signInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
