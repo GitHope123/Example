@@ -1,5 +1,6 @@
 package com.example.example.ui.Estudiante
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,9 @@ import com.example.example.databinding.FragmentEstudianteBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import androidx.appcompat.widget.SearchView
+import androidx.navigation.fragment.findNavController
+import com.example.example.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class GalleryFragment : Fragment() {
 
@@ -19,7 +23,8 @@ class GalleryFragment : Fragment() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var studentAdapter: StudentAdapter
     private val estudiantes = mutableListOf<Estudiante>()
-    private val fullEstudiantesList = mutableListOf<Estudiante>() // To keep the original list
+    private val fullEstudiantesList = mutableListOf<Estudiante>()
+    private lateinit var addButtom: FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +43,7 @@ class GalleryFragment : Fragment() {
         setupSearchView()
         setupSpinner()
         fetchEstudiantes()
+        addStudents()
     }
 
     private fun setupRecyclerView() {
@@ -113,5 +119,12 @@ class GalleryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    private fun addStudents(){
+        addButtom = view?.findViewById(R.id.addButtom)!!
+        addButtom.setOnClickListener{
+            val intent= Intent(requireContext(),AddActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
