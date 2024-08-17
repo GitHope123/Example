@@ -4,34 +4,43 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.example.databinding.FragmentProfesorBinding
+import com.google.firebase.firestore.FirebaseFirestore
 
-class SlideshowFragment : Fragment() {
+class ProfesorFragment : Fragment() {
 
     private var _binding: FragmentProfesorBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    private val firestore: FirebaseFirestore by lazy {
+        FirebaseFirestore.getInstance()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val slideshowViewModel =
-            ViewModelProvider(this).get(SlideshowViewModel::class.java)
-
         _binding = FragmentProfesorBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textSlideshow
-        slideshowViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        // Access the Docente collection from Firestore
+        firestore.collection("Docente")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    // Handle the document data
+                    val nombre = document.getString("nombre") ?: "N/A"
+                    val apellidos = document.getString("apellidos") ?: "N/A"
+                }
+            }
+            .addOnFailureListener { exception ->
+                // Handle any errors
+                exception.printStackTrace()
+            }
+
         return root
     }
 

@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/nav_profesor"
-        android:name="com.example.example.ui.Profesor.SlideshowFragment"
+        android:name="com.example.example.ui.Profesor.ProfesorFragment"
         android:label="@string/menu_profesor"
         tools:layout="@layout/fragment_profesor" />
 
