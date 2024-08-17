@@ -5,6 +5,192 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Estudiante.EditEstudiante">
+    android:background="@drawable/background_primary_blue"
+    android:padding="10dp"
+    tools:context=".ui.Estudiante.AddEstudiante">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        tools:layout_editor_absoluteX="104dp"
+        tools:layout_editor_absoluteY="150dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/background_text_transparent"
+            android:backgroundTint="@color/Transparent_color"
+            android:drawableLeft="@drawable/icon_student"
+            android:drawablePadding="10sp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="@string/hint_name"
+            android:inputType="textPersonName"
+            android:padding="10sp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/Primary_white"
+            android:textSize="14sp"></EditText>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_text_transparent"
+            android:backgroundTint="@color/Transparent_color"
+            android:drawableLeft="@drawable/icon_docente"
+            android:drawablePadding="10sp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="@string/hint_lastName"
+            android:inputType="textPersonName"
+            android:padding="10sp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/Primary_white"
+            android:textSize="14sp"></EditText>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_text_transparent"
+            android:backgroundTint="@color/Transparent_color"
+            android:drawableLeft="@drawable/icon_call"
+            android:drawablePadding="10sp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="@string/hint_phone"
+            android:inputType="phone"
+            android:maxLength="9"
+            android:padding="10sp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/Primary_white"
+            android:textSize="14sp"></EditText>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/montserrat"
+                android:padding="10sp"
+                android:text="@string/hint_degree"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp"></TextView>
+
+            <Spinner
+                android:id="@+id/spinnerGrado"
+                android:layout_width="match_parent"
+                android:layout_height="50sp"
+                android:background="@drawable/search_view_query_background"
+                android:outlineSpotShadowColor="@color/Primary_white"
+                android:prompt="@string/hint_degree" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/montserrat"
+                android:padding="10sp"
+                android:text="@string/hint_section"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp"></TextView>
+
+            <Spinner
+                android:id="@+id/spinnerSection"
+                android:layout_width="match_parent"
+                android:layout_height="50sp"
+                android:background="@drawable/search_view_query_background"
+                android:outlineSpotShadowColor="@color/Primary_white"
+                android:prompt="@string/hint_degree" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="10sp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_text_transparent"
+            android:backgroundTint="@color/Transparent_color"
+            android:drawableLeft="@drawable/icon_dni"
+            android:drawablePadding="10sp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="@string/hint_DNI"
+            android:inputType="number"
+            android:maxLength="8"
+            android:padding="10sp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/Primary_white"
+            android:textSize="14sp"></EditText>
+
+        <EditText
+            android:id="@+id/editTextFechaNacimiento"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_text_transparent"
+            android:backgroundTint="@color/Transparent_color"
+            android:clickable="true"
+            android:drawableLeft="@drawable/icon_date"
+            android:drawablePadding="10sp"
+            android:focusable="false"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="@string/hint_date_of_birth"
+            android:padding="10sp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/Primary_white"
+            android:textSize="14sp"></EditText>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="10sp" />
+
+        <Button
+            android:id="@+id/buttonModificar"
+            android:layout_width="match_parent"
+            android:layout_height="70sp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_yellow_buttom"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Modificar"
+            android:textColor="@color/Secondary_brown" />
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="70sp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_red"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Eliminar"
+            android:textColor="@color/Secondary_brown" />
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
