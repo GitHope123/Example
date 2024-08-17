@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/item_incidence_level"
+            android:text="Moderado"
             android:gravity="center"
             android:textColor="@color/Primary_white"
             android:textSize="12sp"
@@ -45,9 +45,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/item_incidence_date"
+                android:text="13/08/2024"
                 android:textColor="@color/Primary_blue_sky"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:fontFamily="@font/montserrat_bold"
                 ></TextView>
 
@@ -58,9 +58,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/item_incidence_hour"
+                android:text="4:45pm"
                 android:textColor="@color/Primary_blue_sky"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:fontFamily="@font/montserrat_bold"></TextView>
 
         </LinearLayout>
@@ -72,7 +72,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/item_incidence_name"
+            android:text="Torres Ramos Sebastian Rodrigo"
             android:textColor="@color/Primary_white"
             android:textSize="12sp"
             android:fontFamily="@font/montserrat"></TextView>
@@ -84,11 +84,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/item_incidence_degree_section"
+            android:text="3 A"
             android:textSize="12sp"
             android:fontFamily="@font/montserrat"
-            android:textColor="@color/Primary_white"
-            ></TextView>
+            android:textColor="@color/Primary_white"></TextView>
     </LinearLayout>
 
     <LinearLayout
@@ -100,7 +99,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/item_incidence_observer"
+            android:text="Pendiente"
             android:gravity="center"
             android:textColor="@color/Primary_white"
             android:textSize="12sp"

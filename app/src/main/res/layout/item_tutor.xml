@@ -19,7 +19,7 @@
             android:layout_height="50dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/icon_tutor"
-            android:tint="@color/Primary_blue_sky" />
+            app:tint="@color/Primary_blue_sky" />
 
         <LinearLayout
             android:layout_width="0dp"
