@@ -27,17 +27,16 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="50sp"
                 android:background="@drawable/icon_report"
-                android:backgroundTint="@color/Primary_blue">
+                android:backgroundTint="@color/Secondary_brown">
 
             </TextView>
 
-            <TextView
+            <ImageView
                 android:id="@+id/textView7"
-                android:layout_width="249dp"
+                android:layout_width="match_parent"
                 android:layout_height="139dp"
                 android:layout_gravity="center"
-                android:background="@drawable/icon_looker" />
-
+                android:src="@drawable/icon_looker" />
             <Button
                 android:id="@+id/button3"
                 android:layout_width="match_parent"
