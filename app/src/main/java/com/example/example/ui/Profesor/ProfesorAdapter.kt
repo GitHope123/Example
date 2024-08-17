@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
+import org.w3c.dom.Text
 
 class ProfesorAdapter(
     private val profesores: List<Profesor>
@@ -27,13 +28,14 @@ class ProfesorAdapter(
     }
 
     inner class ProfesorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val textViewNombre: TextView = itemView.findViewById(R.id.textViewNombre)
-        private val textViewApellidos: TextView = itemView.findViewById(R.id.textViewApellidos)
+        private val textViewNombreCompleto: TextView = itemView.findViewById(R.id.textViewNombreCompletos)
+        private val textViewTelefono: TextView = itemView.findViewById(R.id.textViewTelefono)
+        private val textViewDomicilio: TextView = itemView.findViewById(R.id.textViewDomicilio)
 
         fun bind(profesor: Profesor) {
-            textViewNombre.text = profesor.nombres
-            textViewApellidos.text = profesor.apellidos
-            // Actualiza otros TextViews o Views según los datos del profesor
+            textViewNombreCompleto.text = profesor.nombres
+            textViewTelefono.text= profesor.celular
+            textViewDomicilio.text=profesor.domicilio
         }
     }
 }
