@@ -6,15 +6,13 @@ import android.os.Bundle
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.example.R
 
 class AddActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_add)
+        setContentView(R.layout.activity_add_estudiantes)
         val editTextFechaNacimiento: EditText = findViewById(R.id.editTextFechaNacimiento)
         editTextFechaNacimiento.setOnClickListener {
             val calendar = Calendar.getInstance()

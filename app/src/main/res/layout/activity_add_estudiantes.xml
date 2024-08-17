@@ -29,7 +29,9 @@
                 android:textSize="14sp"
                 android:background="@drawable/background_text_transparent"
                 android:textColor="@android:color/white"
-                android:padding="10sp"></EditText>
+                android:padding="10sp"
+                android:drawablePadding="10sp"
+                android:drawableLeft="@drawable/icon_student"></EditText>
 
 
 
@@ -45,7 +47,9 @@
                 android:textSize="14sp"
                 android:background="@drawable/background_text_transparent"
                 android:textColor="@android:color/white"
-                android:padding="10sp"></EditText>
+                android:padding="10sp"
+                android:drawablePadding="10sp"
+                android:drawableLeft="@drawable/icon_docente"></EditText>
 
             <EditText
                 android:layout_width="match_parent"
@@ -60,7 +64,9 @@
                 android:textSize="14sp"
                 android:background="@drawable/background_text_transparent"
                 android:textColor="@android:color/white"
-                android:padding="10sp"></EditText>
+                android:padding="10sp"
+                android:drawablePadding="10sp"
+                android:drawableLeft="@drawable/icon_call"></EditText>
 
             <Space
                 android:layout_width="wrap_content"
@@ -131,7 +137,9 @@
                 android:textSize="14sp"
                 android:background="@drawable/background_text_transparent"
                 android:textColor="@android:color/white"
-                android:padding="10sp"></EditText>
+                android:padding="10sp"
+                android:drawablePadding="10sp"
+                android:drawableLeft="@drawable/icon_dni"></EditText>
 
             <EditText
                 android:id="@+id/editTextFechaNacimiento"
@@ -147,7 +155,9 @@
                 android:textSize="14sp"
                 android:background="@drawable/background_text_transparent"
                 android:textColor="@android:color/white"
-                android:padding="10sp"></EditText>
+                android:padding="10sp"
+                android:drawablePadding="10sp"
+                android:drawableLeft="@drawable/icon_date"></EditText>
 
             <Space
                 android:layout_width="wrap_content"
