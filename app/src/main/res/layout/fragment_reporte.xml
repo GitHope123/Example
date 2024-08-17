@@ -26,8 +26,9 @@
                 android:layout_height="180sp"
                 android:layout_gravity="center"
                 android:layout_marginTop="50sp"
+
                 android:background="@drawable/icon_report"
-                android:backgroundTint="@color/Secondary_brown">
+                android:backgroundTint="@color/Transparent_color">
 
             </TextView>
 
@@ -41,11 +42,13 @@
                 android:id="@+id/button3"
                 android:layout_width="match_parent"
                 android:layout_height="70sp"
-                android:layout_margin="20sp"
+                android:layout_gravity="center"
+                android:layout_marginStart="40sp"
+                android:layout_marginEnd="40sp"
                 android:backgroundTint="@color/Primary_blue"
                 android:fontFamily="@font/montserrat_bold"
-                android:textColor="@color/Secondary_brown"
-               android:background="@drawable/background_white_element_full"
+                android:textColor="@color/Primary_white"
+                style="@style/ButtonStyle"
                 android:text="Acceder al sitio" />
 
         </LinearLayout>
@@ -59,8 +62,8 @@
             android:layout_gravity="center"
             android:textAlignment="center"
             android:fontFamily="@font/montserrat"
-            android:textColor="@color/Primary_white"
-            android:text="Con Looker, tendrás acceso a un resumen detallado de la información de las incidencias incidentes." />
+            android:textColor="@color/Primary_blue_sky"
+            android:text="Con Looker, tendrás acceso a un resumen detallado de la información de las incidencias." />
 
 
     </LinearLayout>

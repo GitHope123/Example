@@ -90,7 +90,7 @@
         <TextView
             android:id="@+id/textViewLema"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50sp"
             android:fontFamily="@font/montserrat"
             android:layout_marginTop="20sp"
             android:text="“Educando en libertad con la correspondiente responsabilidad” "

@@ -18,7 +18,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Row for Full Name and Edit Button -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,8 +75,8 @@
                 android:textColor="@color/Primary_blue_sky"
                 android:textSize="12sp"
                 android:gravity="center_vertical" />
-
-            <!-- Row for Subject -->
+<!--
+          Row for Subject
             <TextView
                 android:id="@+id/textViewMateria"
                 android:layout_width="wrap_content"
@@ -92,7 +91,7 @@
                 android:textSize="12sp"
                 android:gravity="center_vertical" />
 
-            <!-- Row for Grade -->
+
             <TextView
                 android:id="@+id/textViewGrado"
                 android:layout_width="wrap_content"
@@ -107,7 +106,6 @@
                 android:textSize="12sp"
                 android:gravity="center_vertical" />
 
-            <!-- Row for Section -->
             <TextView
                 android:id="@+id/textViewSeccion"
                 android:layout_width="wrap_content"
@@ -120,7 +118,7 @@
                 android:text="Sección"
                 android:textColor="@color/Primary_blue_sky"
                 android:textSize="12sp"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical" /> -->
 
         </LinearLayout>
 
