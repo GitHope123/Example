@@ -10,4 +10,6 @@
     <color name="Transparent_color">#2CFFFFFF</color>
     <color name="Transparent_blue_black">#2F00081E</color>
     <color name="Primary_transparent_blue_black">#E402268A</color>
+    <color name="transparent_color">#00000000</color>
+
 </resources>
