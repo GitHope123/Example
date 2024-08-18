@@ -52,6 +52,8 @@ dependencies {
     // Google Play Services Auth for Google authentication
     implementation ("com.google.firebase:firebase-auth:21.0.5")
     implementation ("com.google.android.gms:play-services-auth:20.4.0")
+
+
     // Core AndroidX library
     implementation(libs.androidx.core.ktx)
 
