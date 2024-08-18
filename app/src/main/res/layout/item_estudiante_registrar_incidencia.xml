@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/background_text_transparent"
+    android:backgroundTint="@color/Primary_transparent_blue_black">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/studentNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_estudiante"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/Primary_blue_sky"
+                android:fontFamily="@font/montserrat_bold"
+                android:gravity="center_vertical"
+                android:text="Nombre del Estudiante"
+                android:textColor="@color/Primary_blue_sky"
+                android:textSize="14sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/studentGradeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:drawableLeft="@drawable/icon_class"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/Primary_blue_sky"
+                    android:fontFamily="@font/montserrat"
+                    android:gravity="center_vertical"
+                    android:text="Grado"
+                    android:textColor="@color/Primary_blue_sky"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="20dp"/>
+
+                <TextView
+                    android:id="@+id/studentSectionTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/montserrat"
+                    android:gravity="center_vertical"
+                    android:text="Sección"
+                    android:textColor="@color/Primary_blue_sky"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
