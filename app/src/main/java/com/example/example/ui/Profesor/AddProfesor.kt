@@ -13,7 +13,6 @@ class AddProfesor : AppCompatActivity() {
 
     private lateinit var editTextNombres: EditText
     private lateinit var editTextApellidos: EditText
-    private lateinit var editTextDomicilio: EditText
     private lateinit var editTextCelular: EditText
     private lateinit var editTextMateria: EditText
     private lateinit var editTextCorreo: EditText
@@ -50,13 +49,12 @@ class AddProfesor : AppCompatActivity() {
         // Collect the data from input fields
         val nombres = editTextNombres.text.toString().trim()
         val apellidos = editTextApellidos.text.toString().trim()
-        val domicilio = editTextDomicilio.text.toString().trim()
         val celular = editTextCelular.text.toString().trim()
         val materia = editTextMateria.text.toString().trim()
         val correo = editTextCorreo.text.toString().trim()
 
         // Validate inputs
-        if (nombres.isEmpty() || apellidos.isEmpty() || domicilio.isEmpty() ||
+        if (nombres.isEmpty() || apellidos.isEmpty() ||
             celular.isEmpty() || materia.isEmpty() || correo.isEmpty()) {
             Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
             isSaving = false
@@ -68,7 +66,6 @@ class AddProfesor : AppCompatActivity() {
             idProfesor = "", // Temporary empty ID
             nombres = nombres,
             apellidos = apellidos,
-            domicilio = domicilio,
             celular = celular,
             materia = materia,
             correo = correo,
@@ -105,7 +102,6 @@ class AddProfesor : AppCompatActivity() {
     private fun clearFields() {
         editTextNombres.text.clear()
         editTextApellidos.text.clear()
-        editTextDomicilio.text.clear()
         editTextCelular.text.clear()
         editTextMateria.text.clear()
         editTextCorreo.text.clear()

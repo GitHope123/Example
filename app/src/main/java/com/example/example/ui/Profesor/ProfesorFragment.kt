@@ -2,6 +2,7 @@ package com.example.example.ui.Profesor
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,14 +28,11 @@ class ProfesorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfesorBinding.inflate(inflater, container, false)
-
         setupRecyclerView()
         fetchProfesores()
-
         binding.addButtomProfesor.setOnClickListener {
             startActivity(Intent(context, AddProfesor::class.java))
         }
-
         return binding.root
     }
 
@@ -52,15 +50,19 @@ class ProfesorFragment : Fragment() {
         firestore.collection("Profesor")
             .get()
             .addOnSuccessListener { result ->
+                Log.d("ProfesorFragment", "Fetched ${result.size()} documents")
                 profesorList.clear()
-                result.documents.mapNotNull { document ->
-                    document.toProfesor()
-                }.also {
-                    profesorList.addAll(it)
+                result.forEach { document ->
+                    Log.d("ProfesorFragment", "Document ID: ${document.id}")
+                    document.toProfesor()?.let {
+                        profesorList.add(it)
+                        Log.d("ProfesorFragment", "Added profesor: ${it.nombres} ${it.apellidos}")
+                    }
                 }
                 profesorAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { exception ->
+                Log.e("ProfesorFragment", "Error fetching profesores", exception)
                 Toast.makeText(context, "Error al cargar los profesores: ${exception.message}", Toast.LENGTH_LONG).show()
             }
     }
@@ -68,17 +70,16 @@ class ProfesorFragment : Fragment() {
     private fun DocumentSnapshot.toProfesor(): Profesor? {
         return try {
             Profesor(
-                idProfesor = id, // Use the document ID as the idProfesor
+                idProfesor = id, // Usa el ID del documento como idProfesor
                 nombres = getString("nombres") ?: "",
                 apellidos = getString("apellidos") ?: "",
-                domicilio = getString("domicilio") ?: "",
-                celular = getString("celular") ?: "",
+                celular = getLong("celular")?.toString() ?: "", // Convierte el número a cadena
                 materia = getString("materia") ?: "",
                 correo = getString("correo") ?: ""
             )
         } catch (e: Exception) {
-            e.printStackTrace() // Print stack trace for debugging
-            null // Return null if there's an error during mapping
+            Log.e("ProfesorFragment", "Error converting document to Profesor", e)
+            null
         }
     }
 

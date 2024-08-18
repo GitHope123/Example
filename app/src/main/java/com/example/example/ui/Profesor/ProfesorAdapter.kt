@@ -24,14 +24,12 @@ class ProfesorAdapter(
         holder.bind(profesor)
     }
 
-    override fun getItemCount(): Int {
-        return profesores.size
-    }
+    override fun getItemCount(): Int = profesores.size
 
     inner class ProfesorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textViewNombreCompleto: TextView = itemView.findViewById(R.id.textViewNombreCompletos)
         private val textViewTelefono: TextView = itemView.findViewById(R.id.textViewTelefono)
-        private val textViewDomicilio: TextView = itemView.findViewById(R.id.textViewDomicilio)
+        private val textViewCorreo: TextView = itemView.findViewById(R.id.textViewCorreo)
         private val editButton: ImageButton = itemView.findViewById(R.id.imageButtonEdit)
 
         fun bind(profesor: Profesor) {
@@ -39,7 +37,7 @@ class ProfesorAdapter(
             val nombreCompleto = "${profesor.nombres} ${profesor.apellidos}"
             textViewNombreCompleto.text = nombreCompleto
             textViewTelefono.text = profesor.celular
-            textViewDomicilio.text = profesor.domicilio
+            textViewCorreo.text = profesor.correo
 
             editButton.setOnClickListener {
                 // Notify the click listener with the current profesor
