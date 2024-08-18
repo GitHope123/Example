@@ -147,24 +147,6 @@
             android:textColorHint="@color/Primary_white"
             android:textSize="14sp"></EditText>
 
-        <EditText
-            android:id="@+id/editTextFechaNacimiento"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@drawable/background_text_transparent"
-            android:backgroundTint="@color/Transparent_color"
-            android:clickable="true"
-            android:drawableLeft="@drawable/icon_date"
-            android:drawablePadding="10sp"
-            android:focusable="false"
-            android:fontFamily="@font/montserrat"
-            android:gravity="center_vertical"
-            android:hint="@string/hint_date_of_birth"
-            android:padding="10sp"
-            android:textColor="@android:color/white"
-            android:textColorHint="@color/Primary_white"
-            android:textSize="14sp"></EditText>
-
         <Space
             android:layout_width="wrap_content"
             android:layout_height="50sp" />
