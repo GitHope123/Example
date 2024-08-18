@@ -1,5 +1,6 @@
 package com.example.example.ui.Profesor
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,9 +41,18 @@ class ProfesorAdapter(
             textViewCorreo.text = profesor.correo
 
             editButton.setOnClickListener {
-                // Notify the click listener with the current profesor
-                onEditClickListener(profesor)
+                val context = itemView.context
+                val intent = Intent(context, EditProfesor::class.java).apply {
+                    putExtra("idProfesor", profesor.idProfesor)
+                    putExtra("nombres", profesor.nombres)
+                    putExtra("apellidos", profesor.apellidos)
+                    putExtra("celular", profesor.celular)
+                    putExtra("materia", profesor.materia)
+                    putExtra("correo", profesor.correo)
+                }
+                context.startActivity(intent)
             }
         }
     }
+
 }

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_primary_blue"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10sp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editTextNombres"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_text_transparent"
+            android:backgroundTint="@color/Transparent_color"
+            android:drawableLeft="@drawable/icon_docente"
+            android:drawablePadding="10sp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="Nombres"
+            android:padding="10dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/Primary_white" />
+
+        <EditText
+            android:id="@+id/editTextApellidos"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_text_transparent"
+            android:backgroundTint="@color/Transparent_color"
+            android:drawableLeft="@drawable/icon_dni"
+            android:drawablePadding="10sp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="Apellidos"
+            android:padding="10dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/Primary_white" />
+
+        <EditText
+            android:id="@+id/editTextCelular"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_text_transparent"
+            android:backgroundTint="@color/Transparent_color"
+            android:drawableLeft="@drawable/icon_call"
+            android:drawablePadding="10sp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="Celular"
+            android:padding="10dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/Primary_white" />
+
+        <EditText
+            android:id="@+id/editTextMateria"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_text_transparent"
+            android:backgroundTint="@color/Transparent_color"
+            android:drawableLeft="@drawable/icon_class"
+            android:drawablePadding="10sp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="Materia"
+            android:padding="10dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/Primary_white" />
+
+        <EditText
+            android:id="@+id/editTextCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_text_transparent"
+            android:backgroundTint="@color/Transparent_color"
+            android:drawableLeft="@drawable/icon_login_email"
+            android:drawablePadding="10sp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="Correo"
+            android:padding="10dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/Primary_white" />
+
+        <Button
+            android:id="@+id/buttonGuardar"
+            android:layout_width="match_parent"
+            android:layout_height="70sp"
+            android:layout_marginTop="20sp"
+            android:layout_marginHorizontal="30dp"
+            android:textColor="@color/Secondary_brown"
+            android:textSize="14sp"
+            android:background="@drawable/background_yellow_buttom"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Guardar" />
+    </LinearLayout>
+
+</LinearLayout>

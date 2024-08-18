@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,7 @@ class ProfesorFragment : Fragment() {
 
     private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val profesorList = mutableListOf<Profesor>()
+    private val filteredProfesorList = mutableListOf<Profesor>()
     private lateinit var profesorAdapter: ProfesorAdapter
 
     override fun onCreateView(
@@ -30,6 +32,7 @@ class ProfesorFragment : Fragment() {
         _binding = FragmentProfesorBinding.inflate(inflater, container, false)
         setupRecyclerView()
         fetchProfesores()
+        setupSearchView()
         binding.addButtomProfesor.setOnClickListener {
             startActivity(Intent(context, AddProfesor::class.java))
         }
@@ -37,13 +40,39 @@ class ProfesorFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        profesorAdapter = ProfesorAdapter(profesorList) { profesor ->
+        profesorAdapter = ProfesorAdapter(filteredProfesorList) { profesor ->
             // Handle edit action for the professor here if needed
         }
         binding.recyclerViewProfesores.apply {
             adapter = profesorAdapter
             layoutManager = LinearLayoutManager(context)
         }
+    }
+
+    private fun setupSearchView() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let { filterProfesores(it) }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { filterProfesores(it) }
+                return true
+            }
+        })
+    }
+
+    private fun filterProfesores(query: String) {
+        val filteredList = profesorList.filter {
+            it.nombres.contains(query, ignoreCase = true) ||
+                    it.apellidos.contains(query, ignoreCase = true) ||
+                    it.celular.contains(query, ignoreCase = true) ||
+                    it.correo.contains(query, ignoreCase = true)
+        }
+        filteredProfesorList.clear()
+        filteredProfesorList.addAll(filteredList)
+        profesorAdapter.notifyDataSetChanged()
     }
 
     private fun fetchProfesores() {
@@ -59,6 +88,8 @@ class ProfesorFragment : Fragment() {
                         Log.d("ProfesorFragment", "Added profesor: ${it.nombres} ${it.apellidos}")
                     }
                 }
+                // Initialize filtered list
+                filteredProfesorList.addAll(profesorList)
                 profesorAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { exception ->
