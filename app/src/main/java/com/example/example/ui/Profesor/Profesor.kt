@@ -9,5 +9,6 @@ data class Profesor(
     val domicilio: String = "",
     val celular: String = "",
     val materia: String = "",
-    val correo: String = ""
+    val correo: String = "",
+    val tutor: Boolean = false // Nuevo atributo con valor por defecto
 ) : Serializable

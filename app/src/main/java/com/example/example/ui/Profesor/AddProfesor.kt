@@ -64,7 +64,7 @@ class AddProfesor : AppCompatActivity() {
             return
         }
 
-        // Create a Profesor object without ID
+        // Create a Profesor object with tutor set to false by default
         val profesor = Profesor(
             idProfesor = "", // Temporary empty ID
             nombres = nombres,
@@ -72,7 +72,8 @@ class AddProfesor : AppCompatActivity() {
             domicilio = domicilio,
             celular = celular,
             materia = materia,
-            correo = correo
+            correo = correo,
+            tutor = false // Default value for tutor
         )
 
         // Save the data to Firebase Firestore
@@ -112,7 +113,8 @@ class AddProfesor : AppCompatActivity() {
     }
 
     private fun navigateToProfesorFragment() {
-        val intent = Intent(this,ProfesorFragment::class.java) // Replace MainActivity with your activity
+        // Update this with the correct way to navigate to the fragment
+        val intent = Intent(this, ProfesorFragment::class.java) // Replace with correct activity
         intent.putExtra("navigateToFragment", "ProfesorFragment")
         startActivity(intent)
         finish()
