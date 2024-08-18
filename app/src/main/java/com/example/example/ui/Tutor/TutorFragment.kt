@@ -10,17 +10,17 @@ import androidx.fragment.app.viewModels
 import com.example.example.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class Tutor : Fragment() {
+class TutorFragment : Fragment() {
 
     companion object {
-        fun newInstance() = Tutor()
+        fun newInstance() = TutorFragment()
     }
 
     private val viewModel: TutorViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // TODO: Use the ViewModel
+        // Optionally, use the ViewModel here if needed
     }
 
     override fun onCreateView(
@@ -30,9 +30,9 @@ class Tutor : Fragment() {
         val view = inflater.inflate(R.layout.fragment_tutor, container, false)
 
         // Initialize the FloatingActionButton and set its click listener
-        val addButtonTutor: FloatingActionButton = view.findViewById(R.id.addButtomTutor)
+        val addButtonTutor: FloatingActionButton = view.findViewById(R.id.addButtonTutor) // Ensure ID matches XML
         addButtonTutor.setOnClickListener {
-            val intent = Intent(requireContext(), addTutor::class.java) // Use requireContext() for safety
+            val intent = Intent(requireContext(), AddTutor::class.java) // Use requireContext() for safety
             startActivity(intent)
         }
 

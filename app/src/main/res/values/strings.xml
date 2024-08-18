@@ -8,7 +8,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_cerrar">Cerrar Sesion</string>
 
-    <string name="default_web_client_id">281614136749-q1dhi52e83qoqtt8e1lrep83soj527i0.apps.googleusercontent.com</string>
+    <string name="WEB_CLIENT_ID">281614136749-q1dhi52e83qoqtt8e1lrep83soj527i0.apps.googleusercontent.com</string>
 
     <string name="menu_principal">Principal</string>
     <string name="menu_profesor">Profesores</string>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_primary_blue"
-    tools:context=".ui.Tutor.Tutor">
+    tools:context=".ui.Tutor.TutorFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,17 +33,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            tools:listitem="@layout/item_tutor" />
+            tools:listitem="@layout/item_profesor" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addButtomTutor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fabSize="normal"
-        android:src="@drawable/icon_add_student"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
-        android:backgroundTint="@color/Primary_yellow"
-        tools:contentDescription="@string/action_bottom" />
+        android:id="@+id/addButtonTutor"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:fabSize="normal"
+    android:src="@drawable/icon_add_student"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="20dp"
+    android:backgroundTint="@color/Primary_yellow"
+    tools:contentDescription="@string/action_bottom" />
 </FrameLayout>
