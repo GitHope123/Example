@@ -76,6 +76,7 @@ class BarraLateral : AppCompatActivity() {
                 R.id.nav_estudiantes,
                 R.id.nav_tutor,
                 R.id.nav_incidencia,
+                R.id.nav_tutoria,
                 R.id.nav_reporte
             ), drawerLayout
         )
