@@ -8,8 +8,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical">
 
         <EditText
@@ -19,13 +21,14 @@
             android:background="@drawable/background_text_transparent"
             android:backgroundTint="@color/Transparent_color"
             android:drawableLeft="@drawable/icon_docente"
-            android:drawablePadding="10sp"
+            android:drawablePadding="10dp"
             android:fontFamily="@font/montserrat"
             android:gravity="center_vertical"
             android:hint="Nombres"
             android:padding="10dp"
             android:textColor="@android:color/white"
-            android:textColorHint="@color/Primary_white" />
+            android:textColorHint="@color/Primary_white"
+            android:textSize="14dp" />
 
         <EditText
             android:id="@+id/editTextApellidos"
@@ -34,13 +37,14 @@
             android:background="@drawable/background_text_transparent"
             android:backgroundTint="@color/Transparent_color"
             android:drawableLeft="@drawable/icon_dni"
-            android:drawablePadding="10sp"
+            android:drawablePadding="10dp"
             android:fontFamily="@font/montserrat"
             android:gravity="center_vertical"
             android:hint="Apellidos"
             android:padding="10dp"
             android:textColor="@android:color/white"
-            android:textColorHint="@color/Primary_white" />
+            android:textColorHint="@color/Primary_white"
+            android:textSize="14dp" />
 
         <EditText
             android:id="@+id/editTextCelular"
@@ -49,13 +53,15 @@
             android:background="@drawable/background_text_transparent"
             android:backgroundTint="@color/Transparent_color"
             android:drawableLeft="@drawable/icon_call"
-            android:drawablePadding="10sp"
+            android:drawablePadding="10dp"
             android:fontFamily="@font/montserrat"
             android:gravity="center_vertical"
             android:hint="Celular"
+            android:inputType="number"
             android:padding="10dp"
             android:textColor="@android:color/white"
-            android:textColorHint="@color/Primary_white" />
+            android:textColorHint="@color/Primary_white"
+            android:textSize="14dp" />
 
         <EditText
             android:id="@+id/editTextMateria"
@@ -64,13 +70,14 @@
             android:background="@drawable/background_text_transparent"
             android:backgroundTint="@color/Transparent_color"
             android:drawableLeft="@drawable/icon_class"
-            android:drawablePadding="10sp"
+            android:drawablePadding="10dp"
             android:fontFamily="@font/montserrat"
             android:gravity="center_vertical"
             android:hint="Materia"
             android:padding="10dp"
             android:textColor="@android:color/white"
-            android:textColorHint="@color/Primary_white" />
+            android:textColorHint="@color/Primary_white"
+            android:textSize="14dp" />
 
         <EditText
             android:id="@+id/editTextCorreo"
@@ -79,25 +86,52 @@
             android:background="@drawable/background_text_transparent"
             android:backgroundTint="@color/Transparent_color"
             android:drawableLeft="@drawable/icon_login_email"
-            android:drawablePadding="10sp"
+            android:drawablePadding="10dp"
             android:fontFamily="@font/montserrat"
             android:gravity="center_vertical"
             android:hint="Correo"
             android:padding="10dp"
             android:textColor="@android:color/white"
-            android:textColorHint="@color/Primary_white" />
+            android:textColorHint="@color/Primary_white"
+            android:textSize="14dp" />
 
-        <Button
-            android:id="@+id/buttonGuardar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70sp"
-            android:layout_marginTop="20sp"
-            android:layout_marginHorizontal="30dp"
-            android:textColor="@color/Secondary_brown"
-            android:textSize="14sp"
-            android:background="@drawable/background_yellow_buttom"
-            android:fontFamily="@font/montserrat_bold"
-            android:text="Guardar" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonModificar"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/background_yellow_buttom"
+                android:drawableLeft="@drawable/icon_modificar"
+                android:drawableTint="@color/Secondary_brown"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Modificar"
+                android:textColor="@color/Secondary_brown"
+                android:textSize="14sp" />
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/buttonEliminar"
+                style="@style/ButtonStyle"
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:layout_weight="0.5"
+                android:backgroundTint="@color/Secondary_red"
+                android:drawableLeft="@drawable/icon_delete"
+                android:fontFamily="@font/montserrat_bold"
+                android:letterSpacing="0"
+                android:text="Eliminar"
+                android:textColor="@color/Primary_white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

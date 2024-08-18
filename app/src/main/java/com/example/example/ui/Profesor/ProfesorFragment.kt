@@ -81,7 +81,7 @@ class ProfesorFragment : Fragment() {
             .addOnSuccessListener { result ->
                 Log.d("ProfesorFragment", "Fetched ${result.size()} documents")
                 profesorList.clear()
-                result.forEach { document ->
+                result.documents.forEach { document ->
                     Log.d("ProfesorFragment", "Document ID: ${document.id}")
                     document.toProfesor()?.let {
                         profesorList.add(it)
@@ -89,6 +89,7 @@ class ProfesorFragment : Fragment() {
                     }
                 }
                 // Initialize filtered list
+                filteredProfesorList.clear()
                 filteredProfesorList.addAll(profesorList)
                 profesorAdapter.notifyDataSetChanged()
             }
@@ -98,13 +99,18 @@ class ProfesorFragment : Fragment() {
             }
     }
 
+    // Make refreshData public to allow external access
+    fun refreshData() {
+        fetchProfesores()
+    }
+
     private fun DocumentSnapshot.toProfesor(): Profesor? {
         return try {
             Profesor(
-                idProfesor = id, // Usa el ID del documento como idProfesor
+                idProfesor = id, // Use the document ID as idProfesor
                 nombres = getString("nombres") ?: "",
                 apellidos = getString("apellidos") ?: "",
-                celular = getLong("celular")?.toString() ?: "", // Convierte el número a cadena
+                celular = getLong("celular")?.toString() ?: "", // Convert the number to string
                 materia = getString("materia") ?: "",
                 correo = getString("correo") ?: ""
             )
@@ -117,5 +123,10 @@ class ProfesorFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshData() // Refresh data when the fragment becomes visible
     }
 }
