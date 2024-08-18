@@ -25,6 +25,10 @@
             android:icon="@drawable/icon_incidencia"
             android:title="Incidencia" />
         <item
+            android:id="@+id/nav_tutoria"
+            android:icon="@drawable/ic_group"
+            android:title="Tutoria" />
+        <item
             android:id="@+id/nav_reporte"
             android:icon="@drawable/icon_report"
             android:title="Reporte" />
