@@ -33,7 +33,7 @@
             android:name=".ui.Profesor.AddProfesor"
             android:exported="false" />
         <activity
-            android:name=".ui.Tutor.addTutor"
+            android:name=".ui.Tutor.AddTutor"
             android:exported="false" />
         <activity
             android:name=".ui.Estudiante.EditEstudiante"
