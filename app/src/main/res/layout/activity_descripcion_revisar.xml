@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="20sp"
-
             android:orientation="vertical"
             android:padding="10sp">
 
@@ -268,7 +267,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat"
                 android:padding="10dp"
-                android:text="Detalles aqui"
+                android:text="Detalles aqui\nD\nEDD\nDD\naqui\nD\nEDD\nDDaqui\nD\nEDD\nDDaqui\nD\nEDD\nDDaqui\nD\nEDD\nDD"
                 android:textColor="@color/Primary_white"
                 android:textSize="14sp" />
 
@@ -293,9 +292,7 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/Primary_white"
-                    android:textColor="@color/Primary_white"
-
+                    android:buttonTint="@color/Secondary_red"
                     />
             </LinearLayout>
 
@@ -304,6 +301,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Enviar"
+                android:layout_marginBottom="30dp"
                 android:textColor="@color/Primary_black" />
         </LinearLayout>
 
