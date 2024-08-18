@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class GalleryViewModel : ViewModel() {
-
+//Obtencion de datos desde Firestore
     private val _text = MutableLiveData<String>().apply {
-        value = "This is gallery Fragment"
+
+
+
     }
     val text: LiveData<String> = _text
 }
