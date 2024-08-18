@@ -17,19 +17,18 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="50sp"
-            android:src="@drawable/icon_gravedad"
-            app:tint="@color/color_red">
-        </ImageView>
+            android:layout_height="60sp"
+            android:src="@drawable/ic_alert"
+            app:tint="@color/color_orange"
+            android:padding="2sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Moderado"
             android:gravity="center"
-            android:textColor="@color/Primary_white"
+            android:textColor="@color/color_orange"
             android:textSize="12sp"
-            android:fontFamily="@font/montserrat"
-            ></TextView>
+            android:fontFamily="@font/montserrat_bold"/>
     </LinearLayout>
 
     <LinearLayout
@@ -102,10 +101,10 @@
             android:layout_height="wrap_content"
             android:text="Pendiente"
             android:gravity="center"
-            android:textColor="@color/Primary_white"
+            android:textColor="@color/color_red"
             android:textSize="12sp"
-            android:fontFamily="@font/montserrat"
-            ></TextView>
+            android:fontFamily="@font/montserrat_bold"
+            />
         <ImageButton
             android:layout_width="60dp"
             android:layout_height="60dp"

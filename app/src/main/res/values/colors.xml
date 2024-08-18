@@ -13,5 +13,6 @@
     <color name="Primary_transparent_blue_black">#E402268A</color>
     <color name="transparent_color">#00000000</color>
     <color name="color_red">#F12828</color>
+    <color name="color_orange">#F15246</color>
     <color name="Green">#319808</color>
 </resources>
