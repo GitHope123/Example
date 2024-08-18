@@ -44,21 +44,6 @@
             android:textColor="@android:color/white"/>
 
         <EditText
-            android:id="@+id/editTextDomicilio"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:padding="10dp"
-            android:drawablePadding="10sp"
-            android:drawableLeft="@drawable/icon_direccion"
-            android:hint="Domicilio"
-            android:textColorHint="@color/Primary_white"
-            android:fontFamily="@font/montserrat"
-            android:gravity="center_vertical"
-            android:textSize="14sp"
-            android:background="@drawable/background_text_transparent"
-            android:textColor="@android:color/white"/>
-
-        <EditText
             android:id="@+id/editTextCelular"
             android:layout_width="match_parent"
             android:layout_height="70dp"
@@ -104,13 +89,8 @@
             android:background="@drawable/background_text_transparent"
             android:textColor="@android:color/white" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:layout_marginTop="10sp"
-            android:layout_marginBottom="10sp" />
-
         <Button
+            android:layout_marginTop="100dp"
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="70sp"

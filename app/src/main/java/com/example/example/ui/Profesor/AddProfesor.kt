@@ -32,7 +32,6 @@ class AddProfesor : AppCompatActivity() {
         // Bind the views
         editTextNombres = findViewById(R.id.editTextNombres)
         editTextApellidos = findViewById(R.id.editTextApellidos)
-        editTextDomicilio = findViewById(R.id.editTextDomicilio)
         editTextCelular = findViewById(R.id.editTextCelular)
         editTextMateria = findViewById(R.id.editTextMateria)
         editTextCorreo = findViewById(R.id.editTextCorreo)
