@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 
 class AgregarEstudiantes : AppCompatActivity() {
     private lateinit var btnIrRegistrar: Button
@@ -54,7 +53,7 @@ class AgregarEstudiantes : AppCompatActivity() {
                     estudiantes.forEach { estudiante ->
                         val nombres = estudiante["nombres"] as? String ?: ""
                         val apellidos = estudiante["apellidos"] as? String ?: ""
-                        val grado = estudiante["grado"] as? Int ?: 0
+                        val grado = (estudiante["grado"] as? Long)?.toInt() ?: 0
                         val seccion = estudiante["seccion"] as? String ?: ""
                         estudianteList.add(EstudianteAgregar(nombres, apellidos, grado, seccion))
                     }
