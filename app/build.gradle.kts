@@ -41,27 +41,18 @@ android {
         viewBinding = true
     }
 }
-
 dependencies {
     // Firebase BoM (Bill of Materials) for version management
     implementation(platform(libs.firebase.bom))
-
     // Firebase Authentication for managing authentication
     implementation(libs.firebase.auth.ktx)
-
     // Google Play Services Auth for Google authentication
     implementation ("com.google.firebase:firebase-auth:21.0.5")
     implementation ("com.google.android.gms:play-services-auth:20.4.0")
-
-
-    // Core AndroidX library
     implementation(libs.androidx.core.ktx)
-
     // AppCompat library for backward compatibility
     implementation(libs.androidx.appcompat)
-
     implementation (libs.google.firebase.auth.ktx)
-
     // Google Sign-In
     implementation (libs.play.services.auth.v2120)
     // Material Design Components
@@ -91,3 +82,4 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+

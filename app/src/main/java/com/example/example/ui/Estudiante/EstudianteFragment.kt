@@ -1,4 +1,5 @@
 package com.example.example.ui.Estudiante
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -64,8 +65,7 @@ class EstudianteFragment : Fragment() {
     private fun fetchEstudiantes() {
         showProgressBar(true)
 
-        firestore.collection("Estudiante")
-            .orderBy("estudiante", Query.Direction.ASCENDING)
+        firestore.collection("Aula")
             .addSnapshotListener { snapshot, e ->
                 showProgressBar(false)
 
@@ -75,7 +75,13 @@ class EstudianteFragment : Fragment() {
                 }
 
                 snapshot?.documents?.let { documents ->
-                    val newEstudiantes = documents.mapNotNull { it.toObject(Estudiante::class.java) }
+                    val newEstudiantes = mutableListOf<Estudiante>()
+                    documents.forEach { document ->
+                        val estudiantesList = document.get("estudiantes") as? List<Map<String, Any>> ?: emptyList()
+                        estudiantesList.mapNotNull { it.toEstudiante() }.let {
+                            newEstudiantes.addAll(it)
+                        }
+                    }
                     estudiantes.clear()
                     estudiantes.addAll(newEstudiantes)
                     fullEstudiantesList.clear()
@@ -85,6 +91,22 @@ class EstudianteFragment : Fragment() {
             }
     }
 
+    private fun Map<String, Any>.toEstudiante(): Estudiante? {
+        return try {
+            Estudiante(
+                id = this["id"] as? String ?: "",
+                apellidos = this["apellidos"] as? String ?: "",
+                celularApoderado = (this["celularApoderado"] as? Number)?.toLong() ?: 0,
+                dni = (this["dni"] as? Number)?.toLong() ?: 0,
+                grado = (this["grado"] as? Number)?.toInt() ?: 0,
+                nombres = this["nombres"] as? String ?: "",
+                seccion = this["seccion"] as? String ?: ""
+            )
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     private fun filterEstudiantes(query: String?) {
         val queryLower = query?.lowercase().orEmpty()
         estudiantes.clear()
@@ -92,14 +114,20 @@ class EstudianteFragment : Fragment() {
             if (queryLower.isEmpty()) {
                 fullEstudiantesList
             } else {
-                fullEstudiantesList.filter { it.estudiante.lowercase().contains(queryLower) }
+                fullEstudiantesList.filter {
+                    it.nombres.lowercase().contains(queryLower) ||
+                            it.apellidos.lowercase().contains(queryLower)
+                }
             }
         )
         studentAdapter.notifyDataSetChanged()
     }
 
     private fun showProgressBar(show: Boolean) {
-        binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        // Verificar que binding no sea null antes de usarlo
+        if (_binding != null) {
+            binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        }
     }
 
     private fun setupButtons() {
