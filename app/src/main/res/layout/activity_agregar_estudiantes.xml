@@ -5,33 +5,73 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_primary_blue"
     android:orientation="vertical"
     android:padding="10sp"
-    android:background="@drawable/background_primary_blue"
     tools:context=".ui.Incidencia.AgregarEstudiantes">
-    <SearchView
-        android:layout_marginTop="20dp"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/search_view_query_background"
-        app:showAsAction="always"
-        android:layout_marginBottom="10dp"/>
+        android:padding="5sp"
+        android:layout_marginTop="20sp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15sp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Grado"
+            android:textColor="@color/Primary_blue_sky" />
+        <Spinner
+            android:id="@+id/spinnerGrado"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/background_spinner"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seccion"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/Primary_blue_sky"
+            android:layout_marginEnd="15sp"/>
+
+        <Spinner
+            android:id="@+id/spinnerSeccion"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@drawable/background_spinner"
+             />
+    </LinearLayout>
+
+    <SearchView
+        android:id="@+id/searchViewEstudiante"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/background_spinner"
+        app:showAsAction="always" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewEstudiantes"
         android:layout_width="match_parent"
         android:layout_height="520dp"
-        tools:listitem="@layout/item_estudiante_registrar_incidencia"/>
+        tools:listitem="@layout/item_estudiante_registrar_incidencia" />
 
     <Button
         android:id="@+id/btnIrRegistrar"
-        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="70sp"
-        android:fontFamily="@font/montserrat_bold"
-        android:textColor="@color/Secondary_brown"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/background_yellow_buttom"
+        android:fontFamily="@font/montserrat_bold"
         android:text="Ir a registrar"
-        android:layout_marginHorizontal="50dp"/>
+        android:textColor="@color/Secondary_brown" />
 
 </LinearLayout>
