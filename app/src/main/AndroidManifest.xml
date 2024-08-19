@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Example"
         tools:targetApi="31">
         <activity
+            android:name=".ui.Incidencia.AgregarEstudiantes"
+            android:exported="false" />
+        <activity
             android:name=".ui.Tutoria.DescripcionRevisar"
             android:exported="false" />
         <activity

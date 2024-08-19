@@ -9,8 +9,11 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.ViewPager
 import com.example.example.R
 import com.example.example.ui.Incidencia.Estado.AdapterEstado
+import com.example.example.ui.Profesor.Profesor
+import com.example.example.ui.Profesor.ProfesorAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.firestore.FirebaseFirestore
 
 class Incidencia : Fragment() {
 
@@ -27,15 +30,15 @@ class Incidencia : Fragment() {
         tabLayout = view?.findViewById(R.id.tabLayout)
         viewPager = view?.findViewById(R.id.viewPager)
         btnAgregar = view?.findViewById(R.id.btnAgregarIncidencia)!!
-
         viewPager!!.adapter = AdapterEstado(childFragmentManager)
         tabLayout!!.setupWithViewPager(viewPager)
         init()
+
         return view
     }
     private fun init() {
         btnAgregar.setOnClickListener {
-            val intent= Intent(requireContext(), AgregarEstudianteIncidencia::class.java)
+            val intent= Intent(requireContext(), AgregarEstudiantes::class.java)
             startActivity(intent)
         }
     }
