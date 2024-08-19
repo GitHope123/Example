@@ -12,8 +12,8 @@ class StudentAdapter(
 
     inner class StudentViewHolder(private val binding: ItemStudentBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(estudiante: Estudiante) {
-            binding.studentNameTextView.text = estudiante.estudiante // Cambié "estudiante" por "nombre"
-            binding.studentIdTextView.text = estudiante.id
+            binding.studentNameTextView.text = "${estudiante.nombres} ${estudiante.apellidos}" // Muestra nombres y apellidos
+            binding.studentIdTextView.text = estudiante.dni.toString() // Usar DNI como identificador
             binding.studentGradeTextView.text = estudiante.grado.toString()
             binding.studentSectionTextView.text = estudiante.seccion
 
@@ -47,4 +47,3 @@ class StudentAdapter(
         notifyDataSetChanged()
     }
 }
-
