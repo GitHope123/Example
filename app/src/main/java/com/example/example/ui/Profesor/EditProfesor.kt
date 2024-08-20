@@ -33,16 +33,18 @@ class EditProfesor : AppCompatActivity() {
         editTextCorreo = findViewById(R.id.editTextCorreo)
         buttonGuardar = findViewById(R.id.buttonModificar)
 
+        // Retrieve data from Intent
         val idProfesor = intent.getStringExtra("idProfesor") ?: ""
         val nombres = intent.getStringExtra("nombres") ?: ""
         val apellidos = intent.getStringExtra("apellidos") ?: ""
-        val celular = intent.getStringExtra("celular") ?: ""
+        val celular = intent.getLongExtra("celular", 0) // Use getLongExtra for Long
         val materia = intent.getStringExtra("materia") ?: ""
         val correo = intent.getStringExtra("correo") ?: ""
 
+        // Set data to EditTexts
         editTextNombres.setText(nombres)
         editTextApellidos.setText(apellidos)
-        editTextCelular.setText(celular)
+        editTextCelular.setText(celular.toString()) // Convert Long to String
         editTextMateria.setText(materia)
         editTextCorreo.setText(correo)
 

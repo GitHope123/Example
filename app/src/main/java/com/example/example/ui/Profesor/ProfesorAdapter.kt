@@ -47,7 +47,7 @@ class ProfesorAdapter(
                     putExtra("idProfesor", profesor.idProfesor)
                     putExtra("nombres", profesor.nombres)
                     putExtra("apellidos", profesor.apellidos)
-                    putExtra("celular", profesor.celular) // Pass Long as Long
+                    putExtra("celular", profesor.celular)
                     putExtra("materia", profesor.materia)
                     putExtra("correo", profesor.correo)
                 }
