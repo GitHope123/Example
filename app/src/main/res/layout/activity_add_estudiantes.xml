@@ -130,7 +130,6 @@
                 android:prompt="@string/hint_degree" />
         </LinearLayout>
 
-
         <EditText
             android:layout_width="match_parent"
             android:layout_height="60dp"

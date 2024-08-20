@@ -9,7 +9,8 @@
     tools:context=".InicioSesion">
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="30dp"
         android:layout_height="650dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,7 +22,7 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="160dp"
             app:srcCompat="@drawable/icon_colegio_parroquial" />
 
