@@ -45,10 +45,6 @@ class AgregarEstudiantes : AppCompatActivity() {
     }
 
     private fun initButton() {
-        btnIrRegistrar.setOnClickListener {
-            val intent = Intent(this, AgregarIncidencia::class.java)
-            startActivity(intent)
-        }
         val grados = arrayOf("Todas", "1", "2", "3", "4", "5")
         val adapterGrados = ArrayAdapter(this, android.R.layout.simple_spinner_item, grados)
         adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -99,10 +95,17 @@ class AgregarEstudiantes : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        estudianteAdapter = EstudianteAgregarAdapter(filterEstudianteList)
+        estudianteAdapter =
+            EstudianteAgregarAdapter(filterEstudianteList) { estudianteSeleccionado ->
+                val intent = Intent(this, AgregarIncidencia::class.java)
+                intent.putExtra("EXTRA_STUDENT_NAME", estudianteSeleccionado.nombres)
+                intent.putExtra("EXTRA_STUDENT_LAST_NAME", estudianteSeleccionado.apellidos)
+                intent.putExtra("EXTRA_STUDENT_GRADE", estudianteSeleccionado.grado)
+                intent.putExtra("EXTRA_STUDENT_SECTION", estudianteSeleccionado.seccion)
+                startActivity(intent)
+            }
         recyclerViewEstudiantes.layoutManager = LinearLayoutManager(this)
         recyclerViewEstudiantes.adapter = estudianteAdapter
-
     }
 
     private fun fetchEstudiantes() {
@@ -154,8 +157,10 @@ class AgregarEstudiantes : AppCompatActivity() {
 
         filterEstudianteList.clear()
         estudianteList.filterTo(filterEstudianteList) { estudiante ->
-            val coincideGrado = gradoSeleccionado == "Todas" || estudiante.grado.toString() == gradoSeleccionado
-            val coincideSeccion = seccionSeleccionada == "Todas" || estudiante.seccion == seccionSeleccionada
+            val coincideGrado =
+                gradoSeleccionado == "Todas" || estudiante.grado.toString() == gradoSeleccionado
+            val coincideSeccion =
+                seccionSeleccionada == "Todas" || estudiante.seccion == seccionSeleccionada
             val nombreCompleto = "${estudiante.nombres} ${estudiante.apellidos}".lowercase()
             val coincideNombre = queryWords.all { nombreCompleto.contains(it) }
             coincideNombre && coincideGrado && coincideSeccion
@@ -163,6 +168,7 @@ class AgregarEstudiantes : AppCompatActivity() {
 
         estudianteAdapter.notifyDataSetChanged()
     }
+
     fun refreshData() {
         fetchEstudiantes()
     }
