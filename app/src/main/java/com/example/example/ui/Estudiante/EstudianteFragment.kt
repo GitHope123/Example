@@ -47,6 +47,10 @@ class EstudianteFragment : Fragment() {
     }
 
     private fun setupSearchView() {
+        binding.searchView.setOnClickListener {
+            binding.searchView.isIconified = false
+            binding.searchView.requestFocus()
+        }
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = false

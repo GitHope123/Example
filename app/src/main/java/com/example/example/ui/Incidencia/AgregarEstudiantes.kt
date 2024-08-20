@@ -111,6 +111,11 @@ class AgregarEstudiantes : AppCompatActivity() {
     }
 
     private fun setupSearchView() {
+        searchViewEstudiante.setOnClickListener{
+           searchViewEstudiante.isIconified = false
+           searchViewEstudiante.requestFocus()
+        }
+
         searchViewEstudiante.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { filterEstudiante(it) }
