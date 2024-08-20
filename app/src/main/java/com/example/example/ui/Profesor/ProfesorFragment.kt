@@ -18,7 +18,6 @@ class ProfesorFragment : Fragment() {
 
     private var _binding: FragmentProfesorBinding? = null
     private val binding get() = _binding!!
-
     private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val profesorList = mutableListOf<Profesor>()
     private val filteredProfesorList = mutableListOf<Profesor>()
@@ -29,6 +28,7 @@ class ProfesorFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentProfesorBinding.inflate(inflater, container, false)
         setupRecyclerView()
         fetchProfesores()
@@ -50,6 +50,11 @@ class ProfesorFragment : Fragment() {
     }
 
     private fun setupSearchView() {
+        binding.searchView.setOnClickListener {
+            binding.searchView.isIconified = false
+            binding.searchView.requestFocus()
+        }
+
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { filterProfesores(it) }
@@ -61,6 +66,7 @@ class ProfesorFragment : Fragment() {
                 return true
             }
         })
+        
     }
 
     private fun filterProfesores(query: String) {
