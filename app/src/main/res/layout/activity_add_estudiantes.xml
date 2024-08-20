@@ -17,11 +17,18 @@
         tools:layout_editor_absoluteX="104dp"
         tools:layout_editor_absoluteY="150dp">
 
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            app:srcCompat="@drawable/icon_student" />
+
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/background_text_transparent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/background_white_element_full"
             android:backgroundTint="@color/Transparent_color"
             android:drawableLeft="@drawable/icon_student"
             android:drawablePadding="10sp"
@@ -37,8 +44,9 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@drawable/background_text_transparent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/background_white_element_full"
             android:backgroundTint="@color/Transparent_color"
             android:drawableLeft="@drawable/icon_docente"
             android:drawablePadding="10sp"
@@ -53,8 +61,9 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@drawable/background_text_transparent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/background_white_element_full"
             android:backgroundTint="@color/Transparent_color"
             android:drawableLeft="@drawable/icon_call"
             android:drawablePadding="10sp"
@@ -67,53 +76,49 @@
             android:textColor="@android:color/white"
             android:textColorHint="@color/Primary_white"
             android:textSize="14sp"></EditText>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="20sp" />
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
+            android:background="@drawable/background_white_element_full"
+            android:backgroundTint="@color/Primary_blue"
+            android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
                 android:fontFamily="@font/montserrat"
                 android:padding="10sp"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/icon_grado"
+                android:gravity="center_vertical"
                 android:text="@string/hint_degree"
                 android:textColor="@color/Primary_white"
                 android:textSize="14sp"></TextView>
-
             <Spinner
                 android:id="@+id/spinnerGrado"
                 android:layout_width="match_parent"
                 android:layout_height="50sp"
-                android:background="@drawable/search_view_query_background"
                 android:outlineSpotShadowColor="@color/Primary_white"
                 android:prompt="@string/hint_degree" />
         </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="20sp" />
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/background_white_element_full"
+            android:backgroundTint="@color/Primary_blue"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="8dp"
                 android:fontFamily="@font/montserrat"
                 android:padding="10sp"
+                android:drawablePadding="10dp"
                 android:text="@string/hint_section"
+                android:gravity="center_vertical"
+                android:drawableLeft="@drawable/icon_seccion"
                 android:textColor="@color/Primary_white"
                 android:textSize="14sp"></TextView>
 
@@ -121,19 +126,16 @@
                 android:id="@+id/spinnerSection"
                 android:layout_width="match_parent"
                 android:layout_height="50sp"
-                android:background="@drawable/search_view_query_background"
                 android:outlineSpotShadowColor="@color/Primary_white"
                 android:prompt="@string/hint_degree" />
         </LinearLayout>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="10sp" />
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@drawable/background_text_transparent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/background_white_element_full"
             android:backgroundTint="@color/Transparent_color"
             android:drawableLeft="@drawable/icon_dni"
             android:drawablePadding="10sp"
@@ -147,22 +149,17 @@
             android:textColorHint="@color/Primary_white"
             android:textSize="14sp"></EditText>
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="50sp" />
-
         <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="70sp"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="30dp"
+            android:drawableLeft="@drawable/ic_upload"
+            android:drawableTint="@color/Secondary_brown"
+            android:layout_marginTop="10dp"
             android:background="@drawable/background_yellow_buttom"
             android:fontFamily="@font/montserrat_bold"
             android:text="Agregar"
             android:textColor="@color/Secondary_brown" />
-
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
