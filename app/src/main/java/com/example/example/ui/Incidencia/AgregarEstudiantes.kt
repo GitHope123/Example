@@ -20,7 +20,7 @@ class AgregarEstudiantes : AppCompatActivity() {
     private lateinit var recyclerViewEstudiantes: RecyclerView
     private lateinit var spinnerGrado: Spinner
     private lateinit var spinnerSeccion: Spinner
-    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+     private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val estudianteList = mutableListOf<EstudianteAgregar>()
     private val filterEstudianteList = mutableListOf<EstudianteAgregar>()
     private lateinit var estudianteAdapter: EstudianteAgregarAdapter
@@ -49,7 +49,7 @@ class AgregarEstudiantes : AppCompatActivity() {
             val intent = Intent(this, AgregarIncidencia::class.java)
             startActivity(intent)
         }
-        val grados = arrayOf(1, 2, 3, 4, 5)
+        val grados = arrayOf("Todas", "1", "2", "3", "4", "5")
         val adapterGrados = ArrayAdapter(this, android.R.layout.simple_spinner_item, grados)
         adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerGrado.adapter = adapterGrados
@@ -61,24 +61,34 @@ class AgregarEstudiantes : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                updateSecciones(position)
+                val gradoSeleccionado = spinnerGrado.selectedItem.toString()
+                updateSecciones(gradoSeleccionado)
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // Handle case where no item is selected
             }
         }
+        spinnerSeccion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
 
     }
-
-    private fun updateSecciones(gradoPosition: Int){
-        val secciones= when(gradoPosition){
-            0-> arrayOf("A","B", "C", "D","E")
-            else-> arrayOf("A","B", "C", "D")
+    private fun updateSecciones(gradoSeleccionado: String) {
+        val secciones = if (gradoSeleccionado == "Todas") {
+            arrayOf("Todas")
+        } else {
+            arrayOf("Todas", "A", "B", "C", "D", "E")
         }
         val adapterSecciones = ArrayAdapter(this, android.R.layout.simple_spinner_item, secciones)
         adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerSeccion.adapter = adapterSecciones
+        spinnerSeccion.isEnabled = gradoSeleccionado != "Todas"
     }
     private fun setupRecyclerView() {
         estudianteAdapter = EstudianteAgregarAdapter(filterEstudianteList)
