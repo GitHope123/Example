@@ -20,7 +20,7 @@ class AgregarEstudiantes : AppCompatActivity() {
     private lateinit var recyclerViewEstudiantes: RecyclerView
     private lateinit var spinnerGrado: Spinner
     private lateinit var spinnerSeccion: Spinner
-     private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private val estudianteList = mutableListOf<EstudianteAgregar>()
     private val filterEstudianteList = mutableListOf<EstudianteAgregar>()
     private lateinit var estudianteAdapter: EstudianteAgregarAdapter
@@ -63,6 +63,7 @@ class AgregarEstudiantes : AppCompatActivity() {
             ) {
                 val gradoSeleccionado = spinnerGrado.selectedItem.toString()
                 updateSecciones(gradoSeleccionado)
+                filterEstudiante(searchViewEstudiante.query.toString())
 
             }
 
@@ -71,14 +72,20 @@ class AgregarEstudiantes : AppCompatActivity() {
             }
         }
         spinnerSeccion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                filterEstudiante(searchViewEstudiante.query.toString())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
     }
+
     private fun updateSecciones(gradoSeleccionado: String) {
         val secciones = if (gradoSeleccionado == "Todas") {
             arrayOf("Todas")
@@ -90,6 +97,7 @@ class AgregarEstudiantes : AppCompatActivity() {
         spinnerSeccion.adapter = adapterSecciones
         spinnerSeccion.isEnabled = gradoSeleccionado != "Todas"
     }
+
     private fun setupRecyclerView() {
         estudianteAdapter = EstudianteAgregarAdapter(filterEstudianteList)
         recyclerViewEstudiantes.layoutManager = LinearLayoutManager(this)
@@ -121,9 +129,9 @@ class AgregarEstudiantes : AppCompatActivity() {
     }
 
     private fun setupSearchView() {
-        searchViewEstudiante.setOnClickListener{
-           searchViewEstudiante.isIconified = false
-           searchViewEstudiante.requestFocus()
+        searchViewEstudiante.setOnClickListener {
+            searchViewEstudiante.isIconified = false
+            searchViewEstudiante.requestFocus()
         }
 
         searchViewEstudiante.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -140,19 +148,21 @@ class AgregarEstudiantes : AppCompatActivity() {
     }
 
     private fun filterEstudiante(query: String) {
-        val queryLower = query.toLowerCase()
-        val queryWords = queryLower.split("\\s+".toRegex())
-
-        val filteredList = estudianteList.filter { estudiante ->
-            val nombreCompleto = "${estudiante.nombres} ${estudiante.apellidos}".toLowerCase()
-            queryWords.all { queryWord -> nombreCompleto.contains(queryWord) }
-        }
+        val gradoSeleccionado = spinnerGrado.selectedItem.toString()
+        val seccionSeleccionada = spinnerSeccion.selectedItem.toString()
+        val queryWords = query.lowercase().split("\\s+".toRegex())
 
         filterEstudianteList.clear()
-        filterEstudianteList.addAll(filteredList)
+        estudianteList.filterTo(filterEstudianteList) { estudiante ->
+            val coincideGrado = gradoSeleccionado == "Todas" || estudiante.grado.toString() == gradoSeleccionado
+            val coincideSeccion = seccionSeleccionada == "Todas" || estudiante.seccion == seccionSeleccionada
+            val nombreCompleto = "${estudiante.nombres} ${estudiante.apellidos}".lowercase()
+            val coincideNombre = queryWords.all { nombreCompleto.contains(it) }
+            coincideNombre && coincideGrado && coincideSeccion
+        }
+
         estudianteAdapter.notifyDataSetChanged()
     }
-
     fun refreshData() {
         fetchEstudiantes()
     }
