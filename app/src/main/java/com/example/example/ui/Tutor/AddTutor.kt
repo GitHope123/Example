@@ -89,7 +89,7 @@ class AddTutor : AppCompatActivity() {
 
     private fun updateSelectedTutors() {
         if (selectedProfesores.isEmpty()) {
-            Toast.makeText(this, "No tutors selected.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "No hay tutores seleccionados.", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -101,7 +101,7 @@ class AddTutor : AppCompatActivity() {
 
         batch.commit()
             .addOnSuccessListener {
-                Toast.makeText(this, "Tutors updated successfully.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Tutores actualizados exitosamente.", Toast.LENGTH_SHORT).show()
                 setResult(RESULT_OK) // Set result to indicate success
                 finish()
             }
