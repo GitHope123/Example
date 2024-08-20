@@ -98,7 +98,7 @@
             <Spinner
                 android:id="@+id/spinnerGrado"
                 android:layout_width="match_parent"
-                android:layout_height="50sp"
+                android:layout_height="60sp"
                 android:outlineSpotShadowColor="@color/Primary_white"
                 android:prompt="@string/hint_degree" />
         </LinearLayout>
@@ -125,7 +125,7 @@
             <Spinner
                 android:id="@+id/spinnerSection"
                 android:layout_width="match_parent"
-                android:layout_height="50sp"
+                android:layout_height="60sp"
                 android:outlineSpotShadowColor="@color/Primary_white"
                 android:prompt="@string/hint_degree" />
         </LinearLayout>
