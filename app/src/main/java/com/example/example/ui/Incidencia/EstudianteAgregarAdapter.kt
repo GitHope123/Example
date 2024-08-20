@@ -31,7 +31,7 @@ class EstudianteAgregarAdapter(private val estudiantes: MutableList<EstudianteAg
 
         fun bind(estudiante: EstudianteAgregar) {
 
-            studentNameTextView.text = estudiante.nombres+" "+estudiante.apellidos
+            studentNameTextView.text =estudiante.apellidos+ " " +estudiante.nombres
             studentGradeTextView.text = estudiante.grado.toString()
             studentSectionTextView.text = estudiante.seccion
         }
