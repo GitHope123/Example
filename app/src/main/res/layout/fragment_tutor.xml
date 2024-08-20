@@ -7,43 +7,46 @@
     android:background="@drawable/background_primary_blue"
     tools:context=".ui.Tutor.TutorFragment">
 
+    <!-- Main container for content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:orientation="vertical">
 
+        <!-- Search view container -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <SearchView
-                android:id="@+id/searchView"
+                android:id="@+id/searchViewTutor"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/search_view_query_background"
                 app:iconifiedByDefault="false"
                 app:showAsAction="always" />
         </LinearLayout>
 
+        <!-- RecyclerView for listing tutors -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewTutores"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            tools:listitem="@layout/item_profesor" />
+            tools:listitem="@layout/item_tutor" />
     </LinearLayout>
 
+    <!-- FloatingActionButton for adding a new tutor -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButtonTutor"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:fabSize="normal"
-    android:src="@drawable/icon_add_student"
-    android:layout_gravity="bottom|end"
-    android:layout_margin="20dp"
-    android:backgroundTint="@color/Primary_yellow"
-    tools:contentDescription="@string/action_bottom" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        android:src="@drawable/icon_add_student"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/Primary_yellow"/>
 </FrameLayout>

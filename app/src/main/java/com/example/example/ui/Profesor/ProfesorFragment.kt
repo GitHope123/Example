@@ -67,13 +67,14 @@ class ProfesorFragment : Fragment() {
         val filteredList = profesorList.filter {
             it.nombres.contains(query, ignoreCase = true) ||
                     it.apellidos.contains(query, ignoreCase = true) ||
-                    it.celular.contains(query, ignoreCase = true) ||
+                    it.celular.toString().contains(query, ignoreCase = true) || // Convert celular to String
                     it.correo.contains(query, ignoreCase = true)
         }
         filteredProfesorList.clear()
         filteredProfesorList.addAll(filteredList)
         profesorAdapter.notifyDataSetChanged()
     }
+
 
     private fun fetchProfesores() {
         firestore.collection("Profesor")
@@ -99,7 +100,6 @@ class ProfesorFragment : Fragment() {
             }
     }
 
-    // Make refreshData public to allow external access
     fun refreshData() {
         fetchProfesores()
     }
@@ -110,7 +110,7 @@ class ProfesorFragment : Fragment() {
                 idProfesor = id, // Use the document ID as idProfesor
                 nombres = getString("nombres") ?: "",
                 apellidos = getString("apellidos") ?: "",
-                celular = getLong("celular")?.toString() ?: "", // Convert the number to string
+                celular = getLong("celular") ?: 0L, // Directly get Long value
                 materia = getString("materia") ?: "",
                 correo = getString("correo") ?: ""
             )
@@ -119,6 +119,9 @@ class ProfesorFragment : Fragment() {
             null
         }
     }
+
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

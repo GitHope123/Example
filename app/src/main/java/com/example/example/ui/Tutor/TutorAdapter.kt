@@ -1,77 +1,80 @@
 package com.example.example.ui.Tutor
 
+import ProfesorDiffCallback
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
 import com.example.example.ui.Profesor.Profesor
 
 class TutorAdapter(
-    private val profesores: List<Profesor>,
-    private val onItemClick: (Profesor) -> Unit
-) : RecyclerView.Adapter<TutorAdapter.TutorViewHolder>() {
+    var listaProfesores: List<Profesor>,
+    private val onEditClickListener: (Profesor) -> Unit,
+    private val isButtonVisible: Boolean
+) : RecyclerView.Adapter<TutorAdapter.ProfesorViewHolder>() {
 
-    private var selectedPosition: Int = RecyclerView.NO_POSITION
-    private val selectedProfesores = mutableSetOf<Profesor>()
+    private val selectedProfesores = mutableSetOf<String>() // Track selection by ID
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TutorViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_profesor, parent, false)
-        return TutorViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: TutorViewHolder, position: Int) {
-        val profesor = profesores[position]
-        holder.bind(profesor, position)
-    }
-
-    override fun getItemCount(): Int = profesores.size
-
-    inner class TutorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val textViewNombreCompleto: TextView = itemView.findViewById(R.id.textViewNombreCompletos)
-        private val textViewTelefono: TextView = itemView.findViewById(R.id.textViewTelefono)
-        private val textViewCorreo: TextView = itemView.findViewById(R.id.textViewCorreo)
+    inner class ProfesorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val textViewNombre: TextView = itemView.findViewById(R.id.textViewTutorNombreCompleto)
+        private val textViewCelular: TextView = itemView.findViewById(R.id.textViewTutorCelular)
+        private val textViewCorreo: TextView = itemView.findViewById(R.id.textViewTutorCorreo)
         private val imageButtonSeleccionar: ImageButton = itemView.findViewById(R.id.imageButtonSeleccionar)
 
-        fun bind(profesor: Profesor, position: Int) {
-            val nombreCompleto = "${profesor.nombres} ${profesor.apellidos}"
-            textViewNombreCompleto.text = nombreCompleto
-            textViewTelefono.text = profesor.celular
+        fun bind(profesor: Profesor) {
+            textViewNombre.text = "${profesor.nombres} ${profesor.apellidos}"
+            textViewCelular.text = profesor.celular.toString()
             textViewCorreo.text = profesor.correo
+            imageButtonSeleccionar.visibility = if (isButtonVisible) View.VISIBLE else View.GONE
 
-            // Update item view based on selection
-            val isSelected = selectedProfesores.contains(profesor)
-            itemView.setBackgroundColor(
-                if (isSelected) ContextCompat.getColor(itemView.context, R.color.Primary_blue_sky)
-                else ContextCompat.getColor(itemView.context, R.color.Transparent_color)
-            )
-            imageButtonSeleccionar.visibility = if (isSelected) View.VISIBLE else View.GONE
-
-            itemView.setOnClickListener {
-                if (selectedPosition == position) {
-                    // Deselect item if it's already selected
-                    selectedProfesores.remove(profesor)
-                    selectedPosition = RecyclerView.NO_POSITION
-                } else {
-                    // Select new item
-                    selectedProfesores.add(profesor)
-                    notifyItemChanged(selectedPosition)
-                    selectedPosition = position
-                }
-                notifyItemChanged(selectedPosition)
-                onItemClick(profesor)
-            }
+            val idProfesor = profesor.idProfesor ?: return
+            val isSelected = selectedProfesores.contains(idProfesor)
+            imageButtonSeleccionar.setColorFilter(if (isSelected) Color.YELLOW else Color.GRAY)
 
             imageButtonSeleccionar.setOnClickListener {
-                // Handle select button click if needed
-                // For example, open details or perform other actions
+                if (isSelected) {
+                    selectedProfesores.remove(idProfesor)
+                } else {
+                    selectedProfesores.add(idProfesor)
+                }
+                notifyItemChanged(adapterPosition) // Update only the changed item
+                onEditClickListener(profesor)
             }
         }
     }
 
-    fun getSelectedProfesores(): List<Profesor> = selectedProfesores.toList()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfesorViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_tutor, parent, false)
+        return ProfesorViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ProfesorViewHolder, position: Int) {
+        holder.bind(listaProfesores[position])
+    }
+
+    override fun getItemCount(): Int = listaProfesores.size
+
+    fun updateList(newList: List<Profesor>) {
+        val diffCallback = ProfesorDiffCallback(listaProfesores, newList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        listaProfesores = newList
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun filterList(query: String?) {
+        val filteredList = listaProfesores.filter { profesor ->
+            val queryLowerCase = query?.lowercase() ?: ""
+            profesor.nombres.lowercase().contains(queryLowerCase) ||
+                    profesor.celular.toString().contains(queryLowerCase) ||
+                    profesor.correo.lowercase().contains(queryLowerCase)
+        }
+        updateList(filteredList)
+    }
+
+    fun getSelectedProfesores(): Set<String> = selectedProfesores
 }

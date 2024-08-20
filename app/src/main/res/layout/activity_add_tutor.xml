@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <SearchView
-            android:id="@+id/searchView"
+            android:id="@+id/searchViewTutorAdd"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/search_view_query_background"
@@ -24,7 +24,7 @@
             app:showAsAction="always" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewSeleccionar"
+            android:id="@+id/recyclerViewSeleccionarTutor"
             android:layout_width="match_parent"
             android:layout_height="500sp"
             android:layout_weight="1"
@@ -37,7 +37,7 @@
             android:layout_gravity="bottom">
 
             <Button
-                android:id="@+id/buttonAceptar"
+                android:id="@+id/buttonAceptarTutor"
                 android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:layout_weight="1"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"/>
 
             <Button
-                android:id="@+id/buttonCancelar"
+                android:id="@+id/buttonCancelarTutor"
                 android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:layout_weight="1"

@@ -1,63 +1,76 @@
 package com.example.example.ui.Tutor
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
 import com.example.example.ui.Profesor.Profesor
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.firestore.FirebaseFirestore
 
 class TutorFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: TutorAdapter
-    private lateinit var addButtonTutor: View // Cambié a View para el botón, actualiza con el tipo real si es necesario
-    private val profesores = mutableListOf<Profesor>() // Asegúrate de cargar la lista de profesores
+    private val ADD_TUTOR_REQUEST_CODE = 1 // Define a request code
+    private lateinit var tutorAdapter: TutorAdapter
+    private val db = FirebaseFirestore.getInstance()
+    private lateinit var recyclerViewTutores: RecyclerView
+    private lateinit var addButtonTutor: FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_tutor, container, false)
-
-        recyclerView = view.findViewById(R.id.recyclerViewTutores)
-        addButtonTutor = view.findViewById(R.id.addButtonTutor) // Asegúrate de que este ID sea correcto
-
-        recyclerView.layoutManager = LinearLayoutManager(context)
-
-        // Inicializa el adaptador con una lista vacía o la lista de profesores
-        adapter = TutorAdapter(profesores) { profesor ->
-            // Maneja el clic en el ítem si es necesario
-        }
-        recyclerView.adapter = adapter
-
-        // Configura el clic en el botón para agregar un tutor
-        addButtonTutor.setOnClickListener {
-            // Reemplaza con tu actividad o fragmento real para agregar un nuevo tutor
-            startActivity(Intent(context, AddTutor::class.java))
-        }
-
-        // Aquí puedes cargar la lista de profesores, por ejemplo, desde Firebase
-        loadProfesores()
-
-        return view
+        return inflater.inflate(R.layout.fragment_tutor, container, false)
     }
 
-    private fun loadProfesores() {
-        // Ejemplo de carga de datos
-        // Aquí podrías usar Firebase Firestore para obtener la lista de profesores y actualizar el adaptador
-        // Por ejemplo:
-        // firestore.collection("Profesor").get().addOnSuccessListener { documents ->
-        //     profesores.clear()
-        //     for (document in documents) {
-        //         val profesor = document.toObject(Profesor::class.java)
-        //         profesores.add(profesor)
-        //     }
-        //     adapter.notifyDataSetChanged()
-        // }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        recyclerViewTutores = view.findViewById(R.id.recyclerViewTutores)
+        recyclerViewTutores.layoutManager = LinearLayoutManager(requireContext())
+
+        tutorAdapter = TutorAdapter(emptyList(), { profesor ->
+            Toast.makeText(requireContext(), "Selected: ${profesor.nombres}", Toast.LENGTH_SHORT).show()
+        }, isButtonVisible = false)
+        recyclerViewTutores.adapter = tutorAdapter
+
+        fetchProfesores()
+
+        addButtonTutor = view.findViewById(R.id.addButtonTutor)
+        addButtonTutor.setOnClickListener {
+            // Start AddTutor activity for result
+            val intent = Intent(requireContext(), AddTutor::class.java)
+            startActivityForResult(intent, ADD_TUTOR_REQUEST_CODE)
+        }
+    }
+
+    private fun fetchProfesores() {
+        db.collection("Profesor")
+            .whereEqualTo("tutor", true)
+            .get()
+            .addOnSuccessListener { result ->
+                val listaProfesores = result.documents.mapNotNull { document ->
+                    document.toObject(Profesor::class.java)
+                }
+                tutorAdapter.updateList(listaProfesores)
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(requireContext(), "Error fetching tutors: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ADD_TUTOR_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            // Refresh the data
+            fetchProfesores()
+        }
     }
 }

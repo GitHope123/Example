@@ -3,8 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_text_transparent"
-    android:backgroundTint="@color/Primary_transparent_blue_black">
+    android:backgroundTint="@color/Primary_transparent_blue_black"
+    tools:context=".ui.Tutor.TutorFragment"> <!-- Agregar contexto para editor -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -66,14 +68,22 @@
 
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/imageButtonEdit"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:background="@color/transparent_color"
-                android:padding="5dp"
-                app:srcCompat="@drawable/icon_edit" />
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+
+                <ImageButton
+                    android:id="@+id/imageButtonEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent_color"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/icon_edit" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

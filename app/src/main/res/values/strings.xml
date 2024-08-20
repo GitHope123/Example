@@ -55,6 +55,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="desc_select_button">Selecciones el boton</string>
+    <string name="desc_tutor_image">Imagen tutor</string>
+
 
     <string-array name="item_fecha_tutoria">
         <item>Hoy</item>
@@ -62,4 +65,12 @@
         <item>Este mes</item>
         <item>Este año</item>
     </string-array>
+    <dimen name="margin_small">12dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_medium">14sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
 </resources>

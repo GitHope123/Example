@@ -19,7 +19,7 @@ class AddProfesor : AppCompatActivity() {
     private lateinit var buttonAgregar: Button
 
     private lateinit var db: FirebaseFirestore
-    private var isSaving = false  // Flag to prevent duplicate saves
+    private var isSaving = false // Flag to prevent duplicate saves
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +29,7 @@ class AddProfesor : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
 
         // Bind the views
-        editTextNombres = findViewById(R.id.editTextNombres)
-        editTextApellidos = findViewById(R.id.editTextApellidos)
-        editTextCelular = findViewById(R.id.editTextCelular)
-        editTextMateria = findViewById(R.id.editTextMateria)
-        editTextCorreo = findViewById(R.id.editTextCorreo)
-        buttonAgregar = findViewById(R.id.button2)
+        bindViews()
 
         // Set click listener for the button
         buttonAgregar.setOnClickListener {
@@ -45,18 +40,36 @@ class AddProfesor : AppCompatActivity() {
         }
     }
 
+    private fun bindViews() {
+        editTextNombres = findViewById(R.id.editTextNombres)
+        editTextApellidos = findViewById(R.id.editTextApellidos)
+        editTextCelular = findViewById(R.id.editTextCelular)
+        editTextMateria = findViewById(R.id.editTextMateria)
+        editTextCorreo = findViewById(R.id.editTextCorreo)
+        buttonAgregar = findViewById(R.id.button2)
+    }
+
     private fun saveProfesorToFirebase() {
         // Collect the data from input fields
         val nombres = editTextNombres.text.toString().trim()
         val apellidos = editTextApellidos.text.toString().trim()
-        val celular = editTextCelular.text.toString().trim()
+        val celularStr = editTextCelular.text.toString().trim()
         val materia = editTextMateria.text.toString().trim()
         val correo = editTextCorreo.text.toString().trim()
 
         // Validate inputs
-        if (nombres.isEmpty() || apellidos.isEmpty() ||
-            celular.isEmpty() || materia.isEmpty() || correo.isEmpty()) {
-            Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
+        if (nombres.isEmpty() || apellidos.isEmpty() || celularStr.isEmpty() ||
+            materia.isEmpty() || correo.isEmpty()) {
+            showToast("Por favor, complete todos los campos")
+            isSaving = false
+            return
+        }
+
+        // Parse celular as a Long, handle potential errors
+        val celular: Long = try {
+            celularStr.toLong()
+        } catch (e: NumberFormatException) {
+            showToast("Número de celular inválido")
             isSaving = false
             return
         }
@@ -82,19 +95,17 @@ class AddProfesor : AppCompatActivity() {
                 // Optionally, update the document with the ID (if needed)
                 documentReference.update("idProfesor", updatedProfesor.idProfesor)
                     .addOnSuccessListener {
-                        Toast.makeText(this, "Profesor agregado con éxito", Toast.LENGTH_SHORT).show()
+                        showToast("Profesor agregado con éxito")
                         clearFields()
-
-                        // Navigate to ProfesorFragment
-                        navigateToProfesorFragment()
+                        navigateToProfesorFragment() // Navigate to the ProfesorFragment
                     }
                     .addOnFailureListener { e ->
-                        Toast.makeText(this, "Error al actualizar el ID del profesor: ${e.message}", Toast.LENGTH_SHORT).show()
+                        showToast("Error al actualizar el ID del profesor: ${e.message}")
                         isSaving = false
                     }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error al agregar profesor: ${e.message}", Toast.LENGTH_SHORT).show()
+                showToast("Error al agregar profesor: ${e.message}")
                 isSaving = false
             }
     }
@@ -107,10 +118,14 @@ class AddProfesor : AppCompatActivity() {
         editTextCorreo.text.clear()
     }
 
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
     private fun navigateToProfesorFragment() {
-        // Update this with the correct way to navigate to the fragment
-        val intent = Intent(this, ProfesorFragment::class.java) // Replace with correct activity
-        intent.putExtra("navigateToFragment", "ProfesorFragment")
+        // Assuming that ProfesorFragment is part of the navigation system
+        // Use proper fragment navigation or intent as per your app's architecture
+        val intent = Intent(this, ProfesorFragment::class.java) // Replace with correct destination
         startActivity(intent)
         finish()
     }

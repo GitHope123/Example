@@ -54,7 +54,7 @@
             android:layout_width="10dp"
             android:layout_height="wrap_content" />
         <Button
-            android:id="@+id/buttonAceptar"
+            android:id="@+id/buttonAceptarTutor"
             android:layout_width="70sp"
             android:layout_height="50sp"
             android:layout_weight="1"

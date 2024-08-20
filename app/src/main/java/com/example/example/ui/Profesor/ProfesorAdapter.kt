@@ -11,7 +11,7 @@ import com.example.example.R
 
 class ProfesorAdapter(
     private val profesores: List<Profesor>,
-    private val onEditClickListener: (Profesor) -> Unit
+    private val onEditClickListener: (Profesor) -> Unit // You may use this for a callback
 ) : RecyclerView.Adapter<ProfesorAdapter.ProfesorViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfesorViewHolder {
@@ -37,22 +37,27 @@ class ProfesorAdapter(
             // Concatenate first and last names
             val nombreCompleto = "${profesor.nombres} ${profesor.apellidos}"
             textViewNombreCompleto.text = nombreCompleto
-            textViewTelefono.text = profesor.celular
+            textViewTelefono.text = profesor.celular.toString() // Ensure long is converted to string
             textViewCorreo.text = profesor.correo
 
+            // Set the click listener for editing
             editButton.setOnClickListener {
                 val context = itemView.context
                 val intent = Intent(context, EditProfesor::class.java).apply {
                     putExtra("idProfesor", profesor.idProfesor)
                     putExtra("nombres", profesor.nombres)
                     putExtra("apellidos", profesor.apellidos)
-                    putExtra("celular", profesor.celular)
+                    putExtra("celular", profesor.celular) // Pass Long as Long
                     putExtra("materia", profesor.materia)
                     putExtra("correo", profesor.correo)
                 }
                 context.startActivity(intent)
             }
+
+            // Alternatively, use the callback
+            itemView.setOnClickListener {
+                onEditClickListener(profesor) // Trigger the passed-in listener
+            }
         }
     }
-
 }
