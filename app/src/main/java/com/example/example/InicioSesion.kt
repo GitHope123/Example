@@ -66,7 +66,7 @@ class InicioSesion : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         val user = auth.currentUser
-                        if (user != null && email.endsWith("@undc.edu.pe")) {
+                        if (user != null && email.endsWith("@gmail.com")) {
                             val intent = Intent(this, BarraLateral::class.java)
                             startActivity(intent)
                             finish()
@@ -110,7 +110,7 @@ class InicioSesion : AppCompatActivity() {
                     val user = auth.currentUser
                     val email = user?.email
 
-                    if (email != null && email.endsWith("@undc.edu.pe")) {
+                    if (email != null && email.endsWith("@gmail.com")) {
                         val intent = Intent(this, BarraLateral::class.java)
                         startActivity(intent)
                         finish()
