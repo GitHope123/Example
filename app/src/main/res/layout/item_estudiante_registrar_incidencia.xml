@@ -2,20 +2,20 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:background="@drawable/background_text_transparent"
-    android:backgroundTint="@color/Primary_transparent_blue_black">
+    android:layout_marginVertical="5dp"
+    android:background="@drawable/background_white_element_full"
+    android:backgroundTint="@color/Primary_blue_black">
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="15dp">
+        android:layout_gravity="center"
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/studentNameTextView"
@@ -25,7 +25,6 @@
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/Primary_blue_sky"
                 android:fontFamily="@font/montserrat_bold"
-                android:gravity="center_vertical"
                 android:text="Nombre del Estudiante"
                 android:textColor="@color/Primary_blue_sky"
                 android:textSize="14sp" />
@@ -34,31 +33,26 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:layout_marginTop="10sp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/studentGradeTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:drawableLeft="@drawable/icon_class"
                     android:drawablePadding="10dp"
                     android:drawableTint="@color/Primary_blue_sky"
                     android:fontFamily="@font/montserrat"
-                    android:gravity="center_vertical"
-                    android:text="Grado"
+                    android:text="Grado "
                     android:textColor="@color/Primary_blue_sky"
-                    android:textSize="12sp"
-                    android:layout_marginEnd="20dp"/>
+                    android:textSize="12sp"/>
 
                 <TextView
                     android:id="@+id/studentSectionTextView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_height="match_parent"
                     android:fontFamily="@font/montserrat"
-                    android:gravity="center_vertical"
                     android:text="Sección"
                     android:textColor="@color/Primary_blue_sky"
                     android:textSize="12sp" />
