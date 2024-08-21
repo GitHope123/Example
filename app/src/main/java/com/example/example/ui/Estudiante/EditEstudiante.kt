@@ -2,7 +2,6 @@ package com.example.example.ui.Estudiante
 
 import android.os.Bundle
 import android.util.Log
-
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -13,7 +12,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.example.R
 import com.google.firebase.firestore.FirebaseFirestore
-
 
 class EditEstudiante : AppCompatActivity() {
 
@@ -28,18 +26,6 @@ class EditEstudiante : AppCompatActivity() {
     private lateinit var buttonModificar: Button
     private lateinit var buttonEliminar: Button
     private lateinit var idEstudiante: String
-    private lateinit var nombres: String
-    private lateinit var apellidos: String
-    private var celular: Long = 0
-    private var dni: Long = 0
-    private var grado: Int = 0
-    private lateinit var seccion: String
-    private lateinit var updatedNombres: String
-    private lateinit var updatedApellidos: String
-    private var updatedCelular: Long = 0
-    private var updatedDni: Long = 0
-    private var updatedGrado: Int = 0
-    private lateinit var updatedSeccion: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,18 +36,18 @@ class EditEstudiante : AppCompatActivity() {
         editTextCelular = findViewById(R.id.editTextCelular)
         editTextDni = findViewById(R.id.editTextDni)
         spinnerGrado = findViewById(R.id.spinnerGrado)
-        spinnerSeccion = findViewById(R.id.spinnerSection)
+        spinnerSeccion = findViewById(R.id.spinnerSection) // Corrección aquí
         buttonModificar = findViewById(R.id.buttonModificar)
         buttonEliminar = findViewById(R.id.buttonEliminar)
 
         // Obtener datos del Intent
-        idEstudiante = intent.getStringExtra("idEstudiante") ?: ""
-        nombres = intent.getStringExtra("nombres") ?: ""
-        apellidos = intent.getStringExtra("apellidos") ?: ""
-        celular = intent.getLongExtra("celular", 0)
-        dni = intent.getLongExtra("dni", 0)
-        grado = intent.getIntExtra("grado", 0)
-        seccion = intent.getStringExtra("seccion") ?: ""
+        idEstudiante = intent.getStringExtra("id") ?: ""
+        val nombres = intent.getStringExtra("nombres") ?: ""
+        val apellidos = intent.getStringExtra("apellidos") ?: ""
+        val celular = intent.getLongExtra("celular", 0L)
+        val dni = intent.getLongExtra("dni", 0L)
+        val grado = intent.getIntExtra("grado", 0)
+        val seccion = intent.getStringExtra("seccion") ?: ""
         Log.d("EditEstudiante", "Grado recibido: $grado")
 
         // Rellenar los campos con los datos recibidos
@@ -72,33 +58,34 @@ class EditEstudiante : AppCompatActivity() {
 
         // Configurar los adaptadores y establecer el valor del spinner
         initButton()
-
-        // Establecer el valor seleccionado en el Spinner de grado
         setSpinnerValue(spinnerGrado, grado.toString())
-
-        // Establecer el valor seleccionado en el Spinner de sección
         setSpinnerValue(spinnerSeccion, seccion)
 
         buttonModificar.setOnClickListener {
-            updatedNombres = editTextNombres.text.toString().trim()
-            updatedApellidos = editTextApellidos.text.toString().trim()
-            updatedCelular = editTextCelular.text.toString().trim().toLong()
-            updatedDni = editTextDni.text.toString().trim().toLong()
-            updatedGrado = spinnerGrado.selectedItemPosition + 1 // Ajusta el grado según tu lógica
-            updatedSeccion = spinnerSeccion.selectedItem.toString().trim()
+            val updatedNombres = editTextNombres.text.toString().trim()
+            val updatedApellidos = editTextApellidos.text.toString().trim()
+            val updatedCelular = editTextCelular.text.toString().trim().toLongOrNull() // Para convertir a Long
+            val updatedDni = editTextDni.text.toString().trim().toLongOrNull() // Para convertir a Long
+            val updatedGrado = spinnerGrado.selectedItem.toString().trim().toIntOrNull()
+            val updatedSeccion = spinnerSeccion.selectedItem.toString().trim()
 
             if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
-                updatedCelular.toString().length == 9 && updatedDni.toString().length == 8 &&
-                updatedSeccion.isNotEmpty()&&updatedGrado.toString().isNotEmpty()) {
+                updatedCelular != null && updatedCelular.toString().length == 9 &&
+                updatedDni != null && updatedDni.toString().length == 8 &&
+                updatedSeccion.isNotEmpty() && updatedGrado != null) {
 
-                firestore.collection("Aula").get()
-                    .addOnSuccessListener { snapshot ->
-                        val batch = firestore.batch()
+                val documentPath = "${updatedGrado}${updatedSeccion}" // Formato del documento, por ejemplo, "1A", "2B", etc.
 
-                        snapshot.documents.forEach { document ->
+                firestore.collection("Aula").document(documentPath).get()
+                    .addOnSuccessListener { document ->
+                        if (document.exists()) {
                             val estudiantesList = document.get("estudiantes") as? List<Map<String, Any>> ?: emptyList()
-                            estudiantesList.find { it["idEstudiante"] == idEstudiante }?.let { estudiante ->
-                                val updatedEstudiante = estudiante.toMutableMap().apply {
+                            val estudianteIndex = estudiantesList.indexOfFirst {
+                                it["dni"] == dni
+                            }
+
+                            if (estudianteIndex != -1) {
+                                val updatedEstudiante = estudiantesList[estudianteIndex].toMutableMap().apply {
                                     put("nombres", updatedNombres)
                                     put("apellidos", updatedApellidos)
                                     put("celular", updatedCelular)
@@ -107,20 +94,25 @@ class EditEstudiante : AppCompatActivity() {
                                     put("seccion", updatedSeccion)
                                 }
 
-                                val estudiantesRef = document.reference.collection("estudiantes")
-                                estudiantesRef.document(idEstudiante).set(updatedEstudiante)
-                            }
-                        }
+                                val updatedEstudiantesList = estudiantesList.toMutableList().apply {
+                                    set(estudianteIndex, updatedEstudiante)
+                                }
 
-                        batch.commit()
-                            .addOnSuccessListener {
-                                Toast.makeText(this, "Estudiante actualizado con éxito", Toast.LENGTH_SHORT).show()
-                                notifyEstudianteFragment()
-                                finish() // Cierra la actividad
+                                document.reference.update("estudiantes", updatedEstudiantesList)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(this, "Estudiante actualizado con éxito", Toast.LENGTH_SHORT).show()
+                                        notifyEstudianteFragment()
+                                        finish() // Cierra la actividad
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(this, "Error al actualizar el estudiante: ${e.message}", Toast.LENGTH_LONG).show()
+                                    }
+                            } else {
+                                Toast.makeText(this, "Estudiante no encontrado", Toast.LENGTH_SHORT).show()
                             }
-                            .addOnFailureListener { e ->
-                                Toast.makeText(this, "Error al actualizar el estudiante: ${e.message}", Toast.LENGTH_LONG).show()
-                            }
+                        } else {
+                            Toast.makeText(this, "Documento no encontrado", Toast.LENGTH_SHORT).show()
+                        }
                     }
                     .addOnFailureListener { e ->
                         Toast.makeText(this, "Error al obtener datos: ${e.message}", Toast.LENGTH_LONG).show()
@@ -130,31 +122,42 @@ class EditEstudiante : AppCompatActivity() {
             }
         }
 
-
         buttonEliminar.setOnClickListener {
             // Encontrar el documento de Aula que contiene el estudiante
             firestore.collection("Aula").get()
                 .addOnSuccessListener { snapshot ->
                     val batch = firestore.batch()
+                    var documentFound = false
 
                     snapshot.documents.forEach { document ->
                         val estudiantesList = document.get("estudiantes") as? List<Map<String, Any>> ?: emptyList()
-                        estudiantesList.find { it["idEstudiante"] == idEstudiante }?.let { estudiante ->
-                            // Eliminar el estudiante del documento de Aula
-                            val estudiantesRef = document.reference.collection("estudiantes")
-                            estudiantesRef.document(idEstudiante).delete()
+                        val estudianteIndex = estudiantesList.indexOfFirst {
+                            it["id"] == idEstudiante
+                        }
+
+                        if (estudianteIndex != -1) {
+                            val updatedEstudiantesList = estudiantesList.toMutableList().apply {
+                                removeAt(estudianteIndex)
+                            }
+
+                            batch.update(document.reference, "estudiantes", updatedEstudiantesList)
+                            documentFound = true
                         }
                     }
 
-                    batch.commit()
-                        .addOnSuccessListener {
-                            Toast.makeText(this, "Estudiante eliminado con éxito", Toast.LENGTH_SHORT).show()
-                            notifyEstudianteFragment()
-                            finish() // Cierra la actividad
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this, "Error al eliminar el estudiante: ${e.message}", Toast.LENGTH_LONG).show()
-                        }
+                    if (documentFound) {
+                        batch.commit()
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Estudiante eliminado con éxito", Toast.LENGTH_SHORT).show()
+                                notifyEstudianteFragment()
+                                finish() // Cierra la actividad
+                            }
+                            .addOnFailureListener { e ->
+                                Toast.makeText(this, "Error al eliminar el estudiante: ${e.message}", Toast.LENGTH_LONG).show()
+                            }
+                    } else {
+                        Toast.makeText(this, "Estudiante no encontrado", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(this, "Error al obtener datos: ${e.message}", Toast.LENGTH_LONG).show()
@@ -187,5 +190,3 @@ class EditEstudiante : AppCompatActivity() {
         }
     }
 }
-
-

@@ -11,4 +11,3 @@ data class Estudiante(
     val grado: Int = 0,
     val seccion: String = ""
 ):Serializable
-
