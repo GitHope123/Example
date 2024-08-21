@@ -68,7 +68,8 @@
             android:padding="10dp"
             android:textColor="@android:color/white"
             android:textColorHint="@color/Primary_white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:maxLength="9"/>
 
         <EditText
             android:id="@+id/editTextMateria"

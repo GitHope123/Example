@@ -58,7 +58,7 @@ class AddProfesor : AppCompatActivity() {
 
         // Validate inputs
         if (nombres.isEmpty() || apellidos.isEmpty() || celularStr.isEmpty() ||
-            materia.isEmpty() || correo.isEmpty()) {
+            materia.isEmpty() || correo.isEmpty()||celularStr.length!=9) {
             showToast("Por favor, complete todos los campos")
             isSaving = false
             return

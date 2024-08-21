@@ -1,5 +1,6 @@
 package com.example.example.ui.Profesor
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -19,6 +20,18 @@ class EditProfesor : AppCompatActivity() {
     private lateinit var editTextMateria: EditText
     private lateinit var editTextCorreo: EditText
     private lateinit var buttonGuardar: Button
+    private lateinit var idProfesor:String
+    private lateinit var nombres:String
+    private lateinit var apellidos:String
+    private var celular:Long = 0
+    private lateinit var materia:String
+    private lateinit var correo:String
+    private lateinit var updatedNombres:String
+    private lateinit var updatedApellidos:String
+    private lateinit var updatedMateria:String
+    private lateinit var updatedCorreo:String
+    private var updatedCelular:Long=0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +47,12 @@ class EditProfesor : AppCompatActivity() {
         buttonGuardar = findViewById(R.id.buttonModificar)
 
         // Retrieve data from Intent
-        val idProfesor = intent.getStringExtra("idProfesor") ?: ""
-        val nombres = intent.getStringExtra("nombres") ?: ""
-        val apellidos = intent.getStringExtra("apellidos") ?: ""
-        val celular = intent.getLongExtra("celular", 0) // Use getLongExtra for Long
-        val materia = intent.getStringExtra("materia") ?: ""
-        val correo = intent.getStringExtra("correo") ?: ""
+       idProfesor = intent.getStringExtra("idProfesor") ?: ""
+         nombres = intent.getStringExtra("nombres") ?: ""
+       apellidos = intent.getStringExtra("apellidos") ?: ""
+        celular = intent.getLongExtra("celular", 0) // Use getLongExtra for Long
+         materia = intent.getStringExtra("materia") ?: ""
+        correo = intent.getStringExtra("correo") ?: ""
 
         // Set data to EditTexts
         editTextNombres.setText(nombres)
@@ -49,17 +62,22 @@ class EditProfesor : AppCompatActivity() {
         editTextCorreo.setText(correo)
 
         buttonGuardar.setOnClickListener {
-            val updatedNombres = editTextNombres.text.toString()
-            val updatedApellidos = editTextApellidos.text.toString()
-            val updatedMateria = editTextMateria.text.toString()
-            val updatedCorreo = editTextCorreo.text.toString()
+            updatedNombres = editTextNombres.text.toString()
+            updatedApellidos = editTextApellidos.text.toString()
+            updatedMateria = editTextMateria.text.toString()
+            updatedCorreo = editTextCorreo.text.toString()
+            editTextCelular.text.toString().toLong()
+        }
+            fun loadData(){
+                editTextNombres.setText(nombres)
+                editTextApellidos.setText(apellidos)
+                editTextCelular.setText(celular.toString()) // Convert Long to String
+                editTextMateria.setText(materia)
+                editTextCorreo.setText(correo)
 
-            val updatedCelular: Long? = try {
-                editTextCelular.text.toString().toLong()
-            } catch (e: NumberFormatException) {
-                null
             }
 
+        fun updateData(){
             if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
                 updatedCelular != null && updatedMateria.isNotEmpty() &&
                 updatedCorreo.isNotEmpty()&&updatedCelular.toString().length==9) {
@@ -87,8 +105,9 @@ class EditProfesor : AppCompatActivity() {
                 Toast.makeText(this, "Por favor complete todos los campos correctamente", Toast.LENGTH_SHORT).show()
             }
         }
-    }
 
+
+        }
     private fun notifyProfesorFragment() {
         val fragment = supportFragmentManager.findFragmentByTag("ProfesorFragment")
         if (fragment is ProfesorFragment) {
