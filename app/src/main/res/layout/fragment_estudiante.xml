@@ -37,7 +37,8 @@
                 android:layout_width="60sp"
                 android:layout_height="50sp"
                 android:layout_weight="0.2"
-                android:background="@drawable/search_view_query_background" />
+                android:background="@drawable/search_view_query_background"
+                android:outlineSpotShadowColor="@color/Primary_white"/>
 
             <Space
                 android:layout_width="5dp"
