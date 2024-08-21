@@ -140,4 +140,13 @@ class ProfesorFragment : Fragment() {
         super.onResume()
         refreshData() // Refresh data when the fragment becomes visible
     }
+    override fun onPause() {
+        super.onPause()
+        clearSearchView() // Limpiar el SearchView al pausar el fragmento
+    }
+
+    private fun clearSearchView() {
+        binding.searchView.setQuery("", false) // Limpiar el texto sin activar la búsqueda nuevamente
+        binding.searchView.clearFocus() // Opcional: para eliminar el foco del SearchView
+    }
 }

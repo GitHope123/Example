@@ -98,7 +98,7 @@ class AddProfesor : AppCompatActivity() {
                     .addOnSuccessListener {
                         showToast("Profesor agregado con éxito")
                         clearFields()
-                        navigateToProfesorFragment() // Navigate to the ProfesorFragment
+                        finish()// Navigate to the ProfesorFragment
                     }
                     .addOnFailureListener { e ->
                         showToast("Error al actualizar el ID del profesor: ${e.message}")
@@ -126,8 +126,6 @@ class AddProfesor : AppCompatActivity() {
     private fun navigateToProfesorFragment() {
         // Assuming that ProfesorFragment is part of the navigation system
         // Use proper fragment navigation or intent as per your app's architecture
-        val intent = Intent(this, ProfesorFragment::class.java) // Replace with correct destination
-        startActivity(intent)
         finish()
     }
 }
