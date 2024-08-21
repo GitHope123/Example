@@ -51,164 +51,174 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            android:padding="15sp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
-                android:orientation="horizontal">
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="15sp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10sp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
+                        android:text="Estudiante"
+                        android:textColor="@color/Primary_white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvEstudiante"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/montserrat"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
+                        android:text="Maria Gonzales Prada"
+                        android:textColor="@color/Primary_white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10sp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:gravity="center_vertical"
+                        android:padding="10sp"
+                        android:text="@string/hint_gravedad"
+                        android:textColor="@color/Primary_white"
+                        android:textSize="14sp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerGravedad"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:background="@drawable/background_spinner"
+                        android:gravity="center_horizontal"
+                        android:padding="8sp"
+                        android:popupBackground="@color/Primary_white"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10sp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
+                        android:text="@string/hint_tipo"
+                        android:textColor="@color/Primary_white"
+                        android:textSize="14sp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerTipo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:background="@drawable/background_spinner"
+                        android:gravity="center_vertical"
+                        android:padding="8sp"
+                        android:popupBackground="@color/Primary_white"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:fontFamily="@font/montserrat_bold"
-                    android:gravity="center_vertical"
                     android:padding="10dp"
-                    android:text="Estudiante"
+                    android:text="@string/hint_detalle"
                     android:textColor="@color/Primary_white"
                     android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/tvEstudiante"
-                    android:layout_width="0dp"
+                <EditText
+                    android:id="@+id/edMultilinea"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:background="@drawable/background_white_element_full"
+                    android:backgroundTint="@color/Transparent_color"
                     android:fontFamily="@font/montserrat"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:text="Maria Gonzales Prada"
+                    android:gravity="top|start"
+                    android:hint="Escribe aquí..."
+                    android:inputType="textMultiLine"
+                    android:lines="9"
+                    android:maxLines="6"
+                    android:padding="15sp"
+                    android:paddingStart="15sp"
+                    android:paddingTop="20sp"
+                    android:scrollbars="vertical"
                     android:textColor="@color/Primary_white"
+                    android:textColorHint="@color/Primary_white"
                     android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
-                android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
                     android:fontFamily="@font/montserrat_bold"
-                    android:gravity="center_vertical"
-                    android:padding="10sp"
-                    android:text="@string/hint_gravedad"
-                    android:textColor="@color/Primary_white"
-                    android:textSize="14sp" />
-
-                <Spinner
-                    android:id="@+id/spinnerGravedad"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:background="@drawable/background_spinner"
-                    android:gravity="center_horizontal"
-                    android:padding="10sp"
-                    android:popupBackground="@color/Primary_white"
-                    android:spinnerMode="dropdown" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10sp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:gravity="center_vertical"
                     android:padding="10dp"
-                    android:text="@string/hint_tipo"
+                    android:text="@string/hint_evidencia"
                     android:textColor="@color/Primary_white"
                     android:textSize="14sp" />
 
-                <Spinner
-                    android:id="@+id/spinnerTipo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:background="@drawable/background_spinner"
-                    android:gravity="center_vertical"
-                    android:padding="10sp"
-                    android:popupBackground="@color/Primary_white"
-                    android:spinnerMode="dropdown" />
+                <ImageView
+                    android:id="@+id/imageViewEvidencia"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/background_white_element_full"
+                    android:backgroundTint="@color/Transparent_color"
+                    android:padding="30dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_camera"
+                    app:tint="@color/Primary_white" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:id="@+id/btnRegistrarIncidencia"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginHorizontal="50dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/background_yellow_buttom"
+                        android:drawableLeft="@drawable/ic_upload"
+                        android:drawableTint="@color/Secondary_brown"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="@string/hint_registrar_incidencia"
+                        android:textColor="@color/Secondary_brown" />
+                </LinearLayout>
+
             </LinearLayout>
+        </ScrollView>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
-                android:padding="10dp"
-                android:text="@string/hint_detalle"
-                android:textColor="@color/Primary_white"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/edMultilinea"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_white_element_full"
-                android:backgroundTint="@color/Transparent_color"
-                android:fontFamily="@font/montserrat"
-                android:gravity="top|start"
-                android:hint="Escribe aquí..."
-                android:inputType="textMultiLine"
-                android:lines="9"
-                android:maxLines="6"
-                android:padding="15sp"
-                android:paddingStart="15sp"
-                android:paddingTop="20sp"
-                android:scrollbars="vertical"
-                android:textColor="@color/Primary_white"
-                android:textColorHint="@color/Primary_white"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
-                android:padding="10dp"
-                android:text="@string/hint_evidencia"
-                android:textColor="@color/Primary_white"
-                android:textSize="14sp" />
-
-            <ImageButton
-                android:id="@+id/imageButtonEvidencia"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_gravity="center"
-                android:background="@drawable/background_white_element_full"
-                android:backgroundTint="@color/Transparent_color"
-                android:padding="30dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_camera"
-                app:tint="@color/Primary_white" />
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btnRegistrarIncidencia"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/background_yellow_buttom"
-            android:drawableLeft="@drawable/ic_upload"
-            android:drawableTint="@color/Secondary_brown"
-            android:fontFamily="@font/montserrat_bold"
-            android:text="@string/hint_registrar_incidencia"
-            android:textColor="@color/Secondary_brown" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

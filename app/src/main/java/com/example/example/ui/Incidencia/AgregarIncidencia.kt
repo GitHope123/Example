@@ -1,18 +1,25 @@
 package com.example.example.ui.Incidencia
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.R
 import com.example.example.databinding.ActivityAgregarIncidenciaBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -31,6 +38,10 @@ class AgregarIncidencia : AppCompatActivity() {
     private var studentGrade: Int = 0
     private lateinit var studentSection: String
     private lateinit var estudiante: TextView
+    private var imageUri: Uri? = null
+    private lateinit var storageRef: StorageReference
+    private lateinit var imageViewEvidencia: ImageView
+    private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
     private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +54,26 @@ class AgregarIncidencia : AppCompatActivity() {
         val fechaActual= obtenerFechaActual()
         hora.text=horaActual
         fecha.text= fechaActual
+        storageRef = FirebaseStorage.getInstance().reference
+        pickImageLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                result.data?.data?.let {
+                    imageUri = it
+                    Glide.with(this)
+                        .load(imageUri)
+                        .apply(RequestOptions().override(200, 200)) // Ajusta el tamaño
+                        .into(imageViewEvidencia)
+                }
+            }
+        }
+
+        imageViewEvidencia.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            pickImageLauncher.launch(intent)
+        }
     }
     private fun init(){
         studentName = intent.getStringExtra("EXTRA_STUDENT_NAME") ?: "N/A"
@@ -55,6 +86,7 @@ class AgregarIncidencia : AppCompatActivity() {
         hora= findViewById(R.id.tvHora)
         fecha= findViewById(R.id.tvFecha)
         edMultilinea=findViewById(R.id.edMultilinea)
+        imageViewEvidencia=findViewById(R.id.imageViewEvidencia)
     }
     private fun set(){
         estudiante.text= studentLastName+" "+studentName

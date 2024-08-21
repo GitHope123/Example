@@ -74,6 +74,8 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.firebase.firestore.ktx)
+
 
     // Unit testing library
     testImplementation(libs.junit)
@@ -81,5 +83,8 @@ dependencies {
     // AndroidX JUnit and Espresso libraries for testing
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
 }
 
