@@ -1,25 +1,24 @@
 package com.example.example.ui.Estudiante
-
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.databinding.FragmentEstudianteBinding
+import com.example.example.ui.Incidencia.EstudianteAgregar
 import com.google.firebase.firestore.FirebaseFirestore
-import androidx.appcompat.widget.SearchView
-
 class EstudianteFragment : Fragment() {
-
     private var _binding: FragmentEstudianteBinding? = null
     private val binding get() = _binding!!
     private lateinit var firestore: FirebaseFirestore
     private lateinit var estudianteAdapter: EstudianteAdapter
-    private val estudiantes = mutableListOf<Estudiante>()
+    private val filterEstudiantes = mutableListOf<Estudiante>()
     private val fullEstudiantesList = mutableListOf<Estudiante>()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,21 +28,92 @@ class EstudianteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         firestore = FirebaseFirestore.getInstance()
-
+        initButton()
         setupRecyclerView()
         setupSearchView()
         fetchEstudiantes()
         setupButtons()
     }
 
+    private fun initButton() {
+        val grados= arrayOf("Todas","1","2","3","4","5")
+        val adapterGrados=ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,grados)
+        adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerGrado.adapter=adapterGrados
+        binding.spinnerGrado.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val gradoSeleccionado = binding.spinnerGrado.selectedItem.toString()
+                updateSecciones(gradoSeleccionado)
+                filterEstudiante(binding.searchView.query.toString())
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Handle case where no item is selected
+            }
+        }
+        binding.spinnerSeccion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                filterEstudiante(binding.searchView.query.toString())
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+   }
+
+    private fun updateSecciones(gradoSeleccionado: String) {
+        val secciones = if (gradoSeleccionado == "Todas") {
+            arrayOf("Todas")
+        } else {
+            arrayOf("Todas", "A", "B", "C", "D", "E")
+        }
+        val adapterSecciones = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, secciones)
+        adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerSeccion.adapter = adapterSecciones
+        binding.spinnerSeccion.isEnabled = gradoSeleccionado != "Todas"
+    }
+    private fun filterEstudiante(query: String) {
+        val gradoSeleccionado = binding.spinnerGrado.selectedItem.toString()
+        val seccionSeleccionada = binding.spinnerSeccion.selectedItem.toString()
+        val queryWords = query.lowercase().split("\\s+".toRegex())
+        Log.d("EstudianteFragment", "Filtrando con query: $query, grado: $gradoSeleccionado, seccion: $seccionSeleccionada")
+
+        filterEstudiantes.clear()
+        fullEstudiantesList.filterTo(filterEstudiantes) { estudiante ->
+            val coincideGrado =
+                gradoSeleccionado == "Todas" || estudiante.grado?.toString() == gradoSeleccionado
+            val coincideSeccion =
+                seccionSeleccionada == "Todas" || estudiante.seccion == seccionSeleccionada
+            val nombreCompleto = "${estudiante.nombres ?: ""} ${estudiante.apellidos ?: ""}".lowercase()
+            val coincideNombre = queryWords.all { nombreCompleto.contains(it) }
+            Log.d("EstudianteFragment", "Estudiante: $nombreCompleto, coincideNombre: $coincideNombre, coincideGrado: $coincideGrado, coincideSeccion: $coincideSeccion")
+            coincideNombre && coincideGrado && coincideSeccion
+
+        }
+
+        estudianteAdapter.notifyDataSetChanged()
+    }
+
+
     private fun setupRecyclerView() {
-        estudianteAdapter = EstudianteAdapter(estudiantes, requireContext()) // Corregido el constructor
+        estudianteAdapter = EstudianteAdapter(filterEstudiantes, requireContext()) // Corregido el constructor
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = estudianteAdapter
         }
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = estudianteAdapter
     }
 
     private fun setupSearchView() {
@@ -51,43 +121,43 @@ class EstudianteFragment : Fragment() {
             binding.searchView.isIconified = false
             binding.searchView.requestFocus()
         }
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-            android.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+        binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let { filterEstudiante(it) }
+                return true
+            }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                filterEstudiantes(newText)
+                newText?.let { filterEstudiante(it) }
                 return true
             }
         })
     }
 
     private fun fetchEstudiantes() {
-        showProgressBar(true)
-
         firestore.collection("Aula")
-            .addSnapshotListener { snapshot, e ->
-                showProgressBar(false)
-
-                if (e != null) {
-                    // Manejar el error (e.g., mostrar un mensaje o registrar el error)
-                    return@addSnapshotListener
-                }
-
-                snapshot?.documents?.let { documents ->
-                    val newEstudiantes = mutableListOf<Estudiante>()
-                    documents.forEach { document ->
-                        val estudiantesList = document.get("estudiantes") as? List<Map<String, Any>> ?: emptyList()
-                        estudiantesList.mapNotNull { it.toEstudiante() }.let {
-                            newEstudiantes.addAll(it)
-                        }
+            .get()
+            .addOnSuccessListener { result ->
+                fullEstudiantesList.clear()
+                for (document in result) {
+                    val estudiantes = document["estudiantes"] as? List<Map<String, Any>> ?: continue
+                    estudiantes.forEach { estudiante ->
+                        val id = estudiante["nombres"] as? String ?: ""
+                        val apellidos = estudiante["apellidos"] as? String ?: ""
+                        val nombres = estudiante["nombres"] as? String ?: ""
+                        val celular = (estudiante["celularApoderado"] as? Long) ?: 0
+                        val dni = (estudiante["celularApoderado"] as? Long)?: 0
+                        val grado = (estudiante["grado"] as? Long)?.toInt() ?: 0
+                        val seccion = estudiante["seccion"] as? String ?: ""
+                        fullEstudiantesList.add(Estudiante(id,apellidos,nombres,celular,dni,grado,seccion))
                     }
-                    estudiantes.clear()
-                    estudiantes.addAll(newEstudiantes)
-                    fullEstudiantesList.clear()
-                    fullEstudiantesList.addAll(newEstudiantes)
-                    estudianteAdapter.notifyDataSetChanged()
                 }
+                filterEstudiantes.addAll(fullEstudiantesList)
+                estudianteAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { e ->
+                // Manejo de errores
             }
     }
 
@@ -107,21 +177,6 @@ class EstudianteFragment : Fragment() {
         }
     }
 
-    private fun filterEstudiantes(query: String?) {
-        val queryLower = query?.lowercase().orEmpty()
-        estudiantes.clear()
-        estudiantes.addAll(
-            if (queryLower.isEmpty()) {
-                fullEstudiantesList
-            } else {
-                fullEstudiantesList.filter {
-                    it.nombres.lowercase().contains(queryLower) ||
-                            it.apellidos.lowercase().contains(queryLower)
-                }
-            }
-        )
-        estudianteAdapter.notifyDataSetChanged()
-    }
 
     private fun showProgressBar(show: Boolean) {
         // Verificar que binding no sea null antes de usarlo
@@ -132,6 +187,7 @@ class EstudianteFragment : Fragment() {
         binding.addButtom.setOnClickListener {
             startActivity(Intent(requireContext(), AddEstudiante::class.java))
         }
+
     }
 
     fun refreshData() {
