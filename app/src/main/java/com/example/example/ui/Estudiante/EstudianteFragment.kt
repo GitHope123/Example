@@ -70,7 +70,7 @@ class EstudianteFragment : Fragment() {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-   }
+    }
 
     private fun updateSecciones(gradoSeleccionado: String) {
         val secciones = if (gradoSeleccionado == "Todas") {
