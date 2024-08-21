@@ -15,4 +15,6 @@
     <color name="color_red">#F12828</color>
     <color name="color_orange">#F15246</color>
     <color name="Green">#319808</color>
+    <color name="colorItemSelected">#FFEB3B</color>
+    <color name="colorItemDefault">#FFFFFF</color>
 </resources>

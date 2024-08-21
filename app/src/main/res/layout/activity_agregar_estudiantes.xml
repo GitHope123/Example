@@ -9,22 +9,11 @@
     android:orientation="vertical"
     android:padding="10dp"
     tools:context=".ui.Incidencia.AgregarEstudiantes">
-
-    <SearchView
-        android:id="@+id/searchViewEstudiante"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginHorizontal="20dp"
-        android:background="@drawable/background_white_element_full"
-        android:backgroundTint="@color/Primary_white"
-        app:showAsAction="always" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:background="@drawable/background_spinner"
         android:backgroundTint="@color/Primary_white"
@@ -61,6 +50,17 @@
             android:backgroundTint="@color/Primary_white"
             android:background="@drawable/background_spinner" />
     </LinearLayout>
+    <SearchView
+        android:id="@+id/searchViewEstudiante"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/background_spinner"
+        android:backgroundTint="@color/Primary_white"
+        app:showAsAction="always" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewEstudiantes"
@@ -70,15 +70,5 @@
         android:layout_marginHorizontal="20dp"
         tools:listitem="@layout/item_estudiante_registrar_incidencia" />
 
-    <Button
-        android:id="@+id/btnIrRegistrar"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/background_yellow_buttom"
-        android:fontFamily="@font/montserrat_bold"
-        android:text="Ir a registrar"
-        android:textColor="@color/Secondary_brown" />
 
 </LinearLayout>

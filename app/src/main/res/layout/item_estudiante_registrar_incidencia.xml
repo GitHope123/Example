@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="5dp"
-    android:background="@drawable/background_white_element_full"
-    android:backgroundTint="@color/Primary_blue_black">
+    android:background="@drawable/item_background_select"
+    >
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
