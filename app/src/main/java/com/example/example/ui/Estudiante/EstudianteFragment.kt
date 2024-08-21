@@ -87,17 +87,15 @@ class EstudianteFragment : Fragment() {
         val gradoSeleccionado = binding.spinnerGrado.selectedItem.toString()
         val seccionSeleccionada = binding.spinnerSeccion.selectedItem.toString()
         val queryWords = query.lowercase().split("\\s+".toRegex())
-        Log.d("EstudianteFragment", "Filtrando con query: $query, grado: $gradoSeleccionado, seccion: $seccionSeleccionada")
 
         filterEstudiantes.clear()
         fullEstudiantesList.filterTo(filterEstudiantes) { estudiante ->
             val coincideGrado =
                 gradoSeleccionado == "Todas" || estudiante.grado?.toString() == gradoSeleccionado
             val coincideSeccion =
-                seccionSeleccionada == "Todas" || estudiante.seccion == seccionSeleccionada
+                seccionSeleccionada == "Todas" || estudiante.seccion?.toString() == seccionSeleccionada
             val nombreCompleto = "${estudiante.nombres ?: ""} ${estudiante.apellidos ?: ""}".lowercase()
             val coincideNombre = queryWords.all { nombreCompleto.contains(it) }
-            Log.d("EstudianteFragment", "Estudiante: $nombreCompleto, coincideNombre: $coincideNombre, coincideGrado: $coincideGrado, coincideSeccion: $coincideSeccion")
             coincideNombre && coincideGrado && coincideSeccion
 
         }
