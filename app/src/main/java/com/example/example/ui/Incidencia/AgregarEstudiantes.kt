@@ -36,7 +36,6 @@ class AgregarEstudiantes : AppCompatActivity() {
     }
 
     private fun init() {
-        btnIrRegistrar = findViewById(R.id.btnIrRegistrar)
         recyclerViewEstudiantes = findViewById(R.id.recyclerViewEstudiantes)
         searchViewEstudiante = findViewById(R.id.searchViewEstudiante)
         spinnerGrado = findViewById(R.id.spinnerGrado)

@@ -70,15 +70,5 @@
         android:layout_marginHorizontal="20dp"
         tools:listitem="@layout/item_estudiante_registrar_incidencia" />
 
-    <Button
-        android:id="@+id/btnIrRegistrar"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/background_yellow_buttom"
-        android:fontFamily="@font/montserrat_bold"
-        android:text="Ir a registrar"
-        android:textColor="@color/Secondary_brown" />
 
 </LinearLayout>
