@@ -2,6 +2,7 @@ package com.example.example.ui.Tutor
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,17 +20,20 @@ class AddTutor : AppCompatActivity() {
     private lateinit var spinnerGrado: Spinner
     private lateinit var spinnerSeccion: Spinner
     private lateinit var tutorAdapter: TutorAdapter
-    private val selectedProfesores = mutableSetOf<String>() // Using IDs to track selection
+    private val selectedProfesores = mutableSetOf<String>() // Usando IDs para el seguimiento de selección
     private val db = FirebaseFirestore.getInstance()
 
     private val grados = listOf("1", "2", "3", "4", "5") // Grados posibles
     private val secciones = listOf("A", "B", "C", "D", "E") // Secciones posibles
 
+    private lateinit var allCombinations: Set<String>
+    private lateinit var usedCombinations: Set<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_tutor)
 
-        // Initialize views
+        // Inicializar vistas
         recyclerView = findViewById(R.id.recyclerViewSeleccionarTutor)
         searchView = findViewById(R.id.searchViewTutorAdd)
         buttonAceptar = findViewById(R.id.buttonAceptarTutor)
@@ -37,7 +41,7 @@ class AddTutor : AppCompatActivity() {
         spinnerGrado = findViewById(R.id.spinnerGrado)
         spinnerSeccion = findViewById(R.id.spinnerSeccion)
 
-        // Setup RecyclerView
+        // Configurar RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
         tutorAdapter = TutorAdapter(emptyList(), { profesor ->
             profesor.idProfesor?.let { id ->
@@ -46,19 +50,19 @@ class AddTutor : AppCompatActivity() {
                 } else {
                     selectedProfesores.add(id)
                 }
-                // Update only the changed item
+                // Actualizar solo el ítem cambiado
                 tutorAdapter.notifyItemChanged(tutorAdapter.listaProfesores.indexOf(profesor))
             }
-        }, isButtonVisible = true)
+        }, isButtonVisible = true, istextViewGradosSeccionVisible = false)
         recyclerView.adapter = tutorAdapter
 
-        // Fetch professors
+        // Obtener profesores
         fetchProfesores()
 
-        // Set up Spinners
+        // Configurar Spinners
         setupSpinners()
 
-        // Set up search functionality
+        // Configurar funcionalidad de búsqueda
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 tutorAdapter.filterList(query)
@@ -71,7 +75,7 @@ class AddTutor : AppCompatActivity() {
             }
         })
 
-        // Set up button click listeners
+        // Configurar listeners de botones
         buttonAceptar.setOnClickListener {
             updateSelectedTutors()
         }
@@ -87,12 +91,25 @@ class AddTutor : AppCompatActivity() {
             .get()
             .addOnSuccessListener { result ->
                 val listaProfesores = result.documents.mapNotNull { document ->
-                    document.toObject(Profesor::class.java)
+                    try {
+                        val grado = document.getLong("grado") // Obtener como Long
+                        val profesor = document.toObject(Profesor::class.java)?.apply {
+                            if (grado == null) {
+                                // Manejar el caso de grado null
+                                this.grado = 0 // O asignar un valor predeterminado adecuado
+                            }
+                        }
+                        profesor
+                    } catch (e: Exception) {
+                        Log.e("FetchProfesores", "Error al mapear documento: ${e.message}", e)
+                        null
+                    }
                 }
                 tutorAdapter.updateList(listaProfesores)
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error fetching professors: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Log.e("FetchProfesores", "Error al obtener profesores: ${exception.message}", exception)
+                Toast.makeText(this, "Error al obtener profesores: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -102,69 +119,159 @@ class AddTutor : AppCompatActivity() {
             return
         }
 
-        val selectedGrado = spinnerGrado.selectedItem.toString().toLong()
+        val selectedGrado = spinnerGrado.selectedItem.toString().toLongOrNull() ?: 0L
         val selectedSeccion = spinnerSeccion.selectedItem.toString()
 
-        // Debug logs
-        Log.d("AddTutor", "Selected Grado: $selectedGrado")
-        Log.d("AddTutor", "Selected Seccion: $selectedSeccion")
-        Log.d("AddTutor", "Selected Profesores: $selectedProfesores")
+        // Logs en español para depuración
+        Log.d("AddTutor", "Grado seleccionado: $selectedGrado")
+        Log.d("AddTutor", "Sección seleccionada: $selectedSeccion")
+        Log.d("AddTutor", "Profesores seleccionados: $selectedProfesores")
 
-        val batch = db.batch()
-        selectedProfesores.forEach { profesorId ->
-            val profesorRef = db.collection("Profesor").document(profesorId)
-            batch.update(profesorRef, "tutor", true)
-            batch.update(profesorRef, "grado", selectedGrado)
-            batch.update(profesorRef, "seccion", selectedSeccion)
-        }
+        // Verificar si la combinación ya está en uso
+        db.collection("Profesor")
+            .whereEqualTo("grado", selectedGrado)
+            .whereEqualTo("seccion", selectedSeccion)
+            .whereEqualTo("tutor", true)
+            .get()
+            .addOnSuccessListener { result ->
+                if (result.isEmpty) {
+                    // Si la combinación no está en uso, proceder con la actualización
+                    val batch = db.batch()
+                    selectedProfesores.forEach { profesorId ->
+                        val profesorRef = db.collection("Profesor").document(profesorId)
+                        batch.update(profesorRef, "tutor", true)
+                        batch.update(profesorRef, "grado", selectedGrado)
+                        batch.update(profesorRef, "seccion", selectedSeccion)
+                    }
 
-        batch.commit()
-            .addOnSuccessListener {
-                Toast.makeText(this, "Tutores actualizados exitosamente.", Toast.LENGTH_SHORT).show()
-                setResult(RESULT_OK) // Set result to indicate success
-                finish()
+                    batch.commit()
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Tutores actualizados exitosamente.", Toast.LENGTH_SHORT).show()
+                            setResult(RESULT_OK) // Establecer el resultado para indicar éxito
+                            finish()
+                        }
+                        .addOnFailureListener { exception ->
+                            Toast.makeText(this, "Error al actualizar tutores: ${exception.message}", Toast.LENGTH_SHORT).show()
+                        }
+                } else {
+                    // La combinación ya está en uso
+                    Toast.makeText(this, "La combinación de grado y sección ya está en uso.", Toast.LENGTH_SHORT).show()
+                }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error updating tutors: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error al verificar disponibilidad: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
+
     private fun setupSpinners() {
-        // Generate all combinations of grado and sección
-        val allCombinations = grados.flatMap { grado ->
+        // Generar todas las combinaciones posibles
+        allCombinations = grados.flatMap { grado ->
             secciones.map { seccion ->
                 "$grado$seccion"
             }
-        }
+        }.toSet() // Usar Set para evitar duplicados
 
-        // Fetch used combinations from Firestore
+        // Obtener las combinaciones ya usadas desde Firestore
         db.collection("Profesor")
             .whereEqualTo("tutor", true)
             .get()
             .addOnSuccessListener { result ->
-                val usedCombinations = result.documents.mapNotNull { document ->
-                    // Fetch grado and seccion as appropriate type
-                    val grado = document.get("grado")?.toString() ?: ""
-                    val seccion = document.get("seccion")?.toString() ?: ""
-                    "$grado$seccion"
-                }.toSet()
+                usedCombinations = result.documents.mapNotNull { document ->
+                    val grado = document.getLong("grado")?.toString() ?: ""
+                    val seccion = document.getString("seccion")?.takeIf { it.isNotEmpty() } ?: ""
+                    // Combinar solo si grado y sección son válidos
+                    if (grado.isNotEmpty() && seccion.isNotEmpty()) {
+                        "$grado$seccion"
+                    } else {
+                        null
+                    }
+                }.toSet() // Usar Set para evitar duplicados
 
+                // Filtrar las combinaciones disponibles
                 val availableCombinations = allCombinations - usedCombinations
 
-                // Update spinners with available combinations
-                val gradoAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, grados)
-                gradoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // Obtener los grados y secciones disponibles
+                val availableGrados = availableCombinations.map { it.first().toString() }.distinct()
+                val availableSecciones = availableCombinations.map { it.drop(1) }.distinct()
+
+                // Crear adaptadores para los spinners
+                val gradoAdapter = ArrayAdapter(
+                    this,
+                    android.R.layout.simple_spinner_item,
+                    availableGrados
+                ).apply {
+                    setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                }
                 spinnerGrado.adapter = gradoAdapter
 
-                val seccionAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, secciones)
-                seccionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                val seccionAdapter = ArrayAdapter(
+                    this,
+                    android.R.layout.simple_spinner_item,
+                    availableSecciones
+                ).apply {
+                    setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                }
                 spinnerSeccion.adapter = seccionAdapter
 
-                // Log available combinations
-                Log.d("AddTutor", "Available Combinations: $availableCombinations")
+                // Configurar el listener para verificar disponibilidad
+                spinnerGrado.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        checkAvailability()
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        // No hacer nada si no hay selección
+                    }
+                }
+
+                spinnerSeccion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        checkAvailability()
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        // No hacer nada si no hay selección
+                    }
+                }
+
+                // Logs para depuración
+                Log.d("AddTutor", "Combinaciones disponibles: $availableCombinations")
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error fetching used combinations: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error al obtener combinaciones usadas: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+    // Verificar disponibilidad del salón seleccionado
+    private fun checkAvailability() {
+        // Obtener los valores seleccionados en los spinners
+        val selectedGrado = spinnerGrado.selectedItem?.toString() ?: ""
+        val selectedSeccion = spinnerSeccion.selectedItem?.toString() ?: ""
+
+        // Crear la combinación seleccionada
+        val selectedCombination = "$selectedGrado$selectedSeccion"
+
+        // Verificar que ambos valores estén seleccionados
+        if (selectedGrado.isEmpty() || selectedSeccion.isEmpty()) {
+            // Mensaje si alguno de los valores está vacío
+            Toast.makeText(this, "Por favor, seleccione tanto el grado como la sección.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Obtener una copia local de `allCombinations`
+        val localAllCombinations = allCombinations
+
+        // Verificar si la combinación seleccionada está en las combinaciones usadas
+        if (localAllCombinations.contains(selectedCombination)) {
+            if (usedCombinations.contains(selectedCombination)) {
+                Toast.makeText(this, "El salon ya fue seleccionado.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "El salon seleccionado está disponible.", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "La combinación seleccionada no es válida.", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
+
