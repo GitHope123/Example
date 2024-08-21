@@ -18,13 +18,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class TutorFragment : Fragment() {
 
-    private val ADD_TUTOR_REQUEST_CODE = 1 // Define a request code
+    private val ADD_TUTOR_REQUEST_CODE = 1
     private lateinit var tutorAdapter: TutorAdapter
     private val db = FirebaseFirestore.getInstance()
     private lateinit var recyclerViewTutores: RecyclerView
     private lateinit var searchViewTutor: SearchView
     private lateinit var addButtonTutor: FloatingActionButton
-    private lateinit var originalList: List<Profesor> // Define originalList
+    private var originalList: List<Profesor> = emptyList() // Initialize with an empty list
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,40 +47,37 @@ class TutorFragment : Fragment() {
         fetchProfesores()
 
         addButtonTutor = view.findViewById(R.id.addButtonTutor)
-        searchViewTutor = view.findViewById(R.id.searchViewTutor) as SearchView // Asegúrate de usar el cast correcto
+        searchViewTutor = view.findViewById(R.id.searchViewTutor) as SearchView
 
         searchViewTutor.setOnClickListener {
-            // Asegúrate de que el SearchView no esté colapsado
             searchViewTutor.isIconified = false
             searchViewTutor.requestFocus()
         }
 
         searchViewTutor.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                // Aquí puedes manejar la búsqueda cuando se envíe el texto (opcional)
                 query?.let { handleSearch(it) }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                // Aquí puedes manejar la búsqueda en tiempo real
                 newText?.let { handleSearch(it) }
                 return true
             }
         })
 
         addButtonTutor.setOnClickListener {
-            // Start AddTutor activity for result
             val intent = Intent(requireContext(), AddTutor::class.java)
             startActivityForResult(intent, ADD_TUTOR_REQUEST_CODE)
         }
     }
 
     private fun handleSearch(query: String) {
-        // Implementa la lógica de búsqueda aquí
-        // Filtra la lista original y actualiza el adaptador del RecyclerView
+        if (originalList.isEmpty()) {
+            return
+        }
         val filteredList = originalList.filter {
-            it.nombres.contains(query, ignoreCase = true) // Cambia `someField` por el campo real
+            it.nombres.contains(query, ignoreCase = true)
         }
         tutorAdapter.updateList(filteredList)
     }
@@ -109,7 +106,6 @@ class TutorFragment : Fragment() {
                         }
                         profesor
                     } catch (e: Exception) {
-                        // Maneja el error de forma apropiada si ocurre una excepción
                         null
                     }
                 }
@@ -123,8 +119,8 @@ class TutorFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ADD_TUTOR_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            // Refresh the data
             fetchProfesores()
         }
     }
 }
+
