@@ -76,16 +76,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/montserrat"
-                android:gravity="center_vertical"
-                android:textColorHint="@color/Primary_white"
                 android:background="@drawable/background_text_transparent"
                 android:backgroundTint="@color/Transparent_color"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
                 android:hint=""
-                android:textSize="13sp"
+                android:inputType="none"
+                android:paddingStart="10dp"
                 android:textColor="@color/Primary_blue_sky"
-                tools:text=""
-                android:inputType="none"/>
+                android:textColorHint="@color/Primary_white"
+                android:textSize="13sp"
+                tools:text="" />
         </LinearLayout>
 
         <LinearLayout
@@ -114,14 +115,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/montserrat"
-                android:gravity="center_vertical"
                 android:background="@drawable/background_text_transparent"
                 android:backgroundTint="@color/Transparent_color"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
+                android:inputType="none"
+                android:paddingStart="10dp"
                 android:textColor="@color/Primary_blue_sky"
                 android:textSize="13sp"
-                tools:text=""
-                android:inputType="none"/>
+                tools:text="" />
         </LinearLayout>
 
         <LinearLayout
@@ -150,16 +152,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/montserrat"
-                android:gravity="center_vertical"
-                android:textColor="@color/Primary_blue_sky"
                 android:background="@drawable/background_text_transparent"
                 android:backgroundTint="@color/Transparent_color"
-                android:textSize="13sp"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
                 android:inputType="phone"
                 android:maxLength="9"
-                tools:text=""
-                />
+                android:paddingStart="10dp"
+                android:textColor="@color/Primary_blue_sky"
+                android:textSize="13sp"
+                tools:text="" />
         </LinearLayout>
 
         <LinearLayout
@@ -187,14 +189,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:fontFamily="@font/montserrat"
-                android:gravity="center_vertical"
                 android:background="@drawable/background_text_transparent"
                 android:backgroundTint="@color/Transparent_color"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center_vertical"
+                android:inputType="none"
+                android:paddingStart="10dp"
                 android:textColor="@color/Primary_blue_sky"
                 android:textSize="13sp"
-                tools:text=""
-                android:inputType="none"/>
+                tools:text="" />
         </LinearLayout>
 
         <Button

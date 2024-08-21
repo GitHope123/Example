@@ -1,6 +1,11 @@
 package com.example.example.ui.Estudiante
 
 import android.os.Bundle
+import android.util.Log
+
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
@@ -8,7 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.example.R
 import com.google.firebase.firestore.FirebaseFirestore
-import java.lang.NumberFormatException
+
 
 class EditEstudiante : AppCompatActivity() {
 
@@ -22,11 +27,23 @@ class EditEstudiante : AppCompatActivity() {
     private lateinit var spinnerSeccion: Spinner
     private lateinit var buttonModificar: Button
     private lateinit var buttonEliminar: Button
+    private lateinit var idEstudiante: String
+    private lateinit var nombres: String
+    private lateinit var apellidos: String
+    private var celular: Long = 0
+    private var dni: Long = 0
+    private var grado: Int = 0
+    private lateinit var seccion: String
+    private lateinit var updatedNombres: String
+    private lateinit var updatedApellidos: String
+    private var updatedCelular: Long = 0
+    private var updatedDni: Long = 0
+    private var updatedGrado: Int = 0
+    private lateinit var updatedSeccion: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_estudiante)
-
         firestore = FirebaseFirestore.getInstance()
         editTextNombres = findViewById(R.id.editTextNombres)
         editTextApellidos = findViewById(R.id.editTextApellidos)
@@ -38,39 +55,42 @@ class EditEstudiante : AppCompatActivity() {
         buttonEliminar = findViewById(R.id.buttonEliminar)
 
         // Obtener datos del Intent
-        val idEstudiante = intent.getStringExtra("idEstudiante") ?: ""
-        val nombres = intent.getStringExtra("nombres") ?: ""
-        val apellidos = intent.getStringExtra("apellidos") ?: ""
-        val celular = intent.getLongExtra("celular",0)
-        val dni = intent.getLongExtra("dni", 0 )
-        val grado = intent.getIntExtra("grado", 0)
-        val seccion = intent.getStringExtra("seccion") ?: ""
+        idEstudiante = intent.getStringExtra("idEstudiante") ?: ""
+        nombres = intent.getStringExtra("nombres") ?: ""
+        apellidos = intent.getStringExtra("apellidos") ?: ""
+        celular = intent.getLongExtra("celular", 0)
+        dni = intent.getLongExtra("dni", 0)
+        grado = intent.getIntExtra("grado", 0)
+        seccion = intent.getStringExtra("seccion") ?: ""
+        Log.d("EditEstudiante", "Grado recibido: $grado")
 
         // Rellenar los campos con los datos recibidos
         editTextNombres.setText(nombres)
         editTextApellidos.setText(apellidos)
         editTextCelular.setText(celular.toString())
         editTextDni.setText(dni.toString())
-        setSpinnerValue(spinnerGrado, grado)
+
+        // Configurar los adaptadores y establecer el valor del spinner
+        initButton()
+
+        // Establecer el valor seleccionado en el Spinner de grado
+        setSpinnerValue(spinnerGrado, grado.toString())
+
+        // Establecer el valor seleccionado en el Spinner de sección
         setSpinnerValue(spinnerSeccion, seccion)
 
         buttonModificar.setOnClickListener {
-            val updatedNombres = editTextNombres.text.toString().trim()
-            val updatedApellidos = editTextApellidos.text.toString().trim()
-            val updatedCelular: Long? = try {
-                editTextCelular.text.toString().trim().toLong()
-            } catch (e: NumberFormatException) {
-                null
-            }
-            val updatedDni = editTextDni.text.toString().trim()
-            val updatedGrado = spinnerGrado.selectedItemPosition
-            val updatedSeccion = spinnerSeccion.selectedItem.toString().trim()
+            updatedNombres = editTextNombres.text.toString().trim()
+            updatedApellidos = editTextApellidos.text.toString().trim()
+            updatedCelular = editTextCelular.text.toString().trim().toLong()
+            updatedDni = editTextDni.text.toString().trim().toLong()
+            updatedGrado = spinnerGrado.selectedItemPosition + 1 // Ajusta el grado según tu lógica
+            updatedSeccion = spinnerSeccion.selectedItem.toString().trim()
 
             if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
-                updatedCelular != null && updatedDni.isNotEmpty() &&
-                updatedSeccion.isNotEmpty()&& updatedCelular.toString().length==9) {
+                updatedCelular.toString().length == 9 && updatedDni.toString().length == 8 &&
+                updatedSeccion.isNotEmpty()&&updatedGrado.toString().isNotEmpty()) {
 
-                // Encontrar el documento de Aula que contiene el estudiante
                 firestore.collection("Aula").get()
                     .addOnSuccessListener { snapshot ->
                         val batch = firestore.batch()
@@ -78,7 +98,6 @@ class EditEstudiante : AppCompatActivity() {
                         snapshot.documents.forEach { document ->
                             val estudiantesList = document.get("estudiantes") as? List<Map<String, Any>> ?: emptyList()
                             estudiantesList.find { it["idEstudiante"] == idEstudiante }?.let { estudiante ->
-                                // Crear el nuevo objeto estudiante con los datos actualizados
                                 val updatedEstudiante = estudiante.toMutableMap().apply {
                                     put("nombres", updatedNombres)
                                     put("apellidos", updatedApellidos)
@@ -88,7 +107,6 @@ class EditEstudiante : AppCompatActivity() {
                                     put("seccion", updatedSeccion)
                                 }
 
-                                // Actualizar el estudiante en el documento de Aula
                                 val estudiantesRef = document.reference.collection("estudiantes")
                                 estudiantesRef.document(idEstudiante).set(updatedEstudiante)
                             }
@@ -111,6 +129,7 @@ class EditEstudiante : AppCompatActivity() {
                 Toast.makeText(this, "Por favor complete todos los campos correctamente", Toast.LENGTH_SHORT).show()
             }
         }
+
 
         buttonEliminar.setOnClickListener {
             // Encontrar el documento de Aula que contiene el estudiante
@@ -143,9 +162,22 @@ class EditEstudiante : AppCompatActivity() {
         }
     }
 
-    private fun setSpinnerValue(spinner: Spinner, value: Any) {
-        // Implementa la lógica para establecer el valor del Spinner
-        // Esto puede variar según cómo configures tus adaptadores y datos
+    private fun initButton() {
+        val grados = arrayOf("1", "2", "3", "4", "5")
+        val adapterGrados = ArrayAdapter(this, android.R.layout.simple_spinner_item, grados)
+        adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerGrado.adapter = adapterGrados
+
+        val secciones = arrayOf("A", "B", "C", "D", "E")
+        val adapterSecciones = ArrayAdapter(this, android.R.layout.simple_spinner_item, secciones)
+        adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerSeccion.adapter = adapterSecciones
+    }
+
+    private fun setSpinnerValue(spinner: Spinner, value: String) {
+        val adapter = spinner.adapter as? ArrayAdapter<String>
+        val position = adapter?.getPosition(value) ?: 0
+        spinner.setSelection(position)
     }
 
     private fun notifyEstudianteFragment() {
@@ -155,3 +187,5 @@ class EditEstudiante : AppCompatActivity() {
         }
     }
 }
+
+

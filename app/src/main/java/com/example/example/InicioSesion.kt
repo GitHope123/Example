@@ -112,7 +112,6 @@ class InicioSesion : AppCompatActivity() {
 
                     if (email != null && email.endsWith("@gmail.com")) {
                         val intent = Intent(this, BarraLateral::class.java)
-
                         startActivity(intent)
                         finish()
                     } else {

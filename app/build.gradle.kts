@@ -48,7 +48,7 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     // Google Play Services Auth for Google authentication
     implementation (libs.firebase.auth)
-    implementation ("com.google.android.gms:play-services-auth:20.4.0")
+    implementation (libs.play.services.auth)
     implementation(libs.androidx.core.ktx)
     // AppCompat library for backward compatibility
     implementation(libs.androidx.appcompat)
@@ -83,8 +83,7 @@ dependencies {
     // AndroidX JUnit and Espresso libraries for testing
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
-    implementation("com.google.firebase:firebase-storage")
+    implementation(libs.firebase.storage)
     implementation("com.github.bumptech.glide:glide:4.12.0")
 }
 
