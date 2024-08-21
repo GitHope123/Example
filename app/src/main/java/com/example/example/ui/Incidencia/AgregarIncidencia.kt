@@ -79,6 +79,13 @@ class AgregarIncidencia : AppCompatActivity() {
         }
 
         binding.btnRegistrarIncidencia.setOnClickListener {
+            val detalles = edMultilinea.text.toString().trim()
+            if (detalles.isEmpty()) {
+                Toast.makeText(this, "Incluye detalles de la incidencia", Toast.LENGTH_SHORT).show()
+                binding.btnRegistrarIncidencia.isEnabled = true // Habilita el botón nuevamente
+                return@setOnClickListener
+            }
+
             binding.btnRegistrarIncidencia.isEnabled = false
             imageUri?.let { it1 -> subirImagen(it1) }
         }
