@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -24,6 +25,8 @@ class AgregarIncidencia : AppCompatActivity() {
     private lateinit var studentLastName: String
     private lateinit var spinnerGravedad: Spinner
     private lateinit var hora:TextView
+    private lateinit var fecha:TextView
+    private lateinit var edMultilinea:EditText
     private lateinit var spinnerTipo:Spinner
     private var studentGrade: Int = 0
     private lateinit var studentSection: String
@@ -37,7 +40,9 @@ class AgregarIncidencia : AppCompatActivity() {
         init()
         set()
         val horaActual=obtenerHoraActual()
+        val fechaActual= obtenerFechaActual()
         hora.text=horaActual
+        fecha.text= fechaActual
     }
     private fun init(){
         studentName = intent.getStringExtra("EXTRA_STUDENT_NAME") ?: "N/A"
@@ -48,6 +53,8 @@ class AgregarIncidencia : AppCompatActivity() {
         spinnerGravedad=findViewById(R.id.spinnerGravedad)
         spinnerTipo=findViewById(R.id.spinnerTipo)
         hora= findViewById(R.id.tvHora)
+        fecha= findViewById(R.id.tvFecha)
+        edMultilinea=findViewById(R.id.edMultilinea)
     }
     private fun set(){
         estudiante.text= studentLastName+" "+studentName
@@ -96,6 +103,11 @@ class AgregarIncidencia : AppCompatActivity() {
         val formatoHora = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         formatoHora.timeZone = TimeZone.getDefault() // Zona horaria del dispositivo
         return formatoHora.format(Date())
+    }
+    private fun obtenerFechaActual(): String {
+        val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        formatoFecha.timeZone = TimeZone.getDefault() // Asegúrate de usar la zona horaria correcta
+        return formatoFecha.format(Date())
     }
 
 }
