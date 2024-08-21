@@ -87,9 +87,9 @@ class AddTutor : AppCompatActivity() {
                     // Filtrar la lista con la consulta
                     tutorAdapter.filterList(trimmedQuery)
                 }
-
             }
         })
+
 
         // Configurar listeners de botones
         buttonAceptar.setOnClickListener {
