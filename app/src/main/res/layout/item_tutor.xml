@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_weight="1"
     android:orientation="horizontal"
     android:background="@drawable/background_white_element_full"
     android:padding="10dp"
@@ -20,7 +21,7 @@
         tools:ignore="UseAppTint" />
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
@@ -55,63 +56,14 @@
             android:text="Email"
             android:textColor="@color/Primary_blue_sky"
             android:textSize="@dimen/text_size_small" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textViewGrado"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:text="Grado"
-                    android:textColor="@color/Primary_blue_sky" />
-
-                <Spinner
-                    android:id="@+id/spinnerGradoTutor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/background_spinner"
-                    android:layout_marginTop="2dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="10dp">
-
-                <TextView
-                    android:id="@+id/textViewSeccion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:text="Sección"
-                    android:textColor="@color/Primary_blue_sky" />
-
-                <Spinner
-                    android:id="@+id/spinnerSeccionTutor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/background_spinner"
-                    android:layout_marginTop="2dp" />
-            </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
 
+    <!-- Botón para seleccionar -->
     <ImageButton
         android:id="@+id/imageButtonSeleccionar"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@color/transparent_color"
+        android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         android:src="@drawable/icon_seleccionar"
         app:tint="@color/Primary_white"

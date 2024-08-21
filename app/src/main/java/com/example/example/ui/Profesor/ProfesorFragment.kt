@@ -118,7 +118,9 @@ class ProfesorFragment : Fragment() {
                 apellidos = getString("apellidos") ?: "",
                 celular = getLong("celular") ?: 0L, // Directly get Long value
                 materia = getString("materia") ?: "",
-                correo = getString("correo") ?: ""
+                correo = getString("correo") ?: "",
+                grado = getLong("grado") ?: 0L,
+                seccion = getString("seccion")?: ""
             )
         } catch (e: Exception) {
             Log.e("ProfesorFragment", "Error converting document to Profesor", e)

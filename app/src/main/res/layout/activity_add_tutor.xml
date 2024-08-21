@@ -23,18 +23,40 @@
             app:iconifiedByDefault="false"
             app:showAsAction="always" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+            <Spinner
+                android:id="@+id/spinnerGrado"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/background_spinner" />
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"/>
+            <Spinner
+                android:id="@+id/spinnerSeccion"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/background_spinner" />
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewSeleccionarTutor"
             android:layout_width="match_parent"
-            android:layout_height="500sp"
+            android:layout_height="500dp"
             android:layout_weight="1"
             tools:listitem="@layout/item_tutor" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="bottom">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/buttonAceptarTutor"

@@ -57,7 +57,27 @@ class TutorFragment : Fragment() {
             .get()
             .addOnSuccessListener { result ->
                 val listaProfesores = result.documents.mapNotNull { document ->
-                    document.toObject(Profesor::class.java)
+                    try {
+                        val profesor = document.toObject(Profesor::class.java)?.apply {
+                            idProfesor = document.id
+                            nombres = document.getString("nombres") ?: ""
+                            apellidos = document.getString("apellidos") ?: ""
+                            celular = document.getLong("celular") ?: 0
+                            materia = document.getString("materia") ?: ""
+                            correo = document.getString("correo") ?: ""
+                            tutor = document.getBoolean("tutor") ?: false
+                            grado = when (val gradoValue = document.get("grado")) {
+                                is Long -> gradoValue
+                                is String -> gradoValue.toLongOrNull() ?: 0
+                                else -> 0
+                            }
+                            seccion = document.getString("seccion") ?: ""
+                        }
+                        profesor
+                    } catch (e: Exception) {
+                        // Maneja el error de forma apropiada si ocurre una excepción
+                        null
+                    }
                 }
                 tutorAdapter.updateList(listaProfesores)
             }

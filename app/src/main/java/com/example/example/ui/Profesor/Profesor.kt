@@ -5,11 +5,12 @@ import java.io.Serializable
 
 data class Profesor(
     @DocumentId var idProfesor: String? = null, // ID del profesor (documento en Firestore)
-    val nombres: String = "",       // Nombre(s) del profesor
-    val apellidos: String = "",     // Apellido(s) del profesor
-    val celular: Long = 0,       // Número de teléfono del profesor
-    val materia: String = "",       // Materia que enseña el profesor
-    val correo: String = "",        // Correo electrónico del profesor
-    val tutor: Boolean = false      // Indica si el profesor es tutor
+    var nombres: String = "",       // Nombre(s) del profesor
+    var apellidos: String = "",     // Apellido(s) del profesor
+    var celular: Long = 0,          // Número de teléfono del profesor
+    var materia: String = "",       // Materia que enseña el profesor
+    var correo: String = "",        // Correo electrónico del profesor
+    var tutor: Boolean = false,     // Indica si el profesor es tutor
+    var grado: Long = 0,
+    var seccion: String = ""        // Asegúrate de que todos los campos tengan valores predeterminados
 ) : Serializable
-

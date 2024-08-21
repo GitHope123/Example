@@ -81,7 +81,9 @@ class AddProfesor : AppCompatActivity() {
             celular = celular,
             materia = materia,
             correo = correo,
-            tutor = false // Default value for tutor
+            tutor = false,
+            grado = 0,
+            seccion = ""
         )
 
         // Save the data to Firebase Firestore
