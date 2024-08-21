@@ -84,8 +84,8 @@ class EstudianteFragment : Fragment() {
         binding.spinnerSeccion.isEnabled = gradoSeleccionado != "Todas"
     }
     private fun filterEstudiante(query: String) {
-        val gradoSeleccionado = binding.spinnerGrado.selectedItem.toString()
-        val seccionSeleccionada = binding.spinnerSeccion.selectedItem.toString()
+        val gradoSeleccionado = binding.spinnerGrado.selectedItem?.toString()
+        val seccionSeleccionada = binding.spinnerSeccion.selectedItem?.toString()
         val queryWords = query.lowercase().split("\\s+".toRegex())
 
         filterEstudiantes.clear()
@@ -93,7 +93,7 @@ class EstudianteFragment : Fragment() {
             val coincideGrado =
                 gradoSeleccionado == "Todas" || estudiante.grado?.toString() == gradoSeleccionado
             val coincideSeccion =
-                seccionSeleccionada == "Todas" || estudiante.seccion?.toString() == seccionSeleccionada
+                (seccionSeleccionada == "Todas") || (estudiante.seccion?.toString() == seccionSeleccionada)
             val nombreCompleto = "${estudiante.nombres ?: ""} ${estudiante.apellidos ?: ""}".lowercase()
             val coincideNombre = queryWords.all { nombreCompleto.contains(it) }
             coincideNombre && coincideGrado && coincideSeccion
@@ -195,5 +195,14 @@ class EstudianteFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    override fun onPause() {
+        super.onPause()
+        clearSearchView() // Limpiar el SearchView al pausar el fragmento
+    }
+
+    private fun clearSearchView() {
+        binding.searchView.setQuery("", false) // Limpiar el texto sin activar la búsqueda nuevamente
+        binding.searchView.clearFocus() // Opcional: para eliminar el foco del SearchView
     }
 }
