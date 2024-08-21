@@ -12,6 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.R
 import com.example.example.databinding.ActivityAgregarIncidenciaBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 class AgregarIncidencia : AppCompatActivity() {
 
@@ -19,6 +23,7 @@ class AgregarIncidencia : AppCompatActivity() {
     private lateinit var studentName: String
     private lateinit var studentLastName: String
     private lateinit var spinnerGravedad: Spinner
+    private lateinit var hora:TextView
     private lateinit var spinnerTipo:Spinner
     private var studentGrade: Int = 0
     private lateinit var studentSection: String
@@ -31,7 +36,8 @@ class AgregarIncidencia : AppCompatActivity() {
         setContentView(binding.root)
         init()
         set()
-
+        val horaActual=obtenerHoraActual()
+        hora.text=horaActual
     }
     private fun init(){
         studentName = intent.getStringExtra("EXTRA_STUDENT_NAME") ?: "N/A"
@@ -41,11 +47,12 @@ class AgregarIncidencia : AppCompatActivity() {
         estudiante=findViewById(R.id.tvEstudiante)
         spinnerGravedad=findViewById(R.id.spinnerGravedad)
         spinnerTipo=findViewById(R.id.spinnerTipo)
+        hora= findViewById(R.id.tvHora)
     }
     private fun set(){
         estudiante.text= studentLastName+" "+studentName
         val gravedad = arrayOf("Moderado", "Grave", "Muy grave")
-        val adapterGravedad = ArrayAdapter(this, android.R.layout.simple_spinner_item, gravedad)
+        val adapterGravedad = ArrayAdapter(this,R.layout.item_spinner, gravedad)
         adapterGravedad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerGravedad.adapter = adapterGravedad
 
@@ -65,7 +72,7 @@ class AgregarIncidencia : AppCompatActivity() {
         }
 
         val tipo = arrayOf("Conductual", "Academicas", "Vestimenta", "Otros")
-        val adapterTipo = ArrayAdapter(this, android.R.layout.simple_spinner_item, tipo)
+        val adapterTipo = ArrayAdapter(this, R.layout.item_spinner, tipo)
         adapterGravedad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerTipo.adapter = adapterTipo
 
@@ -84,6 +91,11 @@ class AgregarIncidencia : AppCompatActivity() {
             }
         }
 
+    }
+    private fun obtenerHoraActual(): String {
+        val formatoHora = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+        formatoHora.timeZone = TimeZone.getDefault() // Zona horaria del dispositivo
+        return formatoHora.format(Date())
     }
 
 }
