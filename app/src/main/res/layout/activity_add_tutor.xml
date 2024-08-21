@@ -35,7 +35,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:background="@drawable/background_spinner" />
+                android:background="@drawable/background_white_element" />
 
             <Space
                 android:layout_width="10dp"
@@ -47,7 +47,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:background="@drawable/background_spinner" />
+                android:background="@drawable/background_white_element" />
 
         </LinearLayout>
 
