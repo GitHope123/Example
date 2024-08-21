@@ -63,7 +63,7 @@ class AgregarIncidencia : AppCompatActivity() {
                     imageUri = it
                     Glide.with(this)
                         .load(imageUri)
-                        .apply(RequestOptions().override(200, 200)) // Ajusta el tamaño
+                        .apply(RequestOptions().centerCrop())
                         .into(imageViewEvidencia)
                 }
             }
