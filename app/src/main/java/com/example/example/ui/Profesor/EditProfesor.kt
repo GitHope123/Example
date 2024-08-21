@@ -62,7 +62,7 @@ class EditProfesor : AppCompatActivity() {
 
             if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
                 updatedCelular != null && updatedMateria.isNotEmpty() &&
-                updatedCorreo.isNotEmpty()) {
+                updatedCorreo.isNotEmpty()&&updatedCelular.toString().length==9) {
 
                 val updatedProfesor = mapOf(
                     "nombres" to updatedNombres,
@@ -95,4 +95,6 @@ class EditProfesor : AppCompatActivity() {
             fragment.refreshData()
         }
     }
+
+
 }

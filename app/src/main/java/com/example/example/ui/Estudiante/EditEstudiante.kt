@@ -28,7 +28,6 @@ class EditEstudiante : AppCompatActivity() {
         setContentView(R.layout.activity_edit_estudiante)
 
         firestore = FirebaseFirestore.getInstance()
-
         editTextNombres = findViewById(R.id.editTextNombres)
         editTextApellidos = findViewById(R.id.editTextApellidos)
         editTextCelular = findViewById(R.id.editTextCelular)
@@ -69,7 +68,7 @@ class EditEstudiante : AppCompatActivity() {
 
             if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
                 updatedCelular != null && updatedDni.isNotEmpty() &&
-                updatedSeccion.isNotEmpty()) {
+                updatedSeccion.isNotEmpty()&& updatedCelular.toString().length==9) {
 
                 // Encontrar el documento de Aula que contiene el estudiante
                 firestore.collection("Aula").get()
