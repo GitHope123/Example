@@ -45,7 +45,7 @@ class AgregarIncidencia : AppCompatActivity() {
     private fun set(){
         estudiante.text= studentLastName+" "+studentName
         val gravedad = arrayOf("Moderado", "Grave", "Muy grave")
-        val adapterGravedad = ArrayAdapter(this, android.R.layout.simple_spinner_item, gravedad)
+        val adapterGravedad = ArrayAdapter(this,R.layout.item_spinner, gravedad)
         adapterGravedad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerGravedad.adapter = adapterGravedad
 
@@ -65,7 +65,7 @@ class AgregarIncidencia : AppCompatActivity() {
         }
 
         val tipo = arrayOf("Conductual", "Academicas", "Vestimenta", "Otros")
-        val adapterTipo = ArrayAdapter(this, android.R.layout.simple_spinner_item, tipo)
+        val adapterTipo = ArrayAdapter(this, R.layout.item_spinner, tipo)
         adapterGravedad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerTipo.adapter = adapterTipo
 
