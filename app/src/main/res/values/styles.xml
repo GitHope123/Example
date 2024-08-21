@@ -12,5 +12,15 @@
     <style name="CustomNavigationView">
         <item name="android:textAppearance">@style/MenuItemText</item>
     </style>
-</resources>
 
+    <!-- Define un estilo personalizado para el Spinner -->
+    <style name="CustomSpinnerStyle" parent="Widget.AppCompat.Spinner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#00BFA5</item> <!-- Color del texto -->
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:textSize">16sp</item> <!-- Tamaño del texto -->
+        <item name="android:background">@drawable/background_spinner</item> <!-- Fondo personalizado -->
+        <item name="android:padding">8dp</item> <!-- Padding alrededor del texto -->
+    </style>
+</resources>

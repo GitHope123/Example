@@ -15,7 +15,9 @@ import com.example.example.ui.Profesor.Profesor
 class TutorAdapter(
     var listaProfesores: List<Profesor>,
     private val onEditClickListener: (Profesor) -> Unit,
-    private val isButtonVisible: Boolean
+    private val isButtonVisible: Boolean,
+    private val istextViewGradosSeccionVisible: Boolean
+
 ) : RecyclerView.Adapter<TutorAdapter.ProfesorViewHolder>() {
 
     private val selectedProfesores = mutableSetOf<String>() // Track selection by ID
@@ -25,13 +27,15 @@ class TutorAdapter(
         private val textViewCelular: TextView = itemView.findViewById(R.id.textViewTutorCelular)
         private val textViewCorreo: TextView = itemView.findViewById(R.id.textViewTutorCorreo)
         private val imageButtonSeleccionar: ImageButton = itemView.findViewById(R.id.imageButtonSeleccionar)
+        private val textViewGradosSeccionTutor: TextView = itemView.findViewById(R.id.textViewGradosSeccionTutor)
 
         fun bind(profesor: Profesor) {
             textViewNombre.text = "${profesor.nombres} ${profesor.apellidos}"
             textViewCelular.text = profesor.celular.toString()
             textViewCorreo.text = profesor.correo
+            textViewGradosSeccionTutor.text = "${profesor.grado} ${profesor.seccion}"
             imageButtonSeleccionar.visibility = if (isButtonVisible) View.VISIBLE else View.GONE
-
+            textViewGradosSeccionTutor.visibility= if (istextViewGradosSeccionVisible) View.VISIBLE else View.GONE
             val idProfesor = profesor.idProfesor ?: return
             val isSelected = selectedProfesores.contains(idProfesor)
             imageButtonSeleccionar.setColorFilter(if (isSelected) Color.YELLOW else Color.GRAY)

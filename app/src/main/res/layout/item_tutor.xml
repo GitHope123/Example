@@ -64,8 +64,19 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/desc_select_button"
         android:scaleType="centerCrop"
         android:src="@drawable/icon_seleccionar"
-        app:tint="@color/Primary_white"
-        android:contentDescription="@string/desc_select_button" />
+        app:tint="@color/Primary_white" />
+
+    <TextView
+        android:id="@+id/textViewGradosSeccionTutor"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:layout_gravity="bottom|center"
+        android:gravity="center"
+        android:textColor="@color/Secondary_brown"
+        android:background="@drawable/background_white_element"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="3 A" />
 </LinearLayout>
