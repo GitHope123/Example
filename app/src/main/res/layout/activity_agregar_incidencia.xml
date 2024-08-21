@@ -33,7 +33,7 @@
                 android:fontFamily="@font/montserrat"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="20/8/2024"
+                android:text="15/8/2024"
                 android:textColor="@color/Primary_white"
                 android:textSize="16sp" />
 
@@ -156,7 +156,7 @@
                 android:textSize="14sp" />
 
             <EditText
-                android:id="@+id/etMultiLine"
+                android:id="@+id/edMultilinea"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_white_element_full"
