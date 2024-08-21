@@ -76,8 +76,11 @@ class TutorFragment : Fragment() {
         if (originalList.isEmpty()) {
             return
         }
+        val queryWords=query.lowercase().split("\\s+".toRegex())
         val filteredList = originalList.filter {
-            it.nombres.contains(query, ignoreCase = true)
+            val nombreCompleto="${it.nombres} ${it.apellidos}".lowercase()
+            val coincidencia =queryWords.all { nombreCompleto.contains(it) }
+            coincidencia
         }
         tutorAdapter.updateList(filteredList)
     }
