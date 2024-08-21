@@ -62,16 +62,32 @@ class AddTutor : AppCompatActivity() {
         // Configurar Spinners
         setupSpinners()
 
+
         // Configurar funcionalidad de búsqueda
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                tutorAdapter.filterList(query)
+                // Manejar la consulta al enviar el texto
+                handleSearchQuery(query)
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                tutorAdapter.filterList(newText)
+                // Manejar la consulta al cambiar el texto
+                handleSearchQuery(newText)
                 return true
+            }
+
+            private fun handleSearchQuery(query: String?) {
+                val trimmedQuery = query?.trim().orEmpty() // Eliminar espacios en blanco y manejar valores nulos
+
+                if (trimmedQuery.isEmpty()) {
+                    // Restablecer la lista completa si la consulta está vacía
+                    tutorAdapter.resetList()
+                } else {
+                    // Filtrar la lista con la consulta
+                    tutorAdapter.filterList(trimmedQuery)
+                }
+
             }
         })
 
@@ -92,12 +108,12 @@ class AddTutor : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 val listaProfesores = result.documents.mapNotNull { document ->
                     try {
-                        val grado = document.getLong("grado") // Obtener como Long
+                        // Convert the document to a Profesor object
                         val profesor = document.toObject(Profesor::class.java)?.apply {
-                            if (grado == null) {
-                                // Manejar el caso de grado null
-                                this.grado = 0 // O asignar un valor predeterminado adecuado
-                            }
+                            // Get the 'grado' field from Firestore
+                            val grado = document.getLong("grado")
+                            // Assign the grado value to the Profesor object, defaulting to 0L if null
+                            this.grado = grado ?: 0L
                         }
                         profesor
                     } catch (e: Exception) {
@@ -105,6 +121,8 @@ class AddTutor : AppCompatActivity() {
                         null
                     }
                 }
+
+                // Update the adapter with the fetched list
                 tutorAdapter.updateList(listaProfesores)
             }
             .addOnFailureListener { exception ->
@@ -112,6 +130,8 @@ class AddTutor : AppCompatActivity() {
                 Toast.makeText(this, "Error al obtener profesores: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+
 
     private fun updateSelectedTutors() {
         if (selectedProfesores.isEmpty()) {
@@ -165,14 +185,12 @@ class AddTutor : AppCompatActivity() {
 
 
     private fun setupSpinners() {
-        // Generar todas las combinaciones posibles
         allCombinations = grados.flatMap { grado ->
             secciones.map { seccion ->
                 "$grado$seccion"
             }
-        }.toSet() // Usar Set para evitar duplicados
+        }.toSet()
 
-        // Obtener las combinaciones ya usadas desde Firestore
         db.collection("Profesor")
             .whereEqualTo("tutor", true)
             .get()
@@ -265,13 +283,12 @@ class AddTutor : AppCompatActivity() {
         // Verificar si la combinación seleccionada está en las combinaciones usadas
         if (localAllCombinations.contains(selectedCombination)) {
             if (usedCombinations.contains(selectedCombination)) {
-                Toast.makeText(this, "El salon ya fue seleccionado.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "El salón ya fue seleccionado.", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "El salon seleccionado está disponible.", Toast.LENGTH_SHORT).show()
             }
         } else {
             Toast.makeText(this, "La combinación seleccionada no es válida.", Toast.LENGTH_SHORT).show()
         }
-    }
-}
+
+    }}
 
