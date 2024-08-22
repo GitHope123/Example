@@ -5,10 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.example.databinding.FragmentPrincipalBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class Principal : Fragment() {
 
@@ -41,36 +47,48 @@ class Principal : Fragment() {
     }
 
     private fun loadProfessorData() {
-        val currentUser = auth.currentUser
-        val userEmail = currentUser?.email
+        lifecycleScope.launch {
+            try {
+                val currentUser = auth.currentUser
+                val userEmail = currentUser?.email ?: return@launch
 
-        if (userEmail != null) {
-            firestore.collection("Profesor")
-                .whereEqualTo("correo", userEmail)
-                .get()
-                .addOnSuccessListener { documents ->
-                    if (_binding != null && !documents.isEmpty) {
-                        val doc = documents.first()
-
-                        nombre = doc.getString("nombres") ?: "N/A"
-                        apellido = doc.getString("apellidos") ?: "N/A"
-                        id = doc.getString("id") ?: "N/A"
-                        binding.textViewNombreCompletoUsuario.text = nombre
-                        binding.textViewApellidosUsuario.text = apellido
-
-                        celular = doc.get("celular").toString()
-                        binding.textViewCelularUsuario.text = celular
-
-                        correo = doc.getString("correo") ?: "N/A"
-                        binding.textViewCorreoUsuario.text = correo
-
-                        val isTutor = doc.getBoolean("tutor") ?: false
-                        binding.textViewTutorBooleam.text = if (isTutor) "Tutor" else "Docente"
-                    }
+                // Ejecutar la consulta Firestore en el hilo IO y optimizar la espera
+                val documents = withContext(Dispatchers.IO) {
+                    firestore.collection("Profesor")
+                        .whereEqualTo("correo", userEmail)
+                        .limit(1)
+                        .get()
+                        .await()
                 }
-                .addOnFailureListener { exception ->
-                    exception.printStackTrace()
+
+                if (documents.isEmpty) return@launch
+
+                val doc = documents.first()
+
+                // Asignar las variables en un solo bloque
+                id = doc.getString("id") ?: "N/A"
+                nombre = doc.getString("nombres") ?: "N/A"
+                apellido = doc.getString("apellidos") ?: "N/A"
+                celular = doc.get("celular").toString()
+                correo = doc.getString("correo") ?: "N/A"
+                val isTutor = doc.getBoolean("tutor") ?: false
+
+                // Actualizar la UI directamente en el hilo principal
+                binding.apply {
+                    textViewNombreCompletoUsuario.text = nombre
+                    textViewApellidosUsuario.text = apellido
+                    textViewCelularUsuario.text = celular
+                    textViewCorreoUsuario.text = correo
+                    textViewTutorBooleam.text = if (isTutor) "Tutor" else "Docente"
                 }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Manejo de errores adicional, como mostrar un mensaje al usuario
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Error al cargar los datos del profesor", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
