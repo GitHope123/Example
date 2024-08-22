@@ -87,13 +87,12 @@ class EstudianteFragment : Fragment() {
             val coincideGrado =
                 gradoSeleccionado == "Todas" || estudiante.grado?.toString() == gradoSeleccionado
             val coincideSeccion =
-                (seccionSeleccionada == "Todas") || (estudiante.seccion?.toString() == seccionSeleccionada)
+                (seccionSeleccionada == "Todas") || (estudiante.seccion == seccionSeleccionada)
             val nombreCompleto = "${estudiante.nombres ?: ""} ${estudiante.apellidos ?: ""}".lowercase()
             val coincideNombre = queryWords.all { nombreCompleto.contains(it) }
             coincideNombre && coincideGrado && coincideSeccion
         }
-        filterEstudiantes.clear()
-        filterEstudiantes.addAll(fullEstudiantesList)
+
         estudianteAdapter.notifyDataSetChanged()
     }
 
