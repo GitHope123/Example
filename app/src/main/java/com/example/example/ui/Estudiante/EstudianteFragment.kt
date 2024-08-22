@@ -145,7 +145,7 @@ class EstudianteFragment : Fragment() {
                         val apellidos = estudiante["apellidos"] as? String ?: ""
                         val nombres = estudiante["nombres"] as? String ?: ""
                         val celular = (estudiante["celularApoderado"] as? Long) ?: 0
-                        val dni = (estudiante["celularApoderado"] as? Long)?: 0
+                        val dni = (estudiante["dni"] as? Long)?: 0
                         val grado = (estudiante["grado"] as? Long)?.toInt() ?: 0
                         val seccion = estudiante["seccion"] as? String ?: ""
                         fullEstudiantesList.add(Estudiante(id,apellidos,nombres,celular,dni,grado,seccion))
@@ -162,7 +162,6 @@ class EstudianteFragment : Fragment() {
     private fun Map<String, Any>.toEstudiante(): Estudiante? {
         return try {
             Estudiante(
-                id = this["id"] as? String ?: "",
                 apellidos = this["apellidos"] as? String ?: "",
                 celularApoderado = (this["celularApoderado"] as? Number)?.toLong() ?: 0,
                 dni = (this["dni"] as? Number)?.toLong() ?: 0,

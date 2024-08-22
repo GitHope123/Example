@@ -15,13 +15,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <SearchView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/searchViewTutorAdd"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:background="@drawable/search_view_query_background"
             app:iconifiedByDefault="false"
-            app:showAsAction="always" />
+            app:queryHint="Buscar profesor..."
+            app:showAsAction="always"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,7 +36,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:background="@drawable/background_white_element" />
+                android:background="@drawable/background_spinner" />
 
             <Space
                 android:layout_width="10dp"
@@ -47,7 +48,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:background="@drawable/background_white_element" />
+                android:background="@drawable/background_spinner" />
 
         </LinearLayout>
 

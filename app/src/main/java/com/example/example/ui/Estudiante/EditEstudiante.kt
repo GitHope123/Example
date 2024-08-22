@@ -2,8 +2,6 @@ package com.example.example.ui.Estudiante
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -16,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 class EditEstudiante : AppCompatActivity() {
 
     private lateinit var firestore: FirebaseFirestore
-
     private lateinit var editTextNombres: EditText
     private lateinit var editTextApellidos: EditText
     private lateinit var editTextCelular: EditText
@@ -25,23 +22,26 @@ class EditEstudiante : AppCompatActivity() {
     private lateinit var spinnerSeccion: Spinner
     private lateinit var buttonModificar: Button
     private lateinit var buttonEliminar: Button
-    private lateinit var idEstudiante: String
+    private var originalDni: Long = 0
+    private lateinit var gradoSeccionActual:String
+    private lateinit var gradoSeccionNuevo:String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_estudiante)
         firestore = FirebaseFirestore.getInstance()
+
         editTextNombres = findViewById(R.id.editTextNombres)
         editTextApellidos = findViewById(R.id.editTextApellidos)
         editTextCelular = findViewById(R.id.editTextCelular)
         editTextDni = findViewById(R.id.editTextDni)
         spinnerGrado = findViewById(R.id.spinnerGrado)
-        spinnerSeccion = findViewById(R.id.spinnerSection) // Corrección aquí
+        spinnerSeccion = findViewById(R.id.spinnerSection)
         buttonModificar = findViewById(R.id.buttonModificar)
         buttonEliminar = findViewById(R.id.buttonEliminar)
 
         // Obtener datos del Intent
-        idEstudiante = intent.getStringExtra("id") ?: ""
         val nombres = intent.getStringExtra("nombres") ?: ""
         val apellidos = intent.getStringExtra("apellidos") ?: ""
         val celular = intent.getLongExtra("celular", 0L)
@@ -49,14 +49,14 @@ class EditEstudiante : AppCompatActivity() {
         val grado = intent.getIntExtra("grado", 0)
         val seccion = intent.getStringExtra("seccion") ?: ""
         Log.d("EditEstudiante", "Grado recibido: $grado")
+        originalDni = dni
+        gradoSeccionActual="${grado}${seccion}"
 
         // Rellenar los campos con los datos recibidos
         editTextNombres.setText(nombres)
         editTextApellidos.setText(apellidos)
         editTextCelular.setText(celular.toString())
         editTextDni.setText(dni.toString())
-
-        // Configurar los adaptadores y establecer el valor del spinner
         initButton()
         setSpinnerValue(spinnerGrado, grado.toString())
         setSpinnerValue(spinnerSeccion, seccion)
@@ -64,84 +64,100 @@ class EditEstudiante : AppCompatActivity() {
         buttonModificar.setOnClickListener {
             val updatedNombres = editTextNombres.text.toString().trim()
             val updatedApellidos = editTextApellidos.text.toString().trim()
-            val updatedCelular = editTextCelular.text.toString().trim().toLongOrNull() // Para convertir a Long
-            val updatedDni = editTextDni.text.toString().trim().toLongOrNull() // Para convertir a Long
+            val updatedCelular = editTextCelular.text.toString().trim().toLongOrNull()
+            val updatedDni = editTextDni.text.toString().trim().toLongOrNull()
             val updatedGrado = spinnerGrado.selectedItem.toString().trim().toIntOrNull()
             val updatedSeccion = spinnerSeccion.selectedItem.toString().trim()
 
+            gradoSeccionNuevo="${updatedGrado}${updatedSeccion}"
             if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
                 updatedCelular != null && updatedCelular.toString().length == 9 &&
                 updatedDni != null && updatedDni.toString().length == 8 &&
                 updatedSeccion.isNotEmpty() && updatedGrado != null) {
+                val docRef= firestore.collection("Aula").document(gradoSeccionActual)
+                val docNuev= firestore.collection("Aula").document(gradoSeccionNuevo)
+                var documentFound = false
+                val batch = firestore.batch()
+                if(updatedGrado!=grado||updatedSeccion!=seccion){
+                       docRef.get().addOnSuccessListener { document->
+                           if(document.exists()){
+                               val estudiantesList = document.get("estudiantes") as? MutableList<Map<String, Any>> ?: mutableListOf()
+                               val estudianteIndex = estudiantesList.indexOfFirst {
+                                   (it["dni"]as? Long) == originalDni // Reemplaza 'originalDni' con el valor del DNI del estudiante que deseas eliminar
+                               }
+                               if (estudianteIndex != -1) {
+                                   estudiantesList.removeAt(estudianteIndex)
+                                   batch.update(document.reference, "estudiantes", estudiantesList)
+                                   documentFound = true
+                               }
+                               if (documentFound) {
+                                   batch.commit()
+                                       .addOnSuccessListener {
+                                           Toast.makeText(this, "Estudiante eliminado con éxito", Toast.LENGTH_SHORT).show()
+                                           notifyEstudianteFragment()
+                                           finish()
+                                       }
+                                       .addOnFailureListener { e ->
+                                           Toast.makeText(this, "Error al eliminar el estudiante: ${e.message}", Toast.LENGTH_LONG).show()
+                                       }
+                               } else {
+                                   Toast.makeText(this, "Estudiante no encontrado", Toast.LENGTH_SHORT).show()
+                               }
+                           }
+                   }
 
-                val documentPath = "${updatedGrado}${updatedSeccion}" // Formato del documento, por ejemplo, "1A", "2B", etc.
+                       docNuev.get().addOnSuccessListener { document->
+                           if(document.exists()){
+                               val estudiantesList = document.get("estudiantes") as? MutableList<Map<String, Any>> ?: mutableListOf()
+                               val datos=mapOf(
+                                   "apellidos" to updatedApellidos,
+                                   "nombres" to updatedNombres,
+                                   "dni" to updatedDni,
+                                   "celularApoderado" to updatedCelular,
+                                   "grado" to updatedGrado,
+                                   "seccion" to updatedSeccion,
 
-                firestore.collection("Aula").document(documentPath).get()
-                    .addOnSuccessListener { document ->
-                        if (document.exists()) {
-                            val estudiantesList = document.get("estudiantes") as? List<Map<String, Any>> ?: emptyList()
-                            val estudianteIndex = estudiantesList.indexOfFirst {
-                                it["dni"] == dni
-                            }
-
-                            if (estudianteIndex != -1) {
-                                val updatedEstudiante = estudiantesList[estudianteIndex].toMutableMap().apply {
-                                    put("nombres", updatedNombres)
-                                    put("apellidos", updatedApellidos)
-                                    put("celular", updatedCelular)
-                                    put("dni", updatedDni)
-                                    put("grado", updatedGrado)
-                                    put("seccion", updatedSeccion)
-                                }
-
-                                val updatedEstudiantesList = estudiantesList.toMutableList().apply {
-                                    set(estudianteIndex, updatedEstudiante)
-                                }
-
-                                document.reference.update("estudiantes", updatedEstudiantesList)
-                                    .addOnSuccessListener {
-                                        Toast.makeText(this, "Estudiante actualizado con éxito", Toast.LENGTH_SHORT).show()
-                                        notifyEstudianteFragment()
-                                        finish() // Cierra la actividad
-                                    }
-                                    .addOnFailureListener { e ->
-                                        Toast.makeText(this, "Error al actualizar el estudiante: ${e.message}", Toast.LENGTH_LONG).show()
-                                    }
-                            } else {
-                                Toast.makeText(this, "Estudiante no encontrado", Toast.LENGTH_SHORT).show()
-                            }
-                        } else {
-                            Toast.makeText(this, "Documento no encontrado", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(this, "Error al obtener datos: ${e.message}", Toast.LENGTH_LONG).show()
-                    }
+                               )
+                               estudiantesList.add(datos)
+                               docNuev.update("estudiantes", estudiantesList).addOnSuccessListener {
+                                   Toast.makeText(this,"Actualizado", Toast.LENGTH_SHORT).show()
+                               }
+                           }
+                       }
+                }
             } else {
                 Toast.makeText(this, "Por favor complete todos los campos correctamente", Toast.LENGTH_SHORT).show()
             }
         }
 
         buttonEliminar.setOnClickListener {
-            // Encontrar el documento de Aula que contiene el estudiante
             firestore.collection("Aula").get()
                 .addOnSuccessListener { snapshot ->
                     val batch = firestore.batch()
                     var documentFound = false
 
                     snapshot.documents.forEach { document ->
-                        val estudiantesList = document.get("estudiantes") as? List<Map<String, Any>> ?: emptyList()
+                        val estudiantesList = document.get("estudiantes") as? MutableList<Map<String, Any>> ?: mutableListOf()
                         val estudianteIndex = estudiantesList.indexOfFirst {
-                            it["id"] == idEstudiante
+                            (it["dni"] as? Long) == originalDni
                         }
-
                         if (estudianteIndex != -1) {
-                            val updatedEstudiantesList = estudiantesList.toMutableList().apply {
-                                removeAt(estudianteIndex)
-                            }
-
-                            batch.update(document.reference, "estudiantes", updatedEstudiantesList)
+                            estudiantesList.removeAt(estudianteIndex)
+                            batch.update(document.reference, "estudiantes", estudiantesList)
                             documentFound = true
+                        }
+                        if (documentFound) {
+                            batch.commit()
+                                .addOnSuccessListener {
+                                    Toast.makeText(this, "Estudiante eliminado con éxito", Toast.LENGTH_SHORT).show()
+                                    notifyEstudianteFragment()
+                                    finish()
+                                }
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(this, "Error al eliminar el estudiante: ${e.message}", Toast.LENGTH_LONG).show()
+                                }
+                        } else {
+                            Toast.makeText(this, "Estudiante no encontrado", Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -150,7 +166,7 @@ class EditEstudiante : AppCompatActivity() {
                             .addOnSuccessListener {
                                 Toast.makeText(this, "Estudiante eliminado con éxito", Toast.LENGTH_SHORT).show()
                                 notifyEstudianteFragment()
-                                finish() // Cierra la actividad
+                                finish()
                             }
                             .addOnFailureListener { e ->
                                 Toast.makeText(this, "Error al eliminar el estudiante: ${e.message}", Toast.LENGTH_LONG).show()
