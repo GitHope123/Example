@@ -3,8 +3,6 @@ package com.example.example.ui.Incidencia
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageView
@@ -52,43 +50,12 @@ class AgregarIncidencia : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAgregarIncidenciaBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        init()
-        set()
-
         auth = FirebaseAuth.getInstance()
         storageRef = FirebaseStorage.getInstance().reference
-
-        pickImageLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == RESULT_OK) {
-                result.data?.data?.let {
-                    imageUri = it
-                    Glide.with(this)
-                        .load(imageUri)
-                        .apply(RequestOptions().centerCrop())
-                        .into(imageViewEvidencia)
-                }
-            }
-        }
-
-        imageViewEvidencia.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            pickImageLauncher.launch(intent)
-        }
-
-        binding.btnRegistrarIncidencia.setOnClickListener {
-            val detalles = edMultilinea.text.toString().trim()
-            if (detalles.isEmpty()) {
-                Toast.makeText(this, "Incluye detalles de la incidencia", Toast.LENGTH_SHORT).show()
-                binding.btnRegistrarIncidencia.isEnabled = true // Habilita el botón nuevamente
-                return@setOnClickListener
-            }
-
-            binding.btnRegistrarIncidencia.isEnabled = false
-            imageUri?.let { it1 -> subirImagen(it1) }
-        }
+        init()
+        set()
+        selectedImagen()
+        selectedRegistrar()
     }
 
     private fun init() {
@@ -116,14 +83,53 @@ class AgregarIncidencia : AppCompatActivity() {
         val adapterTipo = ArrayAdapter(this, R.layout.item_spinner, tipo)
         adapterTipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerTipo.adapter = adapterTipo
-        fecha.text=obtenerFechaActual()
-        hora.text=obtenerHoraActual()
+        fecha.text = obtenerFechaActual()
+        hora.text = obtenerHoraActual()
+    }
+
+    private fun selectedImagen() {
+        pickImageLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                result.data?.data?.let {
+                    imageUri = it
+                    Glide.with(this)
+                        .load(imageUri)
+                        .apply(RequestOptions().centerCrop())
+                        .into(imageViewEvidencia)
+                }
+            }
+        }
+
+        imageViewEvidencia.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            pickImageLauncher.launch(intent)
+        }
     }
 
     private fun obtenerHoraActual(): String {
         val formatoHora = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         formatoHora.timeZone = TimeZone.getDefault()
         return formatoHora.format(Date())
+    }
+
+    private fun selectedRegistrar() {
+        binding.btnRegistrarIncidencia.setOnClickListener {
+            val detalles = edMultilinea.text.toString().trim()
+            if (detalles.isEmpty()) {
+                Toast.makeText(this, "Incluye detalles de la incidencia", Toast.LENGTH_SHORT).show()
+                binding.btnRegistrarIncidencia.isEnabled = true
+                return@setOnClickListener
+            }
+            binding.btnRegistrarIncidencia.isEnabled = false
+            if (imageUri != null) {
+                subirImagen(imageUri!!)
+            } else {
+                guardarDatosIncidencia(null)
+            }
+        }
     }
 
     private fun obtenerFechaActual(): String {
@@ -147,12 +153,13 @@ class AgregarIncidencia : AppCompatActivity() {
                 val downloadUri = task.result
                 guardarDatosIncidencia(downloadUri.toString())
             } else {
-                Toast.makeText(this, "Error al obtener la URL de la imagen", Toast.LENGTH_SHORT).show()
-                guardarDatosIncidencia(null)
+                Toast.makeText(this, "Error al obtener la URL de la imagen", Toast.LENGTH_SHORT)
+                    .show()
+                guardarDatosIncidencia("")
             }
         }.addOnFailureListener {
             Toast.makeText(this, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
-            guardarDatosIncidencia(null)
+            guardarDatosIncidencia("")
         }
 
     }
@@ -186,20 +193,36 @@ class AgregarIncidencia : AppCompatActivity() {
                     firestore.collection("Incidencia")
                         .add(incidencia)
                         .addOnSuccessListener {
-                            Toast.makeText(this, "Incidencia registrada exitosamente", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this,
+                                "Incidencia registrada exitosamente",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             finish()
                             binding.btnRegistrarIncidencia.isEnabled = true
                         }
                         .addOnFailureListener {
-                            Toast.makeText(this, "Error al registrar la incidencia", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this,
+                                "Error al registrar la incidencia",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             binding.btnRegistrarIncidencia.isEnabled = true
                         }
                 } else {
-                    Toast.makeText(this, "No se encontró el profesor con el correo proporcionado.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "No se encontró el profesor con el correo proporcionado.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error al obtener datos del profesor: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Error al obtener datos del profesor: ${exception.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
     }
 }
