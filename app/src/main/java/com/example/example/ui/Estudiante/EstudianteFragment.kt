@@ -11,30 +11,30 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.databinding.FragmentEstudianteBinding
 import com.example.example.ui.Incidencia.EstudianteAgregar
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import java.lang.reflect.Array.getInt
+
 class EstudianteFragment : Fragment() {
     private var _binding: FragmentEstudianteBinding? = null
     private val binding get() = _binding!!
-    private lateinit var firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private lateinit var estudianteAdapter: EstudianteAdapter
     private val filterEstudiantes = mutableListOf<Estudiante>()
     private val fullEstudiantesList = mutableListOf<Estudiante>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentEstudianteBinding.inflate(inflater, container, false).also {
-        _binding = it
-    }.root
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        firestore = FirebaseFirestore.getInstance()
+    ): View {
+        _binding = FragmentEstudianteBinding.inflate(inflater, container, false)
         initButton()
         setupRecyclerView()
         setupSearchView()
         fetchEstudiantes()
         setupButtons()
+        return binding.root
     }
+
 
     private fun initButton() {
         val grados= arrayOf("Todas","1","2","3","4","5")
@@ -92,6 +92,8 @@ class EstudianteFragment : Fragment() {
             val coincideNombre = queryWords.all { nombreCompleto.contains(it) }
             coincideNombre && coincideGrado && coincideSeccion
         }
+        filterEstudiantes.clear()
+        filterEstudiantes.addAll(fullEstudiantesList)
         estudianteAdapter.notifyDataSetChanged()
     }
 
@@ -101,7 +103,7 @@ class EstudianteFragment : Fragment() {
 
         }
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = LinearLayoutManager(context)
             adapter = estudianteAdapter
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -128,30 +130,41 @@ class EstudianteFragment : Fragment() {
     }
 
     private fun fetchEstudiantes() {
-        firestore.collection("Aula")
+        firestore.collection("Estudiante")
             .get()
-            .addOnSuccessListener { result ->
+            .addOnSuccessListener { result->
                 fullEstudiantesList.clear()
-                for (document in result) {
-                    val estudiantes = document["estudiantes"] as? List<Map<String, Any>> ?: continue
-                    estudiantes.forEach { estudiante ->
-                        val id = estudiante["idEstudiante"] as? String ?: ""
-                        val apellidos = estudiante["apellidos"] as? String ?: ""
-                        val nombres = estudiante["nombres"] as? String ?: ""
-                        val celular = (estudiante["celularApoderado"] as? Long) ?: 0
-                        val dni = (estudiante["dni"] as? Long)?: 0
-                        val grado = (estudiante["grado"] as? Long)?.toInt() ?: 0
-                        val seccion = estudiante["seccion"] as? String ?: ""
-                        val cantidadIncidencias = (estudiante["cantidadIncidencias"] as? Long)?.toInt() ?: 0
-                        fullEstudiantesList.add(Estudiante(id,apellidos,nombres,celular,dni,grado,seccion,cantidadIncidencias))
+                result.documents.forEach(){document->
+                    document.toEstudiante()?.let {
+                        fullEstudiantesList.add(it)
                     }
                 }
+                filterEstudiantes.clear()
                 filterEstudiantes.addAll(fullEstudiantesList)
                 estudianteAdapter.notifyDataSetChanged()
+
             }
-            .addOnFailureListener { e ->
-                // Manejo de errores
-            }
+
+    }
+
+    private fun DocumentSnapshot.toEstudiante():Estudiante?{
+        return try {
+            Estudiante(
+                idEstudiante = id,
+                apellidos = getString("apellidos")?:"",
+                nombres=getString("nombres")?:"",
+                celularApoderado = getLong("celularApoderado")?:0L,
+                dni = getLong("dni")?:0L,
+                grado = getLong("grado")?.toInt()?:0,
+                seccion = getString("seccion")?:"",
+                cantidadIncidencias = getLong("cantidadInciddencias")?.toInt()?:0
+            )
+
+        }catch (e: Exception) {
+            Log.e("ProfesorFragment", "Error converting document to Profesor", e)
+            null
+        }
+
     }
 
     private fun setupButtons() {

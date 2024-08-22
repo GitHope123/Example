@@ -30,11 +30,11 @@ class EstudianteAdapter(
     }
 
     inner class EstudianteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val txtViewNombres: TextView = itemView.findViewById(R.id.textViewNombreCompletos)
-        private val textViewCelular: TextView = itemView.findViewById(R.id.textViewCelular)
+        private val txtViewNombres: TextView = itemView.findViewById(R.id.textViewNombreCompleto)
+        private val textViewCelular: TextView = itemView.findViewById(R.id.textViewCelularStudent)
         private val textViewGradoandSection: TextView =
-            itemView.findViewById(R.id.studentGradeTextView)
-        private val btnEdit: ImageButton = itemView.findViewById(R.id.imageButtonEdit)
+            itemView.findViewById(R.id.studentGradeTextViewItem)
+        private val btnEdit: ImageButton = itemView.findViewById(R.id.imageButtonEditStudent)
         private lateinit var completeName: String
         private lateinit var degreeAndSection: String
         fun bind(estudiante: Estudiante) {
