@@ -38,12 +38,17 @@ class Principal : Fragment() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        loadProfessorData()
+        // No cargar datos aquí para evitar operaciones innecesarias
         binding.button.setOnClickListener {
             editPrincipal()
         }
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loadProfessorData() // Cargar datos después de que la vista esté creada
     }
 
     private fun loadProfessorData() {
@@ -74,12 +79,14 @@ class Principal : Fragment() {
                 val isTutor = doc.getBoolean("tutor") ?: false
 
                 // Actualizar la UI directamente en el hilo principal
-                binding.apply {
-                    textViewNombreCompletoUsuario.text = nombre
-                    textViewApellidosUsuario.text = apellido
-                    textViewCelularUsuario.text = celular
-                    textViewCorreoUsuario.text = correo
-                    textViewTutorBooleam.text = if (isTutor) "Tutor" else "Docente"
+                withContext(Dispatchers.Main) {
+                    binding.apply {
+                        textViewNombreCompletoUsuario.text = nombre
+                        textViewApellidosUsuario.text = apellido
+                        textViewCelularUsuario.text = celular
+                        textViewCorreoUsuario.text = correo
+                        textViewTutorBooleam.text = if (isTutor) "Tutor" else "Docente"
+                    }
                 }
 
             } catch (e: Exception) {
@@ -110,6 +117,7 @@ class Principal : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        // Actualizar datos cuando el fragmento vuelve a ser visible
         if (_binding != null) {
             loadProfessorData()
         }
