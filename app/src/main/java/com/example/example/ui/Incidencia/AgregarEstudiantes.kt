@@ -29,7 +29,7 @@ class AgregarEstudiantes : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_agregar_estudiantes)
         init()
-        initButton()
+        updateGrado()
         setupRecyclerView()
         fetchEstudiantes()
         setupSearchView()
@@ -43,7 +43,7 @@ class AgregarEstudiantes : AppCompatActivity() {
 
     }
 
-    private fun initButton() {
+    private fun updateGrado() {
         val grados = arrayOf("Todas", "1", "2", "3", "4", "5")
         val adapterGrados = ArrayAdapter(this, android.R.layout.simple_spinner_item, grados)
         adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -51,10 +51,7 @@ class AgregarEstudiantes : AppCompatActivity() {
 
         spinnerGrado.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
                 val gradoSeleccionado = spinnerGrado.selectedItem.toString()
                 updateSecciones(gradoSeleccionado)
@@ -63,22 +60,8 @@ class AgregarEstudiantes : AppCompatActivity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Handle case where no item is selected
             }
         }
-        spinnerSeccion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                filterEstudiante(searchViewEstudiante.query.toString())
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
     }
 
     private fun updateSecciones(gradoSeleccionado: String) {
@@ -91,6 +74,16 @@ class AgregarEstudiantes : AppCompatActivity() {
         adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerSeccion.adapter = adapterSecciones
         spinnerSeccion.isEnabled = gradoSeleccionado != "Todas"
+        spinnerSeccion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
+            ) {
+                filterEstudiante(searchViewEstudiante.query.toString())
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
     }
 
     private fun setupRecyclerView() {
@@ -108,26 +101,21 @@ class AgregarEstudiantes : AppCompatActivity() {
     }
 
     private fun fetchEstudiantes() {
-        firestore.collection("Aula")
-            .get()
-            .addOnSuccessListener { result ->
-                estudianteList.clear()
-                for (document in result) {
-                    val estudiantes = document["estudiantes"] as? List<Map<String, Any>> ?: continue
-                    estudiantes.forEach { estudiante ->
-                        val nombres = estudiante["nombres"] as? String ?: ""
-                        val apellidos = estudiante["apellidos"] as? String ?: ""
-                        val grado = (estudiante["grado"] as? Long)?.toInt() ?: 0
-                        val seccion = estudiante["seccion"] as? String ?: ""
-                        estudianteList.add(EstudianteAgregar(nombres, apellidos, grado, seccion))
-                    }
+        firestore.collection("Aula").get().addOnSuccessListener { result ->
+            estudianteList.clear()
+            for (document in result) {
+                val estudiantes = document["estudiantes"] as? List<Map<String, Any>> ?: continue
+                estudiantes.forEach { estudiante ->
+                    val nombres = estudiante["nombres"] as? String ?: ""
+                    val apellidos = estudiante["apellidos"] as? String ?: ""
+                    val grado = (estudiante["grado"] as? Long)?.toInt() ?: 0
+                    val seccion = estudiante["seccion"] as? String ?: ""
+                    estudianteList.add(EstudianteAgregar(nombres, apellidos, grado, seccion))
                 }
-                filterEstudianteList.addAll(estudianteList)
-                estudianteAdapter.notifyDataSetChanged()
             }
-            .addOnFailureListener { e ->
-                // Manejo de errores
-            }
+            filterEstudianteList.addAll(estudianteList)
+            estudianteAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun setupSearchView() {
@@ -174,7 +162,7 @@ class AgregarEstudiantes : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        refreshData() // Refresh data when the fragment becomes visible
+        refreshData()
     }
 
 }
