@@ -51,11 +51,8 @@ class EstudianteFragment : Fragment() {
                 val gradoSeleccionado = binding.spinnerGrado.selectedItem.toString()
                 updateSecciones(gradoSeleccionado)
                 filterEstudiante(binding.searchView.query.toString())
-
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Handle case where no item is selected
             }
         }
         binding.spinnerSeccion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -67,11 +64,9 @@ class EstudianteFragment : Fragment() {
             ) {
                 filterEstudiante(binding.searchView.query.toString())
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
-
     private fun updateSecciones(gradoSeleccionado: String) {
         val secciones = if (gradoSeleccionado == "Todas") {
             arrayOf("Todas")
@@ -87,7 +82,6 @@ class EstudianteFragment : Fragment() {
         val gradoSeleccionado = binding.spinnerGrado.selectedItem?.toString()
         val seccionSeleccionada = binding.spinnerSeccion.selectedItem?.toString()
         val queryWords = query.lowercase().split("\\s+".toRegex())
-
         filterEstudiantes.clear()
         fullEstudiantesList.filterTo(filterEstudiantes) { estudiante ->
             val coincideGrado =
@@ -97,15 +91,15 @@ class EstudianteFragment : Fragment() {
             val nombreCompleto = "${estudiante.nombres ?: ""} ${estudiante.apellidos ?: ""}".lowercase()
             val coincideNombre = queryWords.all { nombreCompleto.contains(it) }
             coincideNombre && coincideGrado && coincideSeccion
-
         }
-
         estudianteAdapter.notifyDataSetChanged()
     }
 
 
     private fun setupRecyclerView() {
-        estudianteAdapter = EstudianteAdapter(filterEstudiantes, requireContext()) // Corregido el constructor
+        estudianteAdapter = EstudianteAdapter(filterEstudiantes){
+
+        }
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = estudianteAdapter
@@ -141,14 +135,15 @@ class EstudianteFragment : Fragment() {
                 for (document in result) {
                     val estudiantes = document["estudiantes"] as? List<Map<String, Any>> ?: continue
                     estudiantes.forEach { estudiante ->
-                        val id = estudiante["nombres"] as? String ?: ""
+                        val id = estudiante["idEstudiante"] as? String ?: ""
                         val apellidos = estudiante["apellidos"] as? String ?: ""
                         val nombres = estudiante["nombres"] as? String ?: ""
                         val celular = (estudiante["celularApoderado"] as? Long) ?: 0
                         val dni = (estudiante["dni"] as? Long)?: 0
                         val grado = (estudiante["grado"] as? Long)?.toInt() ?: 0
                         val seccion = estudiante["seccion"] as? String ?: ""
-                        fullEstudiantesList.add(Estudiante(id,apellidos,nombres,celular,dni,grado,seccion))
+                        val cantidadIncidencias = (estudiante["cantidadIncidencias"] as? Long)?.toInt() ?: 0
+                        fullEstudiantesList.add(Estudiante(id,apellidos,nombres,celular,dni,grado,seccion,cantidadIncidencias))
                     }
                 }
                 filterEstudiantes.addAll(fullEstudiantesList)
@@ -157,27 +152,6 @@ class EstudianteFragment : Fragment() {
             .addOnFailureListener { e ->
                 // Manejo de errores
             }
-    }
-
-    private fun Map<String, Any>.toEstudiante(): Estudiante? {
-        return try {
-            Estudiante(
-                apellidos = this["apellidos"] as? String ?: "",
-                celularApoderado = (this["celularApoderado"] as? Number)?.toLong() ?: 0,
-                dni = (this["dni"] as? Number)?.toLong() ?: 0,
-                grado = (this["grado"] as? Number)?.toInt() ?: 0,
-                nombres = this["nombres"] as? String ?: "",
-                seccion = this["seccion"] as? String ?: ""
-            )
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-
-    private fun showProgressBar(show: Boolean) {
-        // Verificar que binding no sea null antes de usarlo
-        binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private fun setupButtons() {
