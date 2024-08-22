@@ -15,7 +15,6 @@ import com.example.example.R
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AgregarEstudiantes : AppCompatActivity() {
-    private lateinit var btnIrRegistrar: Button
     private lateinit var searchViewEstudiante: SearchView
     private lateinit var recyclerViewEstudiantes: RecyclerView
     private lateinit var spinnerGrado: Spinner
@@ -90,6 +89,7 @@ class AgregarEstudiantes : AppCompatActivity() {
         estudianteAdapter =
             EstudianteAgregarAdapter(filterEstudianteList) { estudianteSeleccionado ->
                 val intent = Intent(this, AgregarIncidencia::class.java)
+                intent.putExtra("EXTRA_STUDENT_ID", estudianteSeleccionado.id)
                 intent.putExtra("EXTRA_STUDENT_NAME", estudianteSeleccionado.nombres)
                 intent.putExtra("EXTRA_STUDENT_LAST_NAME", estudianteSeleccionado.apellidos)
                 intent.putExtra("EXTRA_STUDENT_GRADE", estudianteSeleccionado.grado)
@@ -101,22 +101,22 @@ class AgregarEstudiantes : AppCompatActivity() {
     }
 
     private fun fetchEstudiantes() {
-        firestore.collection("Aula").get().addOnSuccessListener { result ->
+        firestore.collection("Estudiante").get().addOnSuccessListener { result ->
             estudianteList.clear()
             for (document in result) {
-                val estudiantes = document["estudiantes"] as? List<Map<String, Any>> ?: continue
-                estudiantes.forEach { estudiante ->
-                    val nombres = estudiante["nombres"] as? String ?: ""
-                    val apellidos = estudiante["apellidos"] as? String ?: ""
-                    val grado = (estudiante["grado"] as? Long)?.toInt() ?: 0
-                    val seccion = estudiante["seccion"] as? String ?: ""
-                    estudianteList.add(EstudianteAgregar(nombres, apellidos, grado, seccion))
-                }
+                val id = document.id  // Obtener el ID del documento
+                val nombres = document.getString("nombres") ?: ""
+                val apellidos = document.getString("apellidos") ?: ""
+                val grado = document.getLong("grado")?.toInt() ?: 0
+                val seccion = document.getString("seccion") ?: ""
+                estudianteList.add(EstudianteAgregar(id, nombres, apellidos, grado, seccion))
             }
+            filterEstudianteList.clear()
             filterEstudianteList.addAll(estudianteList)
             estudianteAdapter.notifyDataSetChanged()
         }
     }
+
 
     private fun setupSearchView() {
         searchViewEstudiante.setOnClickListener {
