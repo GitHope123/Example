@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -41,10 +42,31 @@ class TutorFragment : Fragment() {
 
         tutorAdapter = TutorAdapter(
             onEditClickListener = { profesor ->
-                Toast.makeText(requireContext(), "Selected: ${profesor.nombres}", Toast.LENGTH_SHORT).show()
+
+            },
+            onRemoveClickListener = { profesor ->
+                // Aquí llamas a Firestore para eliminar el tutor
+                profesor.idProfesor?.let { id ->
+                    db.collection("Profesor").document(id)
+                        .update(
+                            "grado", 0,
+                            "seccion", "",
+                            "tutor", false
+                        )
+                        .addOnSuccessListener {
+                            // Filtra la lista actualizada
+                            val updatedList = tutorAdapter.currentList.filter { it.idProfesor != id }
+                            tutorAdapter.updateList(updatedList)
+                            Toast.makeText(requireContext(), "Tutor removido correctamente", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { exception ->
+                            Toast.makeText(requireContext(), "Error updating tutor: ${exception.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
             },
             isButtonVisible = false,
-            isTextViewGradosSeccionVisible = true
+            isTextViewGradosSeccionVisible = true,
+            isImageButtonQuitarTutor = true
         )
 
         recyclerViewTutores.adapter = tutorAdapter
@@ -73,7 +95,6 @@ class TutorFragment : Fragment() {
             }
         })
 
-
         // Button to add a new tutor
         addButtonTutor.setOnClickListener {
             val intent = Intent(requireContext(), AddTutor::class.java)
@@ -85,10 +106,9 @@ class TutorFragment : Fragment() {
         if (query.isBlank()) {
             tutorAdapter.resetList() // Restablece la lista completa si la consulta está vacía
         } else {
-            tutorAdapter.filterList(query) // Filtra la lista según la consulta
+            tutorAdapter.filterList(query)
         }
     }
-
 
     private fun fetchProfesores() {
         db.collection("Profesor")
@@ -115,7 +135,6 @@ class TutorFragment : Fragment() {
                 Toast.makeText(requireContext(), "Error fetching tutors: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
-
 
     // Handle the result of the AddTutor activity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

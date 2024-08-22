@@ -47,12 +47,22 @@ class AddTutor : AppCompatActivity() {
 
         // Configurar RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
-        tutorAdapter = TutorAdapter({ profesor ->
-            profesor.idProfesor?.let { id ->
-                selectedProfesorId = if (selectedProfesorId == id) null else id
-                tutorAdapter.notifyDataSetChanged()
-            }
-        }, isButtonVisible = true, isTextViewGradosSeccionVisible = false) // textViewGradosSeccionTutor no visible
+
+        tutorAdapter = TutorAdapter(
+            onEditClickListener = { profesor ->
+                profesor.idProfesor?.let { id ->
+                    selectedProfesorId = if (selectedProfesorId == id) null else id
+                    tutorAdapter.notifyDataSetChanged()
+                }
+            },
+            onRemoveClickListener = { profesor ->
+            },
+            isButtonVisible = true,
+            isTextViewGradosSeccionVisible = false,
+            isImageButtonQuitarTutor = false
+        )
+
+        // textViewGradosSeccionTutor no visible
         recyclerView.adapter = tutorAdapter
         fetchProfesores()
         setupSpinners()
