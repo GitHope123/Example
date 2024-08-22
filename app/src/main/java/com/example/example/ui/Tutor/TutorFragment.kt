@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView // Asegúrate de importar la clase correcta
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +24,7 @@ class TutorFragment : Fragment() {
     private lateinit var recyclerViewTutores: RecyclerView
     private lateinit var searchViewTutor: SearchView
     private lateinit var addButtonTutor: FloatingActionButton
-    private var originalList: List<Profesor> = emptyList() // Initialize with an empty list
+    private var originalList: List<Profesor> = emptyList() // List for all the fetched data
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,9 +39,14 @@ class TutorFragment : Fragment() {
         recyclerViewTutores = view.findViewById(R.id.recyclerViewTutores)
         recyclerViewTutores.layoutManager = LinearLayoutManager(requireContext())
 
-        tutorAdapter = TutorAdapter(emptyList(), { profesor ->
-            Toast.makeText(requireContext(), "Selected: ${profesor.nombres}", Toast.LENGTH_SHORT).show()
-        }, isButtonVisible = false, istextViewGradosSeccionVisible = true)
+        tutorAdapter = TutorAdapter(
+            onEditClickListener = { profesor ->
+                Toast.makeText(requireContext(), "Selected: ${profesor.nombres}", Toast.LENGTH_SHORT).show()
+            },
+            isButtonVisible = false,
+            isTextViewGradosSeccionVisible = true
+        )
+
         recyclerViewTutores.adapter = tutorAdapter
 
         fetchProfesores()
@@ -49,23 +54,27 @@ class TutorFragment : Fragment() {
         addButtonTutor = view.findViewById(R.id.addButtonTutor)
         searchViewTutor = view.findViewById(R.id.searchViewTutor) as SearchView
 
+        // Expand search view on click
         searchViewTutor.setOnClickListener {
             searchViewTutor.isIconified = false
             searchViewTutor.requestFocus()
         }
 
+        // Listen to text changes in the search bar
         searchViewTutor.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { handleSearch(it) }
+                handleSearch(query.orEmpty())
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { handleSearch(it) }
+                handleSearch(newText.orEmpty())
                 return true
             }
         })
 
+
+        // Button to add a new tutor
         addButtonTutor.setOnClickListener {
             val intent = Intent(requireContext(), AddTutor::class.java)
             startActivityForResult(intent, ADD_TUTOR_REQUEST_CODE)
@@ -73,57 +82,46 @@ class TutorFragment : Fragment() {
     }
 
     private fun handleSearch(query: String) {
-        if (originalList.isEmpty()) {
-            return
+        if (query.isBlank()) {
+            tutorAdapter.resetList() // Restablece la lista completa si la consulta está vacía
+        } else {
+            tutorAdapter.filterList(query) // Filtra la lista según la consulta
         }
-        val queryWords=query.lowercase().split("\\s+".toRegex())
-        val filteredList = originalList.filter {
-            val nombreCompleto="${it.nombres} ${it.apellidos}".lowercase()
-            val coincidencia =queryWords.all { nombreCompleto.contains(it) }
-            coincidencia
-        }
-        tutorAdapter.updateList(filteredList)
     }
+
 
     private fun fetchProfesores() {
         db.collection("Profesor")
             .whereEqualTo("tutor", true)
             .get()
             .addOnSuccessListener { result ->
-                originalList = result.documents.mapNotNull { document ->
-                    try {
-                        val profesor = document.toObject(Profesor::class.java)?.apply {
-                            idProfesor = document.id
-                            nombres = document.getString("nombres") ?: ""
-                            apellidos = document.getString("apellidos") ?: ""
-                            celular = document.getLong("celular") ?: 0
-                            materia = document.getString("materia") ?: ""
-                            correo = document.getString("correo") ?: ""
-                            tutor = document.getBoolean("tutor") ?: false
-                            grado = when (val gradoValue = document.get("grado")) {
-                                is Long -> gradoValue
-                                is String -> gradoValue.toLongOrNull() ?: 0
-                                else -> 0
-                            }
-                            seccion = document.getString("seccion") ?: ""
-                        }
-                        profesor
-                    } catch (e: Exception) {
-                        null
+                val listaProfesores = result.documents.mapNotNull { document ->
+                    document.toObject(Profesor::class.java)?.apply {
+                        idProfesor = document.id
+                        nombres = document.getString("nombres") ?: ""
+                        apellidos = document.getString("apellidos") ?: ""
+                        celular = document.getLong("celular") ?: 0
+                        materia = document.getString("materia") ?: ""
+                        correo = document.getString("correo") ?: ""
+                        tutor = document.getBoolean("tutor") ?: false
+                        grado = document.get("grado")?.toString()?.toLongOrNull() ?: 0L
+                        seccion = document.getString("seccion") ?: ""
                     }
                 }
-                tutorAdapter.updateList(originalList)
+
+                tutorAdapter.updateList(listaProfesores) // Actualiza la lista en el adaptador
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(requireContext(), "Error fetching tutors: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
+
+    // Handle the result of the AddTutor activity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ADD_TUTOR_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            fetchProfesores()
+            fetchProfesores() // Refresh the list after adding a new tutor
         }
     }
 }
-

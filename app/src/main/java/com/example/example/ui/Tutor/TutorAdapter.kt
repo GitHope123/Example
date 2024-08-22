@@ -1,26 +1,25 @@
 package com.example.example.ui.Tutor
 
-import ProfesorDiffCallback
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
 import com.example.example.ui.Profesor.Profesor
 
 class TutorAdapter(
-    private var fullList: List<Profesor>,  // Lista original de todos los profesores
     private val onEditClickListener: (Profesor) -> Unit,
     private val isButtonVisible: Boolean,
-    private val istextViewGradosSeccionVisible: Boolean
-) : RecyclerView.Adapter<TutorAdapter.ProfesorViewHolder>() {
+    private val isTextViewGradosSeccionVisible: Boolean
+) : ListAdapter<Profesor, TutorAdapter.ProfesorViewHolder>(ProfesorDiffCallback()) {
 
-    var listaProfesores: List<Profesor> = fullList // Lista actual que se muestra
-    private val selectedProfesores = mutableSetOf<String>() // Track selection by ID
+    private var selectedProfesorId: String? = null
+    private var fullList: List<Profesor> = emptyList() // List that stores the complete list of tutors
+    private var filteredList: List<Profesor> = emptyList() // List that stores the filtered results
 
     inner class ProfesorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textViewNombre: TextView = itemView.findViewById(R.id.textViewTutorNombreCompleto)
@@ -34,21 +33,28 @@ class TutorAdapter(
             textViewCelular.text = profesor.celular.toString()
             textViewCorreo.text = profesor.correo
             textViewGradosSeccionTutor.text = "${profesor.grado} ${profesor.seccion}"
+
             imageButtonSeleccionar.visibility = if (isButtonVisible) View.VISIBLE else View.GONE
-            textViewGradosSeccionTutor.visibility = if (istextViewGradosSeccionVisible) View.VISIBLE else View.GONE
+            textViewGradosSeccionTutor.visibility = if (isTextViewGradosSeccionVisible) View.VISIBLE else View.GONE
+
             val idProfesor = profesor.idProfesor ?: return
-            val isSelected = selectedProfesores.contains(idProfesor)
+            val isSelected = idProfesor == selectedProfesorId
             imageButtonSeleccionar.setColorFilter(if (isSelected) Color.YELLOW else Color.GRAY)
 
-            imageButtonSeleccionar.setOnClickListener {
-                if (isSelected) {
-                    selectedProfesores.remove(idProfesor)
-                } else {
-                    selectedProfesores.add(idProfesor)
-                }
-                notifyItemChanged(adapterPosition) // Actualizar solo el ítem cambiado
+            itemView.setOnClickListener {
+                toggleSelection(idProfesor)
                 onEditClickListener(profesor)
             }
+
+            imageButtonSeleccionar.setOnClickListener {
+                toggleSelection(idProfesor)
+                onEditClickListener(profesor)
+            }
+        }
+
+        private fun toggleSelection(idProfesor: String) {
+            selectedProfesorId = if (selectedProfesorId == idProfesor) null else idProfesor
+            notifyItemChanged(adapterPosition) // Update only the current item
         }
     }
 
@@ -58,37 +64,28 @@ class TutorAdapter(
     }
 
     override fun onBindViewHolder(holder: ProfesorViewHolder, position: Int) {
-        holder.bind(listaProfesores[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = listaProfesores.size
-
+    // Updates the complete list of tutors and the filtered list
     fun updateList(newList: List<Profesor>) {
-        val diffCallback = ProfesorDiffCallback(listaProfesores, newList)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-        listaProfesores = newList
-        diffResult.dispatchUpdatesTo(this)
+        fullList = newList
+        filteredList = newList
+        submitList(filteredList)
     }
 
-    fun filterList(query: String?) {
-        val queryLowerCase = query?.lowercase().orEmpty() // Evita nulos y maneja la conversión de una vez
-
-        val filteredList = if (queryLowerCase.isNotEmpty()) {
-            fullList.filter { profesor ->
-                profesor.nombres.lowercase().contains(queryLowerCase) ||
-                        profesor.celular.toString().contains(queryLowerCase) ||
-                        profesor.correo.lowercase().contains(queryLowerCase)
-            }
-        } else {
-            fullList // Usamos la lista completa si la consulta está vacía
-        }
-
-        updateList(filteredList)
-    }
-
+    // Resets the filtered list to the complete list
     fun resetList() {
-        updateList(fullList) // Restablecemos la lista completa
+        filteredList = fullList
+        submitList(filteredList)
     }
 
-    fun getSelectedProfesores(): Set<String> = selectedProfesores
+    // Filters the list based on the search query
+    fun filterList(query: String) {
+        filteredList = fullList.filter { profesor ->
+            val fullName = "${profesor.nombres} ${profesor.apellidos}".lowercase()
+            fullName.contains(query.lowercase())
+        }
+        submitList(filteredList)
+    }
 }

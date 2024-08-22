@@ -20,15 +20,15 @@
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchViewTutor"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
                 android:background="@drawable/search_view_query_background"
                 app:iconifiedByDefault="false"
+                app:queryHint="Buscar tutor..."
                 app:showAsAction="always" />
+
         </LinearLayout>
 
-        <!-- RecyclerView for listing tutors -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewTutores"
             android:layout_marginTop="5dp"

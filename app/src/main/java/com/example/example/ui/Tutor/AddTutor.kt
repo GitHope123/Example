@@ -2,7 +2,6 @@ package com.example.example.ui.Tutor
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
 import com.example.example.ui.Profesor.Profesor
 import com.google.firebase.firestore.FirebaseFirestore
+import android.os.Handler
+import android.os.Looper
+import androidx.appcompat.widget.SearchView
 
 class AddTutor : AppCompatActivity() {
 
@@ -20,14 +22,16 @@ class AddTutor : AppCompatActivity() {
     private lateinit var spinnerGrado: Spinner
     private lateinit var spinnerSeccion: Spinner
     private lateinit var tutorAdapter: TutorAdapter
-    private val selectedProfesores = mutableSetOf<String>() // Usando IDs para el seguimiento de selección
+    private var selectedProfesorId: String? = null
     private val db = FirebaseFirestore.getInstance()
 
-    private val grados = listOf("1", "2", "3", "4", "5") // Grados posibles
-    private val secciones = listOf("A", "B", "C", "D", "E") // Secciones posibles
+    private val grados = listOf("1", "2", "3", "4", "5")
+    private val secciones = listOf("A", "B", "C", "D", "E")
 
     private lateinit var allCombinations: Set<String>
     private lateinit var usedCombinations: Set<String>
+    private val searchHandler = Handler(Looper.getMainLooper())
+    private var searchRunnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,57 +47,46 @@ class AddTutor : AppCompatActivity() {
 
         // Configurar RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
-        tutorAdapter = TutorAdapter(emptyList(), { profesor ->
+        tutorAdapter = TutorAdapter({ profesor ->
             profesor.idProfesor?.let { id ->
-                if (selectedProfesores.contains(id)) {
-                    selectedProfesores.remove(id)
-                } else {
-                    selectedProfesores.add(id)
-                }
-                // Actualizar solo el ítem cambiado
-                tutorAdapter.notifyItemChanged(tutorAdapter.listaProfesores.indexOf(profesor))
+                selectedProfesorId = if (selectedProfesorId == id) null else id
+                tutorAdapter.notifyDataSetChanged()
             }
-        }, isButtonVisible = true, istextViewGradosSeccionVisible = false)
+        }, isButtonVisible = true, isTextViewGradosSeccionVisible = false) // textViewGradosSeccionTutor no visible
         recyclerView.adapter = tutorAdapter
-
-        // Obtener profesores
         fetchProfesores()
-
-        // Configurar Spinners
         setupSpinners()
 
-
-        // Configurar funcionalidad de búsqueda
+        // Configurar el SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                // Manejar la consulta al enviar el texto
                 handleSearchQuery(query)
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                // Manejar la consulta al cambiar el texto
-                handleSearchQuery(newText)
+                searchRunnable?.let { searchHandler.removeCallbacks(it) }
+                searchRunnable = Runnable {
+                    handleSearchQuery(newText)
+                }
+                searchHandler.postDelayed(searchRunnable!!, 300)
                 return true
             }
 
             private fun handleSearchQuery(query: String?) {
-                val trimmedQuery = query?.trim().orEmpty() // Eliminar espacios en blanco y manejar valores nulos
+                val trimmedQuery = query?.trim()?.lowercase().orEmpty()
 
                 if (trimmedQuery.isEmpty()) {
-                    // Restablecer la lista completa si la consulta está vacía
                     tutorAdapter.resetList()
                 } else {
-                    // Filtrar la lista con la consulta
                     tutorAdapter.filterList(trimmedQuery)
                 }
             }
         })
 
-
         // Configurar listeners de botones
         buttonAceptar.setOnClickListener {
-            updateSelectedTutors()
+            updateSelectedTutor()
         }
 
         buttonCancelar.setOnClickListener {
@@ -108,22 +101,37 @@ class AddTutor : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 val listaProfesores = result.documents.mapNotNull { document ->
                     try {
-                        // Convert the document to a Profesor object
-                        val profesor = document.toObject(Profesor::class.java)?.apply {
-                            // Get the 'grado' field from Firestore
-                            val grado = document.getLong("grado")
-                            // Assign the grado value to the Profesor object, defaulting to 0L if null
-                            this.grado = grado ?: 0L
+                        val nombres = document.getString("nombres").orEmpty()
+                        val apellidos = document.getString("apellidos").orEmpty()
+                        val celular = document.getLong("celular") ?: 0L
+                        val correo = document.getString("correo").orEmpty()
+                        val grado = document.getLong("grado") ?: 0L
+                        val seccion = document.getString("seccion").orEmpty()
+
+                        if (nombres.isNotEmpty() && apellidos.isNotEmpty() && celular > 0 && correo.isNotEmpty()) {
+                            Profesor(
+                                idProfesor = document.id,
+                                nombres = nombres,
+                                apellidos = apellidos,
+                                celular = celular,
+                                correo = correo,
+                                grado = grado,
+                                seccion = seccion
+                            )
+                        } else {
+                            null
                         }
-                        profesor
                     } catch (e: Exception) {
                         Log.e("FetchProfesores", "Error al mapear documento: ${e.message}", e)
                         null
                     }
                 }
 
-                // Update the adapter with the fetched list
-                tutorAdapter.updateList(listaProfesores)
+                if (listaProfesores.isNotEmpty()) {
+                    tutorAdapter.updateList(listaProfesores)
+                } else {
+                    Toast.makeText(this, "No se encontraron profesores válidos", Toast.LENGTH_SHORT).show()
+                }
             }
             .addOnFailureListener { exception ->
                 Log.e("FetchProfesores", "Error al obtener profesores: ${exception.message}", exception)
@@ -131,89 +139,75 @@ class AddTutor : AppCompatActivity() {
             }
     }
 
+    private fun updateSelectedTutor() {
+        selectedProfesorId?.let { profesorId ->
+            val selectedGrado = spinnerGrado.selectedItem.toString().toLongOrNull() ?: 0L
+            val selectedSeccion = spinnerSeccion.selectedItem.toString()
 
+            Log.d("AddTutor", "Grado seleccionado: $selectedGrado")
+            Log.d("AddTutor", "Sección seleccionada: $selectedSeccion")
+            Log.d("AddTutor", "Profesor seleccionado: $profesorId")
 
-    private fun updateSelectedTutors() {
-        if (selectedProfesores.isEmpty()) {
-            Toast.makeText(this, "No hay tutores seleccionados.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val selectedGrado = spinnerGrado.selectedItem.toString().toLongOrNull() ?: 0L
-        val selectedSeccion = spinnerSeccion.selectedItem.toString()
-
-        // Logs en español para depuración
-        Log.d("AddTutor", "Grado seleccionado: $selectedGrado")
-        Log.d("AddTutor", "Sección seleccionada: $selectedSeccion")
-        Log.d("AddTutor", "Profesores seleccionados: $selectedProfesores")
-
-        // Verificar si la combinación ya está en uso
-        db.collection("Profesor")
-            .whereEqualTo("grado", selectedGrado)
-            .whereEqualTo("seccion", selectedSeccion)
-            .whereEqualTo("tutor", true)
-            .get()
-            .addOnSuccessListener { result ->
-                if (result.isEmpty) {
-                    // Si la combinación no está en uso, proceder con la actualización
-                    val batch = db.batch()
-                    selectedProfesores.forEach { profesorId ->
+            db.collection("Profesor")
+                .whereEqualTo("grado", selectedGrado)
+                .whereEqualTo("seccion", selectedSeccion)
+                .whereEqualTo("tutor", true)
+                .get()
+                .addOnSuccessListener { result ->
+                    if (result.isEmpty) {
                         val profesorRef = db.collection("Profesor").document(profesorId)
+                        val batch = db.batch()
                         batch.update(profesorRef, "tutor", true)
                         batch.update(profesorRef, "grado", selectedGrado)
                         batch.update(profesorRef, "seccion", selectedSeccion)
-                    }
 
-                    batch.commit()
-                        .addOnSuccessListener {
-                            Toast.makeText(this, "Tutores actualizados exitosamente.", Toast.LENGTH_SHORT).show()
-                            setResult(RESULT_OK) // Establecer el resultado para indicar éxito
-                            finish()
-                        }
-                        .addOnFailureListener { exception ->
-                            Toast.makeText(this, "Error al actualizar tutores: ${exception.message}", Toast.LENGTH_SHORT).show()
-                        }
-                } else {
-                    // La combinación ya está en uso
-                    Toast.makeText(this, "La combinación de grado y sección ya está en uso.", Toast.LENGTH_SHORT).show()
+                        batch.commit()
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Tutor actualizado exitosamente.", Toast.LENGTH_SHORT).show()
+                                setResult(RESULT_OK)
+                                finish()
+                            }
+                            .addOnFailureListener { exception ->
+                                Toast.makeText(this, "Error al actualizar tutor: ${exception.message}", Toast.LENGTH_SHORT).show()
+                            }
+                    } else {
+                        Toast.makeText(this, "La combinación de grado y sección ya está en uso.", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
-            .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error al verificar disponibilidad: ${exception.message}", Toast.LENGTH_SHORT).show()
-            }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(this, "Error al verificar disponibilidad: ${exception.message}", Toast.LENGTH_SHORT).show()
+                }
+        } ?: Toast.makeText(this, "No hay tutor seleccionado.", Toast.LENGTH_SHORT).show()
     }
 
-
     private fun setupSpinners() {
+        // Inicializar combinaciones
         allCombinations = grados.flatMap { grado ->
             secciones.map { seccion ->
                 "$grado$seccion"
             }
         }.toSet()
 
+        // Obtener combinaciones usadas
         db.collection("Profesor")
             .whereEqualTo("tutor", true)
             .get()
             .addOnSuccessListener { result ->
                 usedCombinations = result.documents.mapNotNull { document ->
                     val grado = document.getLong("grado")?.toString() ?: ""
-                    val seccion = document.getString("seccion")?.takeIf { it.isNotEmpty() } ?: ""
-                    // Combinar solo si grado y sección son válidos
+                    val seccion = document.getString("seccion").orEmpty()
                     if (grado.isNotEmpty() && seccion.isNotEmpty()) {
                         "$grado$seccion"
                     } else {
                         null
                     }
-                }.toSet() // Usar Set para evitar duplicados
+                }.toSet()
 
-                // Filtrar las combinaciones disponibles
                 val availableCombinations = allCombinations - usedCombinations
-
-                // Obtener los grados y secciones disponibles
                 val availableGrados = availableCombinations.map { it.first().toString() }.distinct()
                 val availableSecciones = availableCombinations.map { it.drop(1) }.distinct()
 
-                // Crear adaptadores para los spinners
+                // Configurar adaptadores para spinners
                 val gradoAdapter = ArrayAdapter(
                     this,
                     android.R.layout.simple_spinner_item,
@@ -231,64 +225,10 @@ class AddTutor : AppCompatActivity() {
                     setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 }
                 spinnerSeccion.adapter = seccionAdapter
-
-                // Configurar el listener para verificar disponibilidad
-                spinnerGrado.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        checkAvailability()
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        // No hacer nada si no hay selección
-                    }
-                }
-
-                spinnerSeccion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        checkAvailability()
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        // No hacer nada si no hay selección
-                    }
-                }
-
-                // Logs para depuración
-                Log.d("AddTutor", "Combinaciones disponibles: $availableCombinations")
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this, "Error al obtener combinaciones usadas: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Log.e("SetupSpinners", "Error al obtener combinaciones usadas: ${exception.message}", exception)
+                Toast.makeText(this, "Error al cargar grados y secciones", Toast.LENGTH_SHORT).show()
             }
     }
-
-    // Verificar disponibilidad del salón seleccionado
-    private fun checkAvailability() {
-        // Obtener los valores seleccionados en los spinners
-        val selectedGrado = spinnerGrado.selectedItem?.toString() ?: ""
-        val selectedSeccion = spinnerSeccion.selectedItem?.toString() ?: ""
-
-        // Crear la combinación seleccionada
-        val selectedCombination = "$selectedGrado$selectedSeccion"
-
-        // Verificar que ambos valores estén seleccionados
-        if (selectedGrado.isEmpty() || selectedSeccion.isEmpty()) {
-            // Mensaje si alguno de los valores está vacío
-            Toast.makeText(this, "Por favor, seleccione tanto el grado como la sección.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // Obtener una copia local de `allCombinations`
-        val localAllCombinations = allCombinations
-
-        // Verificar si la combinación seleccionada está en las combinaciones usadas
-        if (localAllCombinations.contains(selectedCombination)) {
-            if (usedCombinations.contains(selectedCombination)) {
-                Toast.makeText(this, "El salón ya fue seleccionado.", Toast.LENGTH_SHORT).show()
-            } else {
-            }
-        } else {
-            Toast.makeText(this, "La combinación seleccionada no es válida.", Toast.LENGTH_SHORT).show()
-        }
-
-    }}
-
+}
