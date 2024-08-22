@@ -69,14 +69,35 @@
         android:src="@drawable/icon_seleccionar"
         app:tint="@color/Primary_white" />
 
-    <TextView
-        android:id="@+id/textViewGradosSeccionTutor"
-        android:layout_width="40dp"
-        android:layout_height="30dp"
-        android:layout_gravity="bottom|center"
-        android:gravity="center"
-        android:textColor="@color/Secondary_brown"
-        android:background="@drawable/background_white_element"
-        android:fontFamily="@font/montserrat_bold"
-        android:text="3 A" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/imageButtonQuitarTutor"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/Primary_blue"
+            android:background="@drawable/background_white_element"
+            android:layout_gravity="top"
+            android:padding="5dp"
+            app:srcCompat="@drawable/icon_off_person" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:id="@+id/textViewGradosSeccionTutor"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom|center"
+            android:background="@drawable/background_white_element"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="center"
+            android:text="3 A"
+            android:textColor="@color/Secondary_brown" />
+    </LinearLayout>
+
 </LinearLayout>
