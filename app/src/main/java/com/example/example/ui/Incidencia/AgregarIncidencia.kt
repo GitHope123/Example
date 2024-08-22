@@ -59,6 +59,7 @@ class AgregarIncidencia : AppCompatActivity() {
     }
 
     private fun init() {
+        val studentId = intent.getStringExtra("EXTRA_STUDENT_ID")
         studentName = intent.getStringExtra("EXTRA_STUDENT_NAME") ?: "N/A"
         studentLastName = intent.getStringExtra("EXTRA_STUDENT_LAST_NAME") ?: "N/A"
         studentGrade = intent.getIntExtra("EXTRA_STUDENT_GRADE", 0)
@@ -193,11 +194,8 @@ class AgregarIncidencia : AppCompatActivity() {
                     firestore.collection("Incidencia")
                         .add(incidencia)
                         .addOnSuccessListener {
-                            Toast.makeText(
-                                this,
-                                "Incidencia registrada exitosamente",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            incrementarCantidadIncidencia()
+                            Toast.makeText(this, "Incidencia registrada exitosamente", Toast.LENGTH_SHORT).show()
                             finish()
                             binding.btnRegistrarIncidencia.isEnabled = true
                         }
@@ -224,5 +222,21 @@ class AgregarIncidencia : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+    }
+    private fun incrementarCantidadIncidencia() {
+        val studentId = intent.getStringExtra("EXTRA_STUDENT_ID") ?: return
+
+        val studentRef = firestore.collection("Estudiante").document(studentId)
+
+        firestore.runTransaction { transaction ->
+            val snapshot = transaction.get(studentRef)
+            val currentCount = snapshot.getLong("cantidadIncidencia") ?: 0
+            transaction.update(studentRef, "cantidadIncidencia", currentCount + 1)
+        }.addOnSuccessListener {
+            Toast.makeText(this, "Incidencia registrada y contador actualizado.", Toast.LENGTH_SHORT).show()
+            finish()
+        }.addOnFailureListener { e ->
+            Toast.makeText(this, "Error al actualizar contador de incidencias: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
     }
 }
