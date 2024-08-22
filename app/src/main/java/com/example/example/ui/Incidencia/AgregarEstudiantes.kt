@@ -27,13 +27,15 @@ class AgregarEstudiantes : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_agregar_estudiantes)
+        preloadData()
         init()
         updateGrado()
         setupRecyclerView()
-        fetchEstudiantes()
         setupSearchView()
     }
-
+    private fun preloadData() {
+        fetchEstudiantes()
+    }
     private fun init() {
         recyclerViewEstudiantes = findViewById(R.id.recyclerViewEstudiantes)
         searchViewEstudiante = findViewById(R.id.searchViewEstudiante)

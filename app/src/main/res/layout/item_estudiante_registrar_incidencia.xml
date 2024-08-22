@@ -45,6 +45,7 @@
                     android:drawableTint="@color/Primary_blue_sky"
                     android:fontFamily="@font/montserrat"
                     android:text="Grado "
+                    android:layout_marginEnd="6dp"
                     android:textColor="@color/Primary_blue_sky"
                     android:textSize="12sp"/>
 
