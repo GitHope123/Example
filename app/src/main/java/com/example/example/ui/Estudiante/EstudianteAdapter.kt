@@ -1,68 +1,68 @@
 package com.example.example.ui.Estudiante
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.View
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.example.databinding.ItemStudentBinding
+import com.example.example.R
 
 class EstudianteAdapter(
-    private val estudiantes: MutableList<Estudiante>,
-    private val context: Context
-) : RecyclerView.Adapter<EstudianteAdapter.StudentViewHolder>() {
+    private val estudiantes: List<Estudiante>,
+    private val onEditClickListenerEstudiante: (Estudiante) -> Unit
+) : RecyclerView.Adapter<EstudianteAdapter.EstudianteViewHolder>() {
 
-    inner class StudentViewHolder(private val binding: ItemStudentBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        init {
-            // Configura el clic en el botón de edición aquí para que esté disponible para todos los elementos
-            binding.imageButtonEdit.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val estudiante = estudiantes[position]
-                    val intent = Intent(context, EditEstudiante::class.java).apply {
-                        putExtra("idEstudiante", estudiante.id)
-                        putExtra("nombres", estudiante.nombres)
-                        putExtra("apellidos", estudiante.apellidos)
-                        putExtra("celular", estudiante.celularApoderado)
-                        putExtra("dni", estudiante.dni)
-                        putExtra("grado", estudiante.grado)
-                        putExtra("seccion", estudiante.seccion)
-                    }
-                    context.startActivity(intent)
-                }
-            }
-        }
-
-        fun bind(estudiante: Estudiante) {
-            // Configurar los datos del estudiante en la vista
-            binding.textViewNombreCompleto.text = "${estudiante.nombres} ${estudiante.apellidos}"
-            binding.textViewDni.text = estudiante.dni.toString()
-            binding.studentGradeTextView.text = estudiante.grado.toString()
-            binding.studentSectionTextView.text = estudiante.seccion
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
-        val binding = ItemStudentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return StudentViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
-        holder.bind(estudiantes[position])
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EstudianteViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_student, parent, false)
+        return EstudianteViewHolder(view)
     }
 
     override fun getItemCount(): Int = estudiantes.size
 
-    fun addStudents(newEstudiantes: List<Estudiante>) {
-        val startPosition = estudiantes.size
-        estudiantes.addAll(newEstudiantes)
-        notifyItemRangeInserted(startPosition, newEstudiantes.size)
+    override fun onBindViewHolder(
+        holder: EstudianteViewHolder,
+        position: Int
+    ) {
+        val estudiante = estudiantes[position]
+        holder.bind(estudiante)
     }
 
-    fun updateList(newEstudiantes: List<Estudiante>) {
-        estudiantes.clear()
-        estudiantes.addAll(newEstudiantes)
-        notifyDataSetChanged()
+    inner class EstudianteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val txtViewNombres: TextView = itemView.findViewById(R.id.textViewNombreCompletos)
+        private val textViewCelular: TextView = itemView.findViewById(R.id.textViewCelular)
+        private val textViewGradoandSection: TextView =
+            itemView.findViewById(R.id.studentGradeTextView)
+        private val btnEdit: ImageButton = itemView.findViewById(R.id.imageButtonEdit)
+        private lateinit var completeName: String
+        private lateinit var degreeAndSection: String
+        fun bind(estudiante: Estudiante) {
+            completeName = "${estudiante.apellidos} ${estudiante.nombres}"
+            degreeAndSection = "${estudiante.grado} ${estudiante.seccion}"
+            txtViewNombres.text=completeName
+            textViewCelular.text=estudiante.celularApoderado.toString()
+            textViewGradoandSection.text=degreeAndSection
+            btnEdit.setOnClickListener{
+                val context= itemView.context
+                val intent= Intent(context,EditEstudiante::class.java).apply{
+                    putExtra("idEstudiante",estudiante.idEstudiante)
+                    putExtra("nombres",estudiante.nombres)
+                    putExtra("apellidos",estudiante.apellidos)
+                    putExtra("celularApoderado",estudiante.celularApoderado)
+                    putExtra("dni",estudiante.dni)
+                    putExtra("grado",estudiante.grado)
+                    putExtra("seccion",estudiante.seccion)
+                    putExtra("cantidadIncidencias",estudiante.cantidadIncidencias)
+                }
+                context.startActivity(intent)
+            }
+
+            itemView.setOnClickListener {
+                onEditClickListenerEstudiante(estudiante) // Trigger the passed-in listener
+            }
+        }
+
     }
+
 }

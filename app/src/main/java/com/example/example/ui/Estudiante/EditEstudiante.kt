@@ -14,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 class EditEstudiante : AppCompatActivity() {
 
     private lateinit var firestore: FirebaseFirestore
-
     private lateinit var editTextNombres: EditText
     private lateinit var editTextApellidos: EditText
     private lateinit var editTextCelular: EditText
@@ -24,6 +23,9 @@ class EditEstudiante : AppCompatActivity() {
     private lateinit var buttonModificar: Button
     private lateinit var buttonEliminar: Button
     private var originalDni: Long = 0
+    private lateinit var gradoSeccionActual:String
+    private lateinit var gradoSeccionNuevo:String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +49,8 @@ class EditEstudiante : AppCompatActivity() {
         val grado = intent.getIntExtra("grado", 0)
         val seccion = intent.getStringExtra("seccion") ?: ""
         Log.d("EditEstudiante", "Grado recibido: $grado")
-
         originalDni = dni
+        gradoSeccionActual="${grado}${seccion}"
 
         // Rellenar los campos con los datos recibidos
         editTextNombres.setText(nombres)
@@ -67,68 +69,62 @@ class EditEstudiante : AppCompatActivity() {
             val updatedGrado = spinnerGrado.selectedItem.toString().trim().toIntOrNull()
             val updatedSeccion = spinnerSeccion.selectedItem.toString().trim()
 
+            gradoSeccionNuevo="${updatedGrado}${updatedSeccion}"
             if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
                 updatedCelular != null && updatedCelular.toString().length == 9 &&
                 updatedDni != null && updatedDni.toString().length == 8 &&
                 updatedSeccion.isNotEmpty() && updatedGrado != null) {
+                val docRef= firestore.collection("Aula").document(gradoSeccionActual)
+                val docNuev= firestore.collection("Aula").document(gradoSeccionNuevo)
+                var documentFound = false
+                val batch = firestore.batch()
+                if(updatedGrado!=grado||updatedSeccion!=seccion){
+                       docRef.get().addOnSuccessListener { document->
+                           if(document.exists()){
+                               val estudiantesList = document.get("estudiantes") as? MutableList<Map<String, Any>> ?: mutableListOf()
+                               val estudianteIndex = estudiantesList.indexOfFirst {
+                                   (it["dni"]as? Long) == originalDni // Reemplaza 'originalDni' con el valor del DNI del estudiante que deseas eliminar
+                               }
+                               if (estudianteIndex != -1) {
+                                   estudiantesList.removeAt(estudianteIndex)
+                                   batch.update(document.reference, "estudiantes", estudiantesList)
+                                   documentFound = true
+                               }
+                               if (documentFound) {
+                                   batch.commit()
+                                       .addOnSuccessListener {
+                                           Toast.makeText(this, "Estudiante eliminado con éxito", Toast.LENGTH_SHORT).show()
+                                           notifyEstudianteFragment()
+                                           finish()
+                                       }
+                                       .addOnFailureListener { e ->
+                                           Toast.makeText(this, "Error al eliminar el estudiante: ${e.message}", Toast.LENGTH_LONG).show()
+                                       }
+                               } else {
+                                   Toast.makeText(this, "Estudiante no encontrado", Toast.LENGTH_SHORT).show()
+                               }
+                           }
+                   }
 
-                val documentPathOld = "${grado}${seccion}" // Sección antigua
-                val documentPathNew = "${updatedGrado}${updatedSeccion}" // Nueva sección
+                       docNuev.get().addOnSuccessListener { document->
+                           if(document.exists()){
+                               val estudiantesList = document.get("estudiantes") as? MutableList<Map<String, Any>> ?: mutableListOf()
+                               val datos=mapOf(
+                                   "apellidos" to updatedApellidos,
+                                   "nombres" to updatedNombres,
+                                   "dni" to updatedDni,
+                                   "celularApoderado" to updatedCelular,
+                                   "grado" to updatedGrado,
+                                   "seccion" to updatedSeccion,
 
-                val docRefOld = firestore.collection("Aula").document(documentPathOld)
-                val docRefNew = firestore.collection("Aula").document(documentPathNew)
-
-                firestore.runTransaction { transaction ->
-                    val oldDocument = transaction.get(docRefOld)
-                    val newDocument = transaction.get(docRefNew)
-
-                    val estudiantesListOld = oldDocument.get("estudiantes") as? MutableList<Map<String, Any>> ?: mutableListOf()
-                    val estudiantesListNew = newDocument.get("estudiantes") as? MutableList<Map<String, Any>> ?: mutableListOf()
-
-                    // Actualizar el estudiante solo si cambia el grado o la sección
-                    if (grado != updatedGrado || seccion != updatedSeccion) {
-                        // Eliminar al estudiante de la sección antigua
-                        estudiantesListOld.removeIf { estudiante -> (estudiante["dni"] as? Long) == originalDni }
-
-                        // Agregar al estudiante actualizado a la nueva sección
-                        val updatedEstudiante = mapOf(
-                            "nombres" to updatedNombres,
-                            "apellidos" to updatedApellidos,
-                            "celularApoderado" to updatedCelular,
-                            "dni" to updatedDni,
-                            "grado" to updatedGrado,
-                            "seccion" to updatedSeccion
-                        )
-                        estudiantesListNew.add(updatedEstudiante)
-
-                        transaction.update(docRefOld, "estudiantes", estudiantesListOld)
-                        transaction.update(docRefNew, "estudiantes", estudiantesListNew)
-                    } else {
-                        // Solo actualizar los datos del estudiante en la sección actual
-                        val updatedEstudiante = mapOf(
-                            "nombres" to updatedNombres,
-                            "apellidos" to updatedApellidos,
-                            "celularApoderado" to updatedCelular,
-                            "dni" to updatedDni,
-                            "grado" to updatedGrado,
-                            "seccion" to updatedSeccion
-                        )
-                        val updatedEstudiantesListOld = estudiantesListOld.map {
-                            if ((it["dni"] as? Long) == originalDni) updatedEstudiante else it
-                        }
-                        transaction.update(docRefOld, "estudiantes", updatedEstudiantesListOld)
-                    }
-
-                    null
-                }.addOnSuccessListener {
-                    Toast.makeText(this, "Estudiante actualizado con éxito", Toast.LENGTH_SHORT).show()
-                    notifyEstudianteFragment()
-                    finish()
-                }.addOnFailureListener { e ->
-                    Toast.makeText(this, "Error al actualizar el estudiante: ${e.message}", Toast.LENGTH_LONG).show()
-                    Log.e("FirestoreError", "Error en la transacción", e)
+                               )
+                               estudiantesList.add(datos)
+                               docNuev.update("estudiantes", estudiantesList).addOnSuccessListener {
+                                   Toast.makeText(this,"Actualizado", Toast.LENGTH_SHORT).show()
+                               }
+                           }
+                       }
                 }
-
             } else {
                 Toast.makeText(this, "Por favor complete todos los campos correctamente", Toast.LENGTH_SHORT).show()
             }
@@ -145,11 +141,23 @@ class EditEstudiante : AppCompatActivity() {
                         val estudianteIndex = estudiantesList.indexOfFirst {
                             (it["dni"] as? Long) == originalDni
                         }
-
                         if (estudianteIndex != -1) {
                             estudiantesList.removeAt(estudianteIndex)
                             batch.update(document.reference, "estudiantes", estudiantesList)
                             documentFound = true
+                        }
+                        if (documentFound) {
+                            batch.commit()
+                                .addOnSuccessListener {
+                                    Toast.makeText(this, "Estudiante eliminado con éxito", Toast.LENGTH_SHORT).show()
+                                    notifyEstudianteFragment()
+                                    finish()
+                                }
+                                .addOnFailureListener { e ->
+                                    Toast.makeText(this, "Error al eliminar el estudiante: ${e.message}", Toast.LENGTH_LONG).show()
+                                }
+                        } else {
+                            Toast.makeText(this, "Estudiante no encontrado", Toast.LENGTH_SHORT).show()
                         }
                     }
 
