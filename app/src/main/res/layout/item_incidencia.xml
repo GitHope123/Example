@@ -67,7 +67,7 @@
                 android:textColor="@color/Primary_blue_sky"
                 android:textSize="12sp"></TextView>
             <Space
-                android:layout_width="45dp"
+                android:layout_width="10dp"
                 android:layout_height="match_parent"></Space>
             <TextView
                 android:id="@+id/tvEstado"
