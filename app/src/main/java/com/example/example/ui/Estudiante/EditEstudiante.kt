@@ -68,8 +68,6 @@ class EditEstudiante : AppCompatActivity() {
         editTextApellidos.setText(apellidos)
         editTextCelular.setText(celular.toString())
         editTextDni.setText(dni.toString())
-        setSpinnerValue(spinnerGrado, grado.toString())
-        setSpinnerValue(spinnerSeccion, seccion)
         initButton()
     }
 
@@ -97,6 +95,8 @@ class EditEstudiante : AppCompatActivity() {
             ArrayAdapter(this, android.R.layout.simple_spinner_item, secciones)
         adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerSeccion.adapter = adapterSecciones
+        setSpinnerValue(spinnerGrado, grado.toString())
+        setSpinnerValue(spinnerSeccion, seccion)
     }
 
     private fun setSpinnerValue(spinner: Spinner, value: String) {
@@ -117,23 +117,23 @@ class EditEstudiante : AppCompatActivity() {
         val updatedEstudiante = mapOf(
             "nombres" to updatedNombres,
             "apellidos" to updatedApellidos,
-            "celular" to updatedCelular,
+            "celularApoderado" to updatedCelular,
             "dni" to updatedDni,
             "grado" to updatedGrado,
-            "seccion" to updatedGrado,
+            "seccion" to updatedSeccion,
         )
         if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
             updatedCelular.toString().length == 9 && updatedDni.toString().length == 8 &&
             updatedSeccion.isNotEmpty()
         ) {
-            firestore.collection("Profesor").document(idEstudiante)
+            firestore.collection("Estudiante").document(idEstudiante)
                 .update(updatedEstudiante)
                 .addOnSuccessListener {
                     Toast.makeText(this,"Estudiante actualizado con éxito",Toast.LENGTH_SHORT).show()
                     notifyEstudianteFragment()
                     finish()
                 }
-                .addOnSuccessListener { e->
+                .addOnFailureListener { e->
                     Toast.makeText(this,"Error al actualizar el estudiante: ${e}",Toast.LENGTH_SHORT).show()
                 }
 

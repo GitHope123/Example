@@ -75,6 +75,7 @@ class AgregarIncidencia : AppCompatActivity() {
         fecha = findViewById(R.id.tvFecha)
         edMultilinea = findViewById(R.id.edMultilinea)
         imageViewEvidencia = findViewById(R.id.imageViewEvidencia)
+
     }
 
     private fun set() {
