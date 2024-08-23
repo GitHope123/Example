@@ -22,7 +22,7 @@
         android:theme="@style/Theme.Example"
         tools:targetApi="31">
         <activity
-            android:name=".ui.incidencias.estado.AgregarIncidencia"
+            android:name=".ui.incidencias.AgregarIncidencia"
             android:exported="false" />
         <activity
             android:name=".ui.principal1.EditPrincipal"
