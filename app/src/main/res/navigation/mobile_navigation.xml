@@ -7,39 +7,39 @@
 
     <fragment
         android:id="@+id/nav_principal"
-        android:name="com.example.example.ui.Principal.Principal"
+        android:name="com.example.example.ui.principal.Principal"
         android:label="@string/menu_principal"
         tools:layout="@layout/fragment_principal" />
 
     <fragment
         android:id="@+id/nav_profesor"
-        android:name="com.example.example.ui.Profesor.ProfesorFragment"
+        android:name="com.example.example.ui.profesor.ProfesorFragment"
         android:label="@string/menu_profesor"
         tools:layout="@layout/fragment_profesor" />
 
     <fragment
         android:id="@+id/nav_estudiantes"
-        android:name="com.example.example.ui.Estudiante.EstudianteFragment"
+        android:name="com.example.example.ui.estudiante.EstudianteFragment"
         android:label="@string/menu_estudiante"
         tools:layout="@layout/fragment_estudiante" />
     <fragment
         android:id="@+id/nav_tutor"
-        android:name="com.example.example.ui.Tutor.TutorFragment"
+        android:name="com.example.example.ui.tutor.TutorFragment"
         android:label="@string/menu_tutores"
         tools:layout="@layout/fragment_tutor" />
     <fragment
         android:id="@+id/nav_incidencia"
-        android:name="com.example.example.ui.Incidencia.Incidencia"
+        android:name="com.example.example.ui.incidencia.Incidencia"
         android:label="@string/menu_incidencia"
         tools:layout="@layout/fragment_incidencia" />
     <fragment
         android:id="@+id/nav_tutoria"
-        android:name="com.example.example.ui.Tutoria.Tutoria"
+        android:name="com.example.example.ui.tutoria.Tutoria"
         android:label="@string/menu_tutoria"
         tools:layout="@layout/fragment_tutoria" />
     <fragment
         android:id="@+id/nav_reporte"
-        android:name="com.example.example.ui.Reporte.Reporte"
+        android:name="com.example.example.ui.reporte.Reporte"
         android:label="@string/menu_reporte"
         tools:layout="@layout/fragment_reporte" />
 

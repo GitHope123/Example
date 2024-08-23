@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_primary_blue"
     android:padding="10sp"
-    tools:context=".ui.Incidencia.DescripcionIncidencia">
+    tools:context=".ui.incidencia.DescripcionIncidencia">
 
     <ScrollView
         android:layout_width="match_parent"

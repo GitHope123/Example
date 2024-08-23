@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_primary_blue"
-    tools:context=".ui.Profesor.ProfesorFragment">
+    tools:context=".ui.profesor.ProfesorFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

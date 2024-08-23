@@ -7,7 +7,7 @@
     android:id="@+id/fragment_incidencia"
     android:background="@drawable/background_primary_blue"
     android:padding="10dp"
-    tools:context=".ui.Incidencia.Incidencia">
+    tools:context=".ui.incidencia.Incidencia">
 
     <LinearLayout
         android:layout_width="match_parent"
