@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
 
 class ProfesorAdapter(
-    private val profesores: List<Profesor>,
-    private val onEditClickListener: (Profesor) -> Unit // You may use this for a callback
+    private val profesores: List<Profesor>, private val onEditClickListener: (Profesor) -> Unit
 ) : RecyclerView.Adapter<ProfesorAdapter.ProfesorViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfesorViewHolder {
@@ -28,7 +27,8 @@ class ProfesorAdapter(
     override fun getItemCount(): Int = profesores.size
 
     inner class ProfesorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val textViewNombreCompleto: TextView = itemView.findViewById(R.id.textViewNombreCompletos)
+        private val textViewNombreCompleto: TextView =
+            itemView.findViewById(R.id.textViewNombreCompletos)
         private val textViewTelefono: TextView = itemView.findViewById(R.id.textViewTelefono)
         private val textViewCorreo: TextView = itemView.findViewById(R.id.textViewCorreo)
         private val editButton: ImageButton = itemView.findViewById(R.id.imageButtonEdit)
@@ -37,7 +37,8 @@ class ProfesorAdapter(
             // Concatenate first and last names
             val nombreCompleto = "${profesor.nombres} ${profesor.apellidos}"
             textViewNombreCompleto.text = nombreCompleto
-            textViewTelefono.text = profesor.celular.toString() // Ensure long is converted to string
+            textViewTelefono.text =
+                profesor.celular.toString() // Ensure long is converted to string
             textViewCorreo.text = profesor.correo
 
             // Set the click listener for editing

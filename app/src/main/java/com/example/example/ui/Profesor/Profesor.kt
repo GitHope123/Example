@@ -2,6 +2,7 @@ package com.example.example.ui.Profesor
 
 import java.io.Serializable
 
+
 data class Profesor(
     var idProfesor: String? = null, // ID del profesor (documento en Firestore)
     var nombres: String = "",       // Nombre(s) del profesor
@@ -12,4 +13,4 @@ data class Profesor(
     var tutor: Boolean = false,     // Indica si el profesor es tutor
     var grado: Long? = null,        // Grado del profesor (puede ser null)
     var seccion: String = ""        // Sección del profesor (puede ser null)
-) : Serializable
+) :Serializable

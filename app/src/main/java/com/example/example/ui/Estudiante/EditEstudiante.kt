@@ -31,7 +31,6 @@ class EditEstudiante : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_estudiante)
         firestore = FirebaseFirestore.getInstance()
-
         editTextNombres = findViewById(R.id.editTextNombres)
         editTextApellidos = findViewById(R.id.editTextApellidos)
         editTextCelular = findViewById(R.id.editTextCelular)
@@ -68,17 +67,17 @@ class EditEstudiante : AppCompatActivity() {
             val updatedDni = editTextDni.text.toString().trim().toLongOrNull()
             val updatedGrado = spinnerGrado.selectedItem.toString().trim().toIntOrNull()
             val updatedSeccion = spinnerSeccion.selectedItem.toString().trim()
-
             gradoSeccionNuevo="${updatedGrado}${updatedSeccion}"
+
             if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
                 updatedCelular != null && updatedCelular.toString().length == 9 &&
                 updatedDni != null && updatedDni.toString().length == 8 &&
                 updatedSeccion.isNotEmpty() && updatedGrado != null) {
-                val docRef= firestore.collection("Aula").document(gradoSeccionActual)
-                val docNuev= firestore.collection("Aula").document(gradoSeccionNuevo)
+                val docRef= firestore.collection("Aula").document(gradoSeccionActual)//1A
                 var documentFound = false
                 val batch = firestore.batch()
                 if(updatedGrado!=grado||updatedSeccion!=seccion){
+                    val docNuev= firestore.collection("Aula").document(gradoSeccionNuevo)//1B
                        docRef.get().addOnSuccessListener { document->
                            if(document.exists()){
                                val estudiantesList = document.get("estudiantes") as? MutableList<Map<String, Any>> ?: mutableListOf()
@@ -124,6 +123,63 @@ class EditEstudiante : AppCompatActivity() {
                                }
                            }
                        }
+                }
+                else{
+                    docRef.get().addOnSuccessListener { document ->
+                        if (document.exists()) {
+                            // Obtener la lista de estudiantes
+                            val estudiantesList = document.get("estudiantes") as? MutableList<Map<String, Any>> ?: mutableListOf()
+
+                            // Datos del estudiante a actualizar
+                            val updatedDatos = mapOf(
+                                "apellidos" to updatedApellidos,
+                                "nombres" to updatedNombres,
+                                "dni" to updatedDni,  // Nuevo DNI
+                                "celularApoderado" to updatedCelular,
+                                "grado" to updatedGrado,
+                                "seccion" to updatedSeccion
+                            )
+
+                            // Buscar el índice del estudiante con el DNI original
+                            val estudianteIndex = estudiantesList.indexOfFirst {
+                                (it["dni"] as? Long) == originalDni
+                            }
+
+                            if (estudianteIndex != -1) {
+                                // Verificar si el DNI ha cambiado
+                                val estudianteActual = estudiantesList[estudianteIndex]
+                                val dniActual = estudianteActual["dni"] as? Long
+                                if (dniActual != updatedDni) {
+                                    // Si el DNI ha cambiado, eliminar el estudiante con el DNI original
+                                    estudiantesList.removeAt(estudianteIndex)
+                                    // Agregar el estudiante con el nuevo DNI
+                                    estudiantesList.add(updatedDatos)
+                                } else {
+                                    // Si el DNI no ha cambiado, solo actualizar los otros campos
+                                    estudiantesList[estudianteIndex] = updatedDatos
+                                }
+
+                                // Actualizar el documento en Firestore con la lista modificada
+                                docRef.update("estudiantes", estudiantesList)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(this, "Estudiante actualizado con éxito", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(this, "Error al actualizar el estudiante", Toast.LENGTH_SHORT).show()
+                                        Log.w("Firestore", "Error al actualizar el estudiante", e)
+                                    }
+                            } else {
+                                // Estudiante no encontrado
+                                Toast.makeText(this, "Estudiante no encontrado", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            // Documento no encontrado
+                            Toast.makeText(this, "Documento no encontrado", Toast.LENGTH_SHORT).show()
+                        }
+                    }.addOnFailureListener { e ->
+                        Toast.makeText(this, "Error al obtener el documento", Toast.LENGTH_SHORT).show()
+                        Log.w("Firestore", "Error al obtener el documento", e)
+                    }
                 }
             } else {
                 Toast.makeText(this, "Por favor complete todos los campos correctamente", Toast.LENGTH_SHORT).show()

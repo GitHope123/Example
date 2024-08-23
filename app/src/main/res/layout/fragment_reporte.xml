@@ -11,24 +11,21 @@
         android:layout_width="match_parent"
         android:layout_margin="20sp"
         android:layout_height="match_parent"
-
         android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="500dp"
             android:layout_margin="10sp"
+            android:backgroundTint="@color/Primary_blue"
             android:background="@drawable/background_white_element_full"
             android:orientation="vertical">
-
             <TextView
                 android:layout_width="180sp"
                 android:layout_height="180sp"
                 android:layout_gravity="center"
                 android:layout_marginTop="50sp"
-
                 android:background="@drawable/icon_report"
-                android:backgroundTint="@color/Transparent_color">
+                android:backgroundTint="@color/Primary_blue_sky">
 
             </TextView>
 
@@ -39,7 +36,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/icon_looker" />
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/buttonOpenLink"
                 android:layout_width="match_parent"
                 android:layout_height="70sp"
                 android:layout_gravity="center"

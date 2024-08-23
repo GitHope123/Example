@@ -28,78 +28,83 @@ class InicioSesion : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inicio_sesion)
-        // Configura Google Sign-In
+
+
+        setupGoogleSignIn()
+        auth = FirebaseAuth.getInstance()
+        setupSignInLauncher()
+        setupButtons()
+    }
+
+    private fun setupGoogleSignIn() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-        auth = FirebaseAuth.getInstance()
-        // Registra el ActivityResultLauncher
+    }
+
+    private fun setupSignInLauncher() {
         signInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                val intent = result.data
-                val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
-                try {
-                    val account = task.getResult(ApiException::class.java)!!
-                    firebaseAuthWithGoogle(account)
-                } catch (e: ApiException) {
-                    Log.e("InicioSesion", "Google sign-in failed", e)
-                    Toast.makeText(this, "Error al iniciar sesión.", Toast.LENGTH_LONG).show()
-                }
+                handleGoogleSignInResult(result.data)
             } else {
-                Log.e("InicioSesion", "Result not OK")
+                Log.e("InicioSesion", "Google sign-in failed: result not OK")
             }
         }
-
+    }
+    private fun setupButtons() {
         val iniciarSesion = findViewById<Button>(R.id.buttonIniciarSesion)
-        iniciarSesion.setOnClickListener {
-            val email = findViewById<EditText>(R.id.editTextUsername).text.toString()
-            val password = findViewById<EditText>(R.id.editTextPassword).text.toString()
-
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Por favor, ingrese todos los campos.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        val user = auth.currentUser
-                        if (user != null && email.endsWith("@gmail.com")) {
-                            val intent = Intent(this, BarraLateral::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            handleSignOut()
-                        }
-                    } else {
-                        val exception = task.exception
-                        val errorMessage = when (exception) {
-                            is FirebaseAuthInvalidCredentialsException -> "Credenciales inválidas. Verifique el correo electrónico y la contraseña."
-                            is FirebaseAuthInvalidUserException -> "Usuario no registrado. Verifique el correo electrónico."
-                            else -> "Error al iniciar sesión. Inténtelo de nuevo."
-                        }
-                        Log.e("InicioSesion", errorMessage, exception)
-                        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
-                    }
-                }
-        }
-
         val iniciarSesionGoogle = findViewById<Button>(R.id.buttonGoogle)
-        iniciarSesionGoogle.setOnClickListener {
-            signIn()
+        iniciarSesion.setOnClickListener { loginWithEmailAndPassword() }
+        iniciarSesionGoogle.setOnClickListener { signInWithGoogle() }
+    }
+    private fun loginWithEmailAndPassword() {
+        val email = findViewById<EditText>(R.id.editTextUsername).text.toString()
+        val password = findViewById<EditText>(R.id.editTextPassword).text.toString()
+
+        if (email.isBlank() || password.isBlank()) {
+            showToast("Por favor, ingrese todos los campos.")
+            return
+        }
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    handleSuccessfulLogin(email)
+                } else {
+                    handleSignInError(task.exception)
+                }
+            }
+    }
+
+    private fun handleSuccessfulLogin(email: String) {
+        val user = auth.currentUser
+        if (user != null && email.endsWith("@gmail.com")) {
+            navigateToBarraLateral()
+        } else {
+            handleSignOut()
         }
     }
 
-    private fun signIn() {
+    private fun signInWithGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         signInLauncher.launch(signInIntent)
     }
 
+    private fun handleGoogleSignInResult(data: Intent?) {
+        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+        try {
+            val account = task.getResult(ApiException::class.java)!!
+            firebaseAuthWithGoogle(account)
+        } catch (e: ApiException) {
+            Log.e("InicioSesion", "Google sign-in failed", e)
+            showToast("Error al iniciar sesión.")
+        }
+    }
+
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         val idToken = account.idToken ?: run {
-            Toast.makeText(this, "Error al obtener el token de Google.", Toast.LENGTH_LONG).show()
+            showToast("Error al obtener el token de Google.")
             return
         }
 
@@ -107,32 +112,43 @@ class InicioSesion : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    val email = user?.email
-
+                    val email = auth.currentUser?.email
                     if (email != null && email.endsWith("@gmail.com")) {
-                        val intent = Intent(this, BarraLateral::class.java)
-                        startActivity(intent)
-                        finish()
+                        navigateToBarraLateral()
                     } else {
                         handleSignOut()
                     }
                 } else {
-                    val exception = task.exception
-                    val errorMessage = when (exception) {
-                        is ApiException -> "Error de autenticación de Google: ${exception.statusCode}"
-                        else -> "Error al iniciar sesión con Firebase."
-                    }
-                    Log.e("InicioSesion", errorMessage, exception)
-                    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+                    handleSignInError(task.exception)
                     handleSignOut()
                 }
             }
     }
 
+    private fun handleSignInError(exception: Exception?) {
+        val errorMessage = when (exception) {
+            is FirebaseAuthInvalidCredentialsException -> "Credenciales inválidas. Verifique el correo electrónico y la contraseña."
+            is FirebaseAuthInvalidUserException -> "Usuario no registrado. Verifique el correo electrónico."
+            is ApiException -> "Error de autenticación de Google: ${exception.statusCode}"
+            else -> "Error al iniciar sesión. Inténtelo de nuevo."
+        }
+        Log.e("InicioSesion", errorMessage, exception)
+        showToast(errorMessage)
+    }
+
     private fun handleSignOut() {
         auth.signOut()
         googleSignInClient.signOut()
-        Toast.makeText(this, "Acceso restringido. Inténtelo de nuevo.", Toast.LENGTH_LONG).show()
+        showToast("Acceso restringido. Inténtelo de nuevo.")
+    }
+
+    private fun navigateToBarraLateral() {
+        val intent = Intent(this, BarraLateral::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }

@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.credentials.webauthn.Cbor
 import com.example.example.databinding.ActivityBarraLateralBinding
+import com.example.example.ui.Principal.Principal
 import com.google.firebase.auth.FirebaseAuth
 
 class BarraLateral : AppCompatActivity() {
@@ -65,7 +66,6 @@ class BarraLateral : AppCompatActivity() {
         // Configura la barra de acción
         setSupportActionBar(binding.appBarBarraLateral.toolbar)
 
-
         // Configura el Navigation Drawer
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navController = findNavController(R.id.nav_host_fragment_content_barra_lateral)
@@ -82,11 +82,21 @@ class BarraLateral : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
+
+        // Recibir el email desde el Intent y pasar al fragmento
+        val email = intent.getStringExtra("user_email")
+        val fragment = Principal().apply {
+            arguments = Bundle().apply {
+                putString("email", email)
+            }
+        }
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment_content_barra_lateral, fragment)
+            .commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.barra_lateral, menu)
-
         return true
     }
 
@@ -101,3 +111,4 @@ class BarraLateral : AppCompatActivity() {
         auth.removeAuthStateListener(authStateListener)
     }
 }
+
