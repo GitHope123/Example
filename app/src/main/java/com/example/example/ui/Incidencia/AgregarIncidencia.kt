@@ -203,8 +203,12 @@ class AgregarIncidencia : AppCompatActivity() {
                         .add(incidencia)
                         .addOnSuccessListener {
                             incrementarCantidadIncidencia()
-                            val fragment=Incidencia()
-                            Toast.makeText(this, "Incidencia registrada exitosamente", Toast.LENGTH_SHORT).show()
+                            val fragment = Incidencia()
+                            Toast.makeText(
+                                this,
+                                "Incidencia registrada exitosamente",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             finish()
                             binding.btnRegistrarIncidencia.isEnabled = true
                         }
@@ -232,6 +236,7 @@ class AgregarIncidencia : AppCompatActivity() {
                 ).show()
             }
     }
+
     private fun incrementarCantidadIncidencia() {
         val studentRef = firestore.collection("Estudiante").document(studentId)
 
@@ -240,12 +245,21 @@ class AgregarIncidencia : AppCompatActivity() {
             val currentCount = snapshot.getLong("cantidadIncidencia") ?: 0
             transaction.update(studentRef, "cantidadIncidencia", currentCount + 1)
         }.addOnSuccessListener {
-            Toast.makeText(this, "Incidencia registrada y contador actualizado.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "Incidencia registrada y contador actualizado.",
+                Toast.LENGTH_SHORT
+            ).show()
             finish()
         }.addOnFailureListener { e ->
-            Toast.makeText(this, "Error al actualizar contador de incidencias: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "Error al actualizar contador de incidencias: ${e.message}",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
+
     private fun navigateToIncidenciaFragment() {
         val navController: NavController = findNavController(R.id.mobile_navigation)
         navController.navigate(R.id.nav_incidencia)
