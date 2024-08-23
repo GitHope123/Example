@@ -123,9 +123,5 @@ class AddProfesor : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun navigateToProfesorFragment() {
-        // Assuming that ProfesorFragment is part of the navigation system
-        // Use proper fragment navigation or intent as per your app's architecture
-        finish()
-    }
+
 }

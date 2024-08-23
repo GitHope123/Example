@@ -42,8 +42,6 @@ class EditEstudiante : AppCompatActivity() {
         setContentView(R.layout.activity_edit_estudiante)
         findButtons()
         listener()
-
-
     }
 
     private fun listener() {
@@ -68,7 +66,7 @@ class EditEstudiante : AppCompatActivity() {
         editTextApellidos.setText(apellidos)
         editTextCelular.setText(celular.toString())
         editTextDni.setText(dni.toString())
-        initButton()
+        initSpinner()
     }
 
     private fun findButtons() {
@@ -84,7 +82,7 @@ class EditEstudiante : AppCompatActivity() {
         getData()
     }
 
-    private fun initButton() {
+    private fun initSpinner() {
         val grados = arrayOf("1", "2", "3", "4", "5")
         val adapterGrados = ArrayAdapter(this, android.R.layout.simple_spinner_item, grados)
         adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

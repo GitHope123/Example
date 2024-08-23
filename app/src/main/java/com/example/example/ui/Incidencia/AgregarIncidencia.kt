@@ -261,8 +261,4 @@ class AgregarIncidencia : AppCompatActivity() {
         }
     }
 
-    private fun navigateToIncidenciaFragment() {
-        val navController: NavController = findNavController(R.id.mobile_navigation)
-        navController.navigate(R.id.nav_incidencia)
-    }
 }
