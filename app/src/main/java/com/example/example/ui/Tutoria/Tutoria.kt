@@ -1,4 +1,4 @@
-package com.example.example.ui.tutoria
+package com.example.example.ui.Tutoria
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import com.example.example.R
 import com.example.example.databinding.FragmentTutoriaBinding
 

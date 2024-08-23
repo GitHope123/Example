@@ -28,7 +28,7 @@
             android:name=".ui.incidencia.AgregarEstudiantes"
             android:exported="false" />
         <activity
-            android:name=".ui.tutoria.DescripcionRevisar"
+            android:name=".ui.Tutoria.DescripcionRevisar"
             android:exported="false" />
         <activity
             android:name=".ui.incidencia.DescripcionIncidencia"
