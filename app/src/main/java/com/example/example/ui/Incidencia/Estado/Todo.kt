@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
-import com.example.example.ui.Incidencia.EstudianteAgregar
 import com.google.firebase.firestore.FirebaseFirestore
 
 class Todo : Fragment() {
@@ -44,9 +43,23 @@ class Todo : Fragment() {
                     val apellidoEstudiante = document.getString("apellidoEstudiante") ?: ""
                     val tipo = document.getString("tipo") ?: ""
                     val gravedad = document.getString("gravedad") ?: ""
-                    val estado = document.getString("estado") ?: ""
+                    val grado = document.getLong("grado")?.toInt() ?: 0
+                    val seccion = document.getString("seccion") ?: ""
                     val detalle = document.getString("detalle") ?: ""
-                    incidencias.add(IncidenciaClass( id, fecha, hora, nombreEstudiante, apellidoEstudiante, tipo, gravedad, estado, detalle))
+                    val estado = document.getString("estado") ?: ""
+                    incidencias.add(IncidenciaClass(
+                        id = id,
+                        fecha = fecha,
+                        hora = hora,
+                        nombreEstudiante = nombreEstudiante,
+                        apellidoEstudiante = apellidoEstudiante,
+                        grado = grado,
+                        seccion = seccion,
+                        tipo = tipo,
+                        gravedad = gravedad,
+                        estado = estado,
+                        detalle = detalle
+                    ))
                 }
                 adapter.updateData(incidencias)
             }

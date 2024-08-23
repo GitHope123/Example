@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
 import com.example.example.ui.Incidencia.DescripcionIncidencia
 import android.content.Context
+import android.widget.ImageView
 
 class IncidenciaAdapter(
     private var incidencias: List<IncidenciaClass>,
@@ -44,6 +45,10 @@ class IncidenciaAdapter(
         private val tvHora: TextView = itemView.findViewById(R.id.tvHora)
         private val tvFecha: TextView = itemView.findViewById(R.id.tvFecha)
         private val tvEstado: TextView = itemView.findViewById(R.id.tvEstado)
+        private val tvImagenGravedad: ImageView = itemView.findViewById(R.id.tvImagenGravedad)
+        private val tvGrado: TextView = itemView.findViewById(R.id.tvGrado)
+        private val tvSeccion: TextView = itemView.findViewById(R.id.tvSeccion)
+        private val tvTipo: TextView = itemView.findViewById(R.id.tvTipo)
 
 
         fun bind(incidencia: IncidenciaClass) {
@@ -52,9 +57,28 @@ class IncidenciaAdapter(
             tvHora.text = incidencia.hora
             tvFecha.text = incidencia.fecha
             tvEstado.text = incidencia.estado
+            tvGrado.text = incidencia.grado.toString()
+            tvSeccion.text = incidencia.seccion
+            tvTipo.text = incidencia.tipo
             when (incidencia.estado) {
                 "Revisado" -> tvEstado.setTextColor(itemView.context.getColor(R.color.Green))
                 else -> tvEstado.setTextColor(itemView.context.getColor(R.color.color_red))
+            }
+            when (incidencia.gravedad) {
+                "Moderado" -> {
+                    tvGravedad.setTextColor(itemView.context.getColor(R.color.Primary_yellow))
+                    tvImagenGravedad.setColorFilter(itemView.context.getColor(R.color.Primary_yellow))
+                }
+
+                "Grave" -> {
+                    tvGravedad.setTextColor(itemView.context.getColor(R.color.color_orange))
+                    tvImagenGravedad.setColorFilter(itemView.context.getColor(R.color.color_orange))
+                }
+
+                else -> {
+                    tvGravedad.setTextColor(itemView.context.getColor(R.color.color_red))
+                    tvImagenGravedad.setColorFilter(itemView.context.getColor(R.color.color_red))
+                }
             }
 
         }
