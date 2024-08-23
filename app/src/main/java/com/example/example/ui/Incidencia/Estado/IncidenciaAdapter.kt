@@ -27,7 +27,20 @@ class IncidenciaAdapter(
         holder.bind(incidencia)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, DescripcionIncidencia::class.java)
-            intent.putExtra("INCIDENCIA_DATA", incidencia)
+            intent.putExtra("INCIDENCIA_ID", incidencia.id) // Asegúrate de enviar el ID si es necesario
+            intent.putExtra("INCIDENCIA_FECHA", incidencia.fecha)
+            intent.putExtra("INCIDENCIA_HORA", incidencia.hora)
+            intent.putExtra("INCIDENCIA_NOMBRE", incidencia.nombreEstudiante)
+            intent.putExtra("INCIDENCIA_APELLIDO", incidencia.apellidoEstudiante)
+            intent.putExtra("INCIDENCIA_GRADO", incidencia.grado)
+            intent.putExtra("INCIDENCIA_SECCION", incidencia.seccion)
+            intent.putExtra("INCIDENCIA_TIPO", incidencia.tipo)
+            intent.putExtra("INCIDENCIA_GRAVEDAD", incidencia.gravedad)
+            intent.putExtra("INCIDENCIA_ESTADO", incidencia.estado)
+            intent.putExtra("INCIDENCIA_DETALLE", incidencia.detalle)
+            incidencia.imageUri?.let { uri ->
+                intent.putExtra("INCIDENCIA_FOTO_URL", uri)
+            }
             context.startActivity(intent)
         }
     }

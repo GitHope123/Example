@@ -25,29 +25,33 @@ class Todo : Fragment() {
         init(view)
         return view
     }
-        private fun init(view: View){
-            recyclerViewIncidencia = view.findViewById(R.id.recyclerViewIncidencia)
-            recyclerViewIncidencia.layoutManager = LinearLayoutManager(context)
-            adapter = IncidenciaAdapter(incidencias, requireContext())
-            recyclerViewIncidencia.adapter = adapter
-            loadAllIncidencias()
-        }
+
+    private fun init(view: View) {
+        recyclerViewIncidencia = view.findViewById(R.id.recyclerViewIncidencia)
+        recyclerViewIncidencia.layoutManager = LinearLayoutManager(context)
+        adapter = IncidenciaAdapter(incidencias, requireContext())
+        recyclerViewIncidencia.adapter = adapter
+        loadAllIncidencias()
+    }
+
     private fun loadAllIncidencias() {
         firestore.collection("Incidencia").get().addOnSuccessListener { result ->
-                incidencias.clear()
-                for (document in result) {
-                    val id = document.id  // Obtener el ID del documento
-                    val fecha = document.getString("fecha") ?: ""
-                    val hora = document.getString("hora") ?: ""
-                    val nombreEstudiante = document.getString("nombreEstudiante") ?: ""
-                    val apellidoEstudiante = document.getString("apellidoEstudiante") ?: ""
-                    val tipo = document.getString("tipo") ?: ""
-                    val gravedad = document.getString("gravedad") ?: ""
-                    val grado = document.getLong("grado")?.toInt() ?: 0
-                    val seccion = document.getString("seccion") ?: ""
-                    val detalle = document.getString("detalle") ?: ""
-                    val estado = document.getString("estado") ?: ""
-                    incidencias.add(IncidenciaClass(
+            incidencias.clear()
+            for (document in result) {
+                val id = document.id  // Obtener el ID del documento
+                val fecha = document.getString("fecha") ?: ""
+                val hora = document.getString("hora") ?: ""
+                val nombreEstudiante = document.getString("nombreEstudiante") ?: ""
+                val apellidoEstudiante = document.getString("apellidoEstudiante") ?: ""
+                val tipo = document.getString("tipo") ?: ""
+                val gravedad = document.getString("gravedad") ?: ""
+                val grado = document.getLong("grado")?.toInt() ?: 0
+                val seccion = document.getString("seccion") ?: ""
+                val detalle = document.getString("detalle") ?: ""
+                val estado = document.getString("estado") ?: ""
+                val urlImagen = document.getString("urlImagen") ?: ""
+                incidencias.add(
+                    IncidenciaClass(
                         id = id,
                         fecha = fecha,
                         hora = hora,
@@ -58,15 +62,18 @@ class Todo : Fragment() {
                         tipo = tipo,
                         gravedad = gravedad,
                         estado = estado,
-                        detalle = detalle
-                    ))
-                }
-                adapter.updateData(incidencias)
+                        detalle = detalle,
+                        imageUri = urlImagen
+                    )
+                )
             }
+            adapter.updateData(incidencias)
+        }
             .addOnFailureListener { exception ->
                 exception.printStackTrace()
             }
     }
+
     override fun onResume() {
         super.onResume()
         loadAllIncidencias()  // Recargar los datos cuando el fragmento se reanuda
