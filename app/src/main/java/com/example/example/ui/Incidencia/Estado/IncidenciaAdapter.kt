@@ -52,6 +52,10 @@ class IncidenciaAdapter(
             tvHora.text = incidencia.hora
             tvFecha.text = incidencia.fecha
             tvEstado.text = incidencia.estado
+            when (incidencia.estado) {
+                "Revisado" -> tvEstado.setTextColor(itemView.context.getColor(R.color.Green))
+                else -> tvEstado.setTextColor(itemView.context.getColor(R.color.color_red))
+            }
 
         }
     }
