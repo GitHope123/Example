@@ -35,7 +35,7 @@ class ProfesorAdapter(
 
         fun bind(profesor: Profesor) {
             // Concatenate first and last names
-            val nombreCompleto = "${profesor.nombres} ${profesor.apellidos}"
+            val nombreCompleto = "${profesor.apellidos} ${profesor.nombres}"
             textViewNombreCompleto.text = nombreCompleto
             textViewTelefono.text =
                 profesor.celular.toString() // Ensure long is converted to string
