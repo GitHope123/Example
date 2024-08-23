@@ -37,7 +37,7 @@
             android:name=".ui.incidencia.AgregarIncidencia"
             android:exported="false" />
         <activity
-            android:name=".ui.estudiante.AddEstudiante"
+            android:name=".ui.estudiantes.AddEstudiante"
             android:exported="false" />
         <activity
             android:name=".ui.profesor.AddProfesor"
@@ -46,7 +46,7 @@
             android:name=".ui.tutor.AddTutor"
             android:exported="false" />
         <activity
-            android:name=".ui.estudiante.EditEstudiante"
+            android:name=".ui.estudiantes.EditEstudiante"
             android:exported="false" />
         <activity
             android:name=".ui.profesor.EditProfesor"

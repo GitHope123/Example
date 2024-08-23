@@ -1,4 +1,4 @@
-package com.example.example.ui.estudiante
+package com.example.example.ui.estudiantes
 
 import android.os.Bundle
 import android.view.View

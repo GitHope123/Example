@@ -1,4 +1,4 @@
-package com.example.example.ui.estudiante
+package com.example.example.ui.estudiantes
 
 import java.io.Serializable
 
