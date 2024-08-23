@@ -1,5 +1,6 @@
 package com.example.example.ui.Incidencia
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -12,6 +13,8 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.example.example.R
 import com.example.example.databinding.ActivityAgregarIncidenciaBinding
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,6 +32,7 @@ import java.util.UUID
 class AgregarIncidencia : AppCompatActivity() {
 
     private lateinit var binding: ActivityAgregarIncidenciaBinding
+    private lateinit var studentId: String
     private lateinit var studentName: String
     private lateinit var studentLastName: String
     private lateinit var auth: FirebaseAuth
@@ -59,7 +63,7 @@ class AgregarIncidencia : AppCompatActivity() {
     }
 
     private fun init() {
-        val studentId = intent.getStringExtra("EXTRA_STUDENT_ID")
+        studentId = intent.getStringExtra("EXTRA_STUDENT_ID").toString()
         studentName = intent.getStringExtra("EXTRA_STUDENT_NAME") ?: "N/A"
         studentLastName = intent.getStringExtra("EXTRA_STUDENT_LAST_NAME") ?: "N/A"
         studentGrade = intent.getIntExtra("EXTRA_STUDENT_GRADE", 0)
@@ -168,6 +172,7 @@ class AgregarIncidencia : AppCompatActivity() {
     private fun guardarDatosIncidencia(urlImagen: String?) {
         val currentUser = auth.currentUser
         val userEmail = currentUser?.email ?: return
+        val estado = "Pendiente"
 
         firestore.collection("Profesor")
             .whereEqualTo("correo", userEmail)
@@ -183,6 +188,9 @@ class AgregarIncidencia : AppCompatActivity() {
                         "hora" to obtenerHoraActual(),
                         "nombreEstudiante" to studentName,
                         "apellidoEstudiante" to studentLastName,
+                        "grado" to studentGrade,
+                        "seccion" to studentSection,
+                        "estado" to estado,
                         "gravedad" to spinnerGravedad.selectedItem.toString(),
                         "tipo" to spinnerTipo.selectedItem.toString(),
                         "detalle" to edMultilinea.text.toString(),
@@ -195,6 +203,7 @@ class AgregarIncidencia : AppCompatActivity() {
                         .add(incidencia)
                         .addOnSuccessListener {
                             incrementarCantidadIncidencia()
+                            val fragment=Incidencia()
                             Toast.makeText(this, "Incidencia registrada exitosamente", Toast.LENGTH_SHORT).show()
                             finish()
                             binding.btnRegistrarIncidencia.isEnabled = true
@@ -224,8 +233,6 @@ class AgregarIncidencia : AppCompatActivity() {
             }
     }
     private fun incrementarCantidadIncidencia() {
-        val studentId = intent.getStringExtra("EXTRA_STUDENT_ID") ?: return
-
         val studentRef = firestore.collection("Estudiante").document(studentId)
 
         firestore.runTransaction { transaction ->
@@ -238,5 +245,9 @@ class AgregarIncidencia : AppCompatActivity() {
         }.addOnFailureListener { e ->
             Toast.makeText(this, "Error al actualizar contador de incidencias: ${e.message}", Toast.LENGTH_SHORT).show()
         }
+    }
+    private fun navigateToIncidenciaFragment() {
+        val navController: NavController = findNavController(R.id.mobile_navigation)
+        navController.navigate(R.id.nav_incidencia)
     }
 }
