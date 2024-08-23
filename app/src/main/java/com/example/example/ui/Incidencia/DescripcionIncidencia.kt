@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.example.R
 
 class DescripcionIncidencia : AppCompatActivity() {
@@ -70,21 +71,23 @@ class DescripcionIncidencia : AppCompatActivity() {
         tvGravedad = findViewById(R.id.tvGravedad)
         tvDetalle = findViewById(R.id.tvDetalle)
         imagen = findViewById(R.id.imagen)
+        imageUri?.let { uri ->
+            Glide.with(this)
+                .load(uri)
+                .apply(RequestOptions().centerCrop())
+                .into(imagen)
+        }
     }
     private fun set(){
         tvFecha.text = fecha
         tvHora.text = hora
-        tvNombreCompleto.text = "$nombreEstudiante $apellidoEstudiante"
+        tvNombreCompleto.text = "$apellidoEstudiante $nombreEstudiante"
         tvGrado.text = grado.toString()
         tvSeccion.text = seccion
         tvEstado.text = estado
         tvTipo.text = tipo
         tvGravedad.text = gravedad
         tvDetalle.text = detalle
-        imageUri?.let { uri ->
-            Glide.with(this)
-                .load(uri)
-                .into(imagen)
-        }
+
     }
 }

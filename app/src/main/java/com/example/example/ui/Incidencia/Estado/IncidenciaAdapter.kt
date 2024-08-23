@@ -65,7 +65,7 @@ class IncidenciaAdapter(
 
 
         fun bind(incidencia: IncidenciaClass) {
-            tvNombre.text = "${incidencia.nombreEstudiante} ${incidencia.apellidoEstudiante}"
+            tvNombre.text = "${incidencia.apellidoEstudiante} ${incidencia.nombreEstudiante}"
             tvGravedad.text = incidencia.gravedad
             tvHora.text = incidencia.hora
             tvFecha.text = incidencia.fecha
