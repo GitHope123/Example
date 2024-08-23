@@ -44,9 +44,23 @@ class Pendiente : Fragment() {
                     val apellidoEstudiante = document.getString("apellidoEstudiante") ?: ""
                     val tipo = document.getString("tipo") ?: ""
                     val gravedad = document.getString("gravedad") ?: ""
+                    val grado = document.getLong("grado")?.toInt() ?: 0
+                    val seccion = document.getString("seccion") ?: ""
                     val detalle = document.getString("detalle") ?: ""
 
-                    incidenciasPendiente.add(IncidenciaClass(id, fecha, hora, nombreEstudiante, apellidoEstudiante, tipo, gravedad, estado, detalle))
+                    incidenciasPendiente.add(IncidenciaClass(
+                        id = id,
+                        fecha = fecha,
+                        hora = hora,
+                        nombreEstudiante = nombreEstudiante,
+                        apellidoEstudiante = apellidoEstudiante,
+                        grado = grado,
+                        seccion = seccion,
+                        tipo = tipo,
+                        gravedad = gravedad,
+                        estado = estado,
+                        detalle = detalle
+                    ))
                 }
             }
             adapter.updateData(incidenciasPendiente)

@@ -8,6 +8,8 @@ data class IncidenciaClass(
     val hora: String = "",
     val nombreEstudiante: String = "",
     val apellidoEstudiante: String = "",
+    val grado: Int = 0,
+    val seccion: String = "",
     val tipo: String = "",
     val gravedad: String = "",
     val estado: String = "",

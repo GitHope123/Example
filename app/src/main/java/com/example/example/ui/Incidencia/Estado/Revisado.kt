@@ -43,9 +43,23 @@ class Revisado : Fragment() {
                     val apellidoEstudiante = document.getString("apellidoEstudiante") ?: ""
                     val tipo = document.getString("tipo") ?: ""
                     val gravedad = document.getString("gravedad") ?: ""
+                    val grado = document.getLong("grado")?.toInt() ?: 0
+                    val seccion = document.getString("seccion") ?: ""
                     val detalle = document.getString("detalle") ?: ""
 
-                    incidenciasRevisado.add(IncidenciaClass(id, fecha, hora, nombreEstudiante, apellidoEstudiante, tipo, gravedad, estado, detalle))
+                    incidenciasRevisado.add(IncidenciaClass(
+                        id = id,
+                        fecha = fecha,
+                        hora = hora,
+                        nombreEstudiante = nombreEstudiante,
+                        apellidoEstudiante = apellidoEstudiante,
+                        grado = grado,
+                        seccion = seccion,
+                        tipo = tipo,
+                        gravedad = gravedad,
+                        estado = estado,
+                        detalle = detalle
+                    ))
                 }
             }
             adapter.updateData(incidenciasRevisado)
