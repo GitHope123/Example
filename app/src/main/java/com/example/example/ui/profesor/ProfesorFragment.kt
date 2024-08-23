@@ -1,5 +1,4 @@
 package com.example.example.ui.profesor
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -40,7 +39,7 @@ class ProfesorFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        profesorAdapter = ProfesorAdapter(filteredProfesorList) { profesor ->
+        profesorAdapter = ProfesorAdapter(filteredProfesorList) {
             // Handle edit action for the professor here if needed
         }
         binding.recyclerViewProfesores.apply {

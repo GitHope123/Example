@@ -121,12 +121,6 @@ class EditEstudiante : AppCompatActivity() {
     }
 
 
-    private fun setSpinnerValue(spinner: Spinner, value: String) {
-        val adapter = spinner.adapter as? ArrayAdapter<String>
-        val position = adapter?.getPosition(value) ?: 0
-        spinner.setSelection(position)
-    }
-
 
 
     private fun modifyStudent() {
@@ -155,8 +149,8 @@ class EditEstudiante : AppCompatActivity() {
                     notifyEstudianteFragment()
                     finish()
                 }
-                .addOnFailureListener { e->
-                    Toast.makeText(this,"Error al actualizar el estudiante: ${e}",Toast.LENGTH_SHORT).show()
+                .addOnFailureListener {
+                    Toast.makeText(this,"Error al actualizar el estudiante",Toast.LENGTH_SHORT).show()
                 }
 
         } else {
@@ -176,7 +170,13 @@ class EditEstudiante : AppCompatActivity() {
     }
     private fun removeStudent(){
         val documentRef=firestore.collection("Estudiante").document(idEstudiante)
-
+        documentRef.delete()
+            .addOnSuccessListener {
+                Toast.makeText(this,"Estudiante Eliminado",Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this,"Error al agregar",Toast.LENGTH_SHORT).show()
+            }
     }
 
 }
