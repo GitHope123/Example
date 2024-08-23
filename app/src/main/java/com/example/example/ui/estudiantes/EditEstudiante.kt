@@ -82,7 +82,7 @@ class EditEstudiante : AppCompatActivity() {
         getData()
     }
     private fun updatedGrado(){
-        val grados=arrayOf("Todas","1","2","3","4","5")
+        val grados=arrayOf("1","2","3","4","5")
         val adapterGrados=ArrayAdapter(this,android.R.layout.simple_spinner_item,grados)
         adapterGrados.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
         spinnerGrado.adapter=adapterGrados
@@ -93,6 +93,7 @@ class EditEstudiante : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
+                setSpinnerValue(spinnerGrado, grado.toString())
                 val gradoSeleccionado=spinnerGrado.selectedItem.toString()
                 updatedSeccion(gradoSeleccionado)
             }
@@ -118,6 +119,20 @@ class EditEstudiante : AppCompatActivity() {
         adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerSeccion.adapter=adapterSecciones
         spinnerSeccion.isEnabled=gradoSeleccionado != "Todas"
+        spinnerSeccion.onItemSelectedListener=object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                setSpinnerValue(spinnerSeccion, seccion)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
     }
 
 
@@ -177,6 +192,11 @@ class EditEstudiante : AppCompatActivity() {
             .addOnFailureListener {
                 Toast.makeText(this,"Error al agregar",Toast.LENGTH_SHORT).show()
             }
+    }
+    private fun setSpinnerValue(spinner: Spinner, value: String) {
+        val adapter = spinner.adapter as? ArrayAdapter<String>
+        val position = adapter?.getPosition(value) ?: 0
+        spinner.setSelection(position)
     }
 
 }
