@@ -27,7 +27,7 @@ class EstudianteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEstudianteBinding.inflate(inflater, container, false)
-        initButton()
+        updateGrado()
         setupRecyclerView()
         setupSearchView()
         fetchEstudiantes()
@@ -36,7 +36,7 @@ class EstudianteFragment : Fragment() {
     }
 
 
-    private fun initButton() {
+    private fun updateGrado() {
         val grados= arrayOf("Todas","1","2","3","4","5")
         val adapterGrados=ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,grados)
         adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -71,7 +71,12 @@ class EstudianteFragment : Fragment() {
         val secciones = if (gradoSeleccionado == "Todas") {
             arrayOf("Todas")
         } else {
-            arrayOf("Todas", "A", "B", "C", "D", "E")
+            if(gradoSeleccionado=="1"){
+                arrayOf("Todas","A","B","C","D","E")
+            }
+            else{
+                arrayOf("Todas","A","B","C","D")
+            }
         }
         val adapterSecciones = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, secciones)
         adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

@@ -3,6 +3,8 @@ package com.example.example.ui.Estudiante
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -48,20 +50,45 @@ class AddEstudiante : AppCompatActivity() {
         spinnerAddSection = findViewById(R.id.addSpinnerSectionStudent)
         edTxtAddDni = findViewById(R.id.addDniStudent)
         btnAdd = findViewById(R.id.buttonAddStudent)
-        initSpinner()
+        updateGrado()
     }
 
-    private fun initSpinner() {
-        val grados = arrayOf("1", "2", "3", "4", "5")
+    private fun updateGrado() {
+        val grados = arrayOf("Todas","1", "2", "3", "4", "5")
         val adapterGrados = ArrayAdapter(this, android.R.layout.simple_spinner_item, grados)
         adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerAddGrado.adapter = adapterGrados
-        val secciones = arrayOf("A", "B", "C", "D", "E")
+        spinnerAddGrado.onItemSelectedListener=object:AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val gradoSeleccionado=spinnerAddGrado.selectedItem.toString()
+                updateSecciones(gradoSeleccionado)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+    }
+    private fun updateSecciones(gradoSeleccionado:String){
+        val secciones=if(gradoSeleccionado=="Todas"){
+            arrayOf("Todas")
+        }
+        else{
+            if(gradoSeleccionado=="1"){
+                arrayOf("Todas","A","B","C","D","E")
+            }
+            else{
+                arrayOf("Todas","A","B","C","D")
+            }
+        }
         val adapterSecciones = ArrayAdapter(this, android.R.layout.simple_spinner_item, secciones)
         adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerAddSection.adapter = adapterSecciones
-        setSpinnerValue(spinnerAddGrado, "Seleccione")
-        setSpinnerValue(spinnerAddSection,"Seleccione")
+        spinnerAddSection.isEnabled = gradoSeleccionado != "Todas"
+
     }
 
     private fun listener() {
@@ -120,11 +147,6 @@ class AddEstudiante : AppCompatActivity() {
         }
     }
 
-    private fun setSpinnerValue(spinner: Spinner, value: String) {
-        val adapter = spinner.adapter as? ArrayAdapter<String>
-        val position = adapter?.getPosition(value) ?: 0
-        spinner.setSelection(position)
-    }
     private fun clearFields() {
         edTxtAddName.text.clear()
         edTxtAddLastName.text.clear()

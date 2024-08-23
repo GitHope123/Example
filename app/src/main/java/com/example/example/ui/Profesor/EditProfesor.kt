@@ -134,18 +134,12 @@
         private fun removeTeacher() {
 
             val documentRef = firestore.collection("Profesor").document(idProfesor)
-
-            // Eliminar el documento
             documentRef.delete()
                 .addOnSuccessListener {
-                    // Código que se ejecuta si la eliminación fue exitosa
-                    Log.d("Firestore", "Documento eliminado exitosamente")
                     Toast.makeText(this, "Profesor eliminado", Toast.LENGTH_SHORT).show()
                     finish()
                 }
                 .addOnFailureListener { e ->
-                    // Código que se ejecuta si ocurrió un error al eliminar el documento
-                    Log.w("Firestore", "Error al eliminar el documento", e)
                     Toast.makeText(this, "Error al eliminar el profesor: ${e.message}", Toast.LENGTH_LONG).show()
                 }
         }

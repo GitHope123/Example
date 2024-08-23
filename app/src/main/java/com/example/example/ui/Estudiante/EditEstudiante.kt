@@ -2,6 +2,8 @@ package com.example.example.ui.Estudiante
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -66,7 +68,7 @@ class EditEstudiante : AppCompatActivity() {
         editTextApellidos.setText(apellidos)
         editTextCelular.setText(celular.toString())
         editTextDni.setText(dni.toString())
-        initSpinner()
+        updatedGrado()
     }
 
     private fun findButtons() {
@@ -81,21 +83,45 @@ class EditEstudiante : AppCompatActivity() {
         buttonEliminar = findViewById(R.id.buttonEliminar)
         getData()
     }
+    private fun updatedGrado(){
+        val grados=arrayOf("Todas","1","2","3","4","5")
+        val adapterGrados=ArrayAdapter(this,android.R.layout.simple_spinner_item,grados)
+        adapterGrados.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
+        spinnerGrado.adapter=adapterGrados
+        spinnerGrado.onItemSelectedListener= object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val gradoSeleccionado=spinnerGrado.selectedItem.toString()
+                updatedSeccion(gradoSeleccionado)
+            }
 
-    private fun initSpinner() {
-        val grados = arrayOf("1", "2", "3", "4", "5")
-        val adapterGrados = ArrayAdapter(this, android.R.layout.simple_spinner_item, grados)
-        adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerGrado.adapter = adapterGrados
+            override fun onNothingSelected(parent: AdapterView<*>?) {
 
-        val secciones = arrayOf("A", "B", "C", "D", "E")
-        val adapterSecciones =
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, secciones)
-        adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerSeccion.adapter = adapterSecciones
-        setSpinnerValue(spinnerGrado, grado.toString())
-        setSpinnerValue(spinnerSeccion, seccion)
+            }
+
+        }
     }
+    private fun updatedSeccion(gradoSeleccionado:String){
+        val secciones= if(gradoSeleccionado=="Todas"){
+            arrayOf("Todas")
+        }else{
+            if(gradoSeleccionado=="1"){
+                arrayOf("Todas","A","B","C","D","E")
+            }
+            else{
+                arrayOf("Todas","A","B","C","D")
+            }
+        }
+        val adapterSecciones=ArrayAdapter(this,android.R.layout.simple_spinner_item,secciones)
+        adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerSeccion.adapter=adapterSecciones
+        spinnerSeccion.isEnabled=gradoSeleccionado != "Todas"
+    }
+
 
     private fun setSpinnerValue(spinner: Spinner, value: String) {
         val adapter = spinner.adapter as? ArrayAdapter<String>
