@@ -1,4 +1,5 @@
 package com.example.example.ui.Estudiante
+
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -8,6 +9,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.example.R
+import com.example.example.ui.Profesor.ProfesorFragment
 import com.google.firebase.firestore.FirebaseFirestore
 
 class EditEstudiante : AppCompatActivity() {
@@ -21,15 +23,19 @@ class EditEstudiante : AppCompatActivity() {
     private lateinit var spinnerSeccion: Spinner
     private lateinit var buttonModificar: Button
     private lateinit var buttonEliminar: Button
-    private var originalDni: Long = 0
-    private lateinit var gradoSeccionActual: String
-    private lateinit var gradoSeccionNuevo: String
     private lateinit var updatedNombres: String
     private lateinit var updatedApellidos: String
-    private  var updatedCelular:Long=0
-    private var updatedDni: Long =0
-    private  var updatedGrado: Int=0
+    private var updatedCelular: Long = 0
+    private var updatedDni: Long = 0
+    private var updatedGrado: Int = 0
     private lateinit var updatedSeccion: String
+    private lateinit var idEstudiante: String
+    private lateinit var nombres: String
+    private lateinit var apellidos: String
+    private var celular: Long = 0
+    private var dni: Long = 0
+    private var grado: Int = 0
+    private lateinit var seccion: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,51 +48,29 @@ class EditEstudiante : AppCompatActivity() {
 
     private fun listener() {
         buttonModificar.setOnClickListener {
-            updatedNombres = editTextNombres.text.toString().trim()
-            updatedApellidos = editTextApellidos.text.toString().trim()
-            updatedCelular = editTextCelular.text.toString().trim().toLongOrNull()!!
-            updatedDni = editTextDni.text.toString().trim().toLongOrNull()!!
-            updatedGrado = spinnerGrado.selectedItem.toString().trim().toIntOrNull()!!
-            updatedSeccion = spinnerSeccion.selectedItem.toString().trim()
-            gradoSeccionNuevo = "${updatedGrado}${updatedSeccion}"
-
-            if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
-               updatedCelular.toString().length == 9 && updatedDni.toString().length == 8 &&
-                updatedSeccion.isNotEmpty()) {
-
-            } else {
-                Toast.makeText(
-                    this,
-                    "Por favor complete todos los campos correctamente",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            modifyStudent()
         }
 
         buttonEliminar.setOnClickListener {
-            firestore.collection("Aula").get()
-                .addOnSuccessListener { snapshot ->
-                }
+            removeStudent()
         }
     }
 
     private fun getData() {
-        val nombres = intent.getStringExtra("nombres") ?: ""
-        val apellidos = intent.getStringExtra("apellidos") ?: ""
-        val celular = intent.getLongExtra("celularApoderado", 0L)
-        val dni = intent.getLongExtra("dni", 0L)
-        val grado = intent.getIntExtra("grado", 0)
-        val seccion = intent.getStringExtra("seccion") ?: ""
-        Log.d("EditEstudiante", "Grado recibido: $grado")
-        originalDni = dni
-        gradoSeccionActual = "${grado}${seccion}"
+        idEstudiante = intent.getStringExtra("idEstudiante") ?: ""
+        nombres = intent.getStringExtra("nombres") ?: ""
+        apellidos = intent.getStringExtra("apellidos") ?: ""
+        celular = intent.getLongExtra("celularApoderado", 0L)
+        dni = intent.getLongExtra("dni", 0L)
+        grado = intent.getIntExtra("grado", 0)
+        seccion = intent.getStringExtra("seccion") ?: ""
         editTextNombres.setText(nombres)
         editTextApellidos.setText(apellidos)
         editTextCelular.setText(celular.toString())
         editTextDni.setText(dni.toString())
-        initButton()
         setSpinnerValue(spinnerGrado, grado.toString())
         setSpinnerValue(spinnerSeccion, seccion)
+        initButton()
     }
 
     private fun findButtons() {
@@ -121,10 +105,56 @@ class EditEstudiante : AppCompatActivity() {
         spinner.setSelection(position)
     }
 
+
+
+    private fun modifyStudent() {
+        updatedNombres = editTextNombres.text.toString().trim()
+        updatedApellidos = editTextApellidos.text.toString().trim()
+        updatedCelular = editTextCelular.text.toString().trim().toLongOrNull()!!
+        updatedDni = editTextDni.text.toString().trim().toLongOrNull()!!
+        updatedGrado = spinnerGrado.selectedItem.toString().trim().toIntOrNull()!!
+        updatedSeccion = spinnerSeccion.selectedItem.toString().trim()
+        val updatedEstudiante = mapOf(
+            "nombres" to updatedNombres,
+            "apellidos" to updatedApellidos,
+            "celular" to updatedCelular,
+            "dni" to updatedDni,
+            "grado" to updatedGrado,
+            "seccion" to updatedGrado,
+        )
+        if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
+            updatedCelular.toString().length == 9 && updatedDni.toString().length == 8 &&
+            updatedSeccion.isNotEmpty()
+        ) {
+            firestore.collection("Profesor").document(idEstudiante)
+                .update(updatedEstudiante)
+                .addOnSuccessListener {
+                    Toast.makeText(this,"Estudiante actualizado con éxito",Toast.LENGTH_SHORT).show()
+                    notifyEstudianteFragment()
+                    finish()
+                }
+                .addOnSuccessListener { e->
+                    Toast.makeText(this,"Error al actualizar el estudiante: ${e}",Toast.LENGTH_SHORT).show()
+                }
+
+        } else {
+            Toast.makeText(
+                this,
+                "Por favor complete todos los campos correctamente",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    }
     private fun notifyEstudianteFragment() {
         val fragment = supportFragmentManager.findFragmentByTag("EstudianteFragment")
         if (fragment is EstudianteFragment) {
             fragment.refreshData()
         }
     }
+    private fun removeStudent(){
+        val documentRef=firestore.collection("Estudiante").document(idEstudiante)
+
+    }
+
 }

@@ -57,7 +57,6 @@ class EstudianteAdapter(
                 }
                 context.startActivity(intent)
             }
-
             itemView.setOnClickListener {
                 onEditClickListenerEstudiante(estudiante) // Trigger the passed-in listener
             }

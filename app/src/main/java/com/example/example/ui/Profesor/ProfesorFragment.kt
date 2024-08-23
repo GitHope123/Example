@@ -73,7 +73,7 @@ class ProfesorFragment : Fragment() {
         val filteredList = profesorList.filter {
             it.nombres.contains(query, ignoreCase = true) ||
                     it.apellidos.contains(query, ignoreCase = true) ||
-                    it.celular.toString().contains(query, ignoreCase = true) || // Convert celular to String
+                    it.celular.toString().contains(query, ignoreCase = true) ||
                     it.correo.contains(query, ignoreCase = true)
         }
         filteredProfesorList.clear()
@@ -86,16 +86,12 @@ class ProfesorFragment : Fragment() {
         firestore.collection("Profesor")
             .get()
             .addOnSuccessListener { result ->
-                Log.d("ProfesorFragment", "Fetched ${result.size()} documents")
                 profesorList.clear()
                 result.documents.forEach { document ->
-                    Log.d("ProfesorFragment", "Document ID: ${document.id}")
                     document.toProfesor()?.let {
                         profesorList.add(it)
-                        Log.d("ProfesorFragment", "Added profesor: ${it.nombres} ${it.apellidos}")
                     }
                 }
-                // Initialize filtered list
                 filteredProfesorList.clear()
                 filteredProfesorList.addAll(profesorList)
                 profesorAdapter.notifyDataSetChanged()

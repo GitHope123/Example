@@ -149,7 +149,7 @@ class EstudianteFragment : Fragment() {
     private fun DocumentSnapshot.toEstudiante():Estudiante?{
         return try {
             Estudiante(
-                idEstudiante = id,
+                idEstudiante = getString("idEstudiante")?:"",
                 apellidos = getString("apellidos")?:"",
                 nombres=getString("nombres")?:"",
                 celularApoderado = getLong("celularApoderado")?:0L,

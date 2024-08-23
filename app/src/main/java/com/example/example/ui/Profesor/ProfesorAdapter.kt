@@ -54,8 +54,6 @@ class ProfesorAdapter(
                 }
                 context.startActivity(intent)
             }
-
-            // Alternatively, use the callback
             itemView.setOnClickListener {
                 onEditClickListener(profesor) // Trigger the passed-in listener
             }
