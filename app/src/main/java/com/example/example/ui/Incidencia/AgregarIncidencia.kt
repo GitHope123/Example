@@ -2,8 +2,11 @@ package com.example.example.ui.Incidencia
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ImageView
@@ -12,7 +15,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.example.R
@@ -28,8 +34,10 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 import java.util.UUID
+import java.util.jar.Manifest
 
 class AgregarIncidencia : AppCompatActivity() {
+    private lateinit var takePhotoLauncher: ActivityResultLauncher<Intent>
 
     private lateinit var binding: ActivityAgregarIncidenciaBinding
     private lateinit var studentId: String
@@ -108,10 +116,44 @@ class AgregarIncidencia : AppCompatActivity() {
             }
         }
 
+        takePhotoLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val imageBitmap = result.data?.extras?.get("data") as? Bitmap
+                imageBitmap?.let {
+                    val imageUri = Uri.parse(MediaStore.Images.Media.insertImage(contentResolver, it, "Title", null))
+                    this.imageUri = imageUri
+                    Glide.with(this)
+                        .load(imageUri)
+                        .apply(RequestOptions().centerCrop())
+                        .into(imageViewEvidencia)
+                }
+            }
+        }
+
+        // Configuración del clic en la vista de imagen
         imageViewEvidencia.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            pickImageLauncher.launch(intent)
+            checkPermissions()
+            val options = arrayOf("Seleccionar imagen", "Tomar foto")
+            AlertDialog.Builder(this)
+                .setTitle("Elegir opción")
+                .setItems(options) { _, which ->
+                    when (which) {
+                        0 -> { // Opción para seleccionar imagen
+                            val intent = Intent(Intent.ACTION_PICK)
+                            intent.type = "image/*"
+                            pickImageLauncher.launch(intent)
+                        }
+                        1 -> { // Opción para tomar foto
+                            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                            if (takePictureIntent.resolveActivity(packageManager) != null) {
+                                takePhotoLauncher.launch(takePictureIntent)
+                            }
+                        }
+                    }
+                }
+                .show()
         }
     }
 
@@ -259,6 +301,27 @@ class AgregarIncidencia : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+    private fun checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA, android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE_PERMISSIONS)
+        }
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permiso concedido
+            } else {
+                // Permiso denegado
+                Toast.makeText(this, "Permiso necesario para usar la cámara", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    companion object {
+        private const val REQUEST_CODE_PERMISSIONS = 1001
     }
 
 }
