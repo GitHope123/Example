@@ -1,4 +1,4 @@
-package com.example.example.ui.incidencia.estado
+package com.example.example.ui.incidencias.estado
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
-import com.example.example.ui.incidencia.DescripcionIncidencia
+import com.example.example.ui.incidencias.DescripcionIncidencia
 import android.content.Context
 import android.widget.ImageView
 

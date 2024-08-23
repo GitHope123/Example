@@ -1,4 +1,4 @@
-package com.example.example.ui.incidencia
+package com.example.example.ui.incidencias
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

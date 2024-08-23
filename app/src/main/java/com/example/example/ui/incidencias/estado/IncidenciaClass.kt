@@ -1,4 +1,4 @@
-package com.example.example.ui.incidencia.estado
+package com.example.example.ui.incidencias.estado
 
 import java.io.Serializable
 

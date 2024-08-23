@@ -1,4 +1,4 @@
-package com.example.example.ui.incidencia.estado
+package com.example.example.ui.incidencias.estado
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

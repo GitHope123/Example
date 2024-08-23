@@ -1,4 +1,4 @@
-package com.example.example.ui.incidencia
+package com.example.example.ui.incidencias
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.ViewPager
 import com.example.example.R
-import com.example.example.ui.incidencia.estado.AdapterEstado
+import com.example.example.ui.incidencias.estado.AdapterEstado
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 

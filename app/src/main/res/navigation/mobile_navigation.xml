@@ -29,7 +29,7 @@
         tools:layout="@layout/fragment_tutor" />
     <fragment
         android:id="@+id/nav_incidencia"
-        android:name="com.example.example.ui.incidencia.Incidencia"
+        android:name="com.example.example.ui.incidencias.Incidencia"
         android:label="@string/menu_incidencia"
         tools:layout="@layout/fragment_incidencia" />
     <fragment

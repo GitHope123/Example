@@ -1,4 +1,4 @@
-package com.example.example.ui.incidencia
+package com.example.example.ui.incidencias
 
 import android.content.Intent
 import android.os.Bundle
