@@ -176,6 +176,10 @@ class EstudianteFragment : Fragment() {
     fun refreshData() {
         fetchEstudiantes()
     }
+    override fun onResume() {
+        super.onResume()
+        refreshData()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
