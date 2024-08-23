@@ -67,5 +67,9 @@ class Todo : Fragment() {
                 exception.printStackTrace()
             }
     }
+    override fun onResume() {
+        super.onResume()
+        loadAllIncidencias()  // Recargar los datos cuando el fragmento se reanuda
+    }
 
 }
