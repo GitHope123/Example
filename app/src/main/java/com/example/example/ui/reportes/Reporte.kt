@@ -1,4 +1,4 @@
-package com.example.example.ui.reporte
+package com.example.example.ui.reportes
 
 import android.content.Intent
 import android.net.Uri

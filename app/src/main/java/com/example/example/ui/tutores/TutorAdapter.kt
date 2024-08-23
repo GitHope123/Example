@@ -1,4 +1,4 @@
-package com.example.example.ui.tutor
+package com.example.example.ui.tutores
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
-import com.example.example.ui.profesor.Profesor
+import com.example.example.ui.profesores.Profesor
 import com.google.firebase.firestore.FirebaseFirestore
 
 class TutorAdapter(

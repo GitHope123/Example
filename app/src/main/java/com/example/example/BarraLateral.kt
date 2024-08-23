@@ -13,7 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.example.databinding.ActivityBarraLateralBinding
-import com.example.example.ui.principal.Principal
+import com.example.example.ui.principal1.Principal
 import com.google.firebase.auth.FirebaseAuth
 
 class BarraLateral : AppCompatActivity() {

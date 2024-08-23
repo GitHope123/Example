@@ -1,4 +1,4 @@
-package com.example.example.ui.profesor
+package com.example.example.ui.profesores
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log

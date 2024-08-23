@@ -1,4 +1,4 @@
-package com.example.example.ui.principal
+package com.example.example.ui.principal1
 
 import android.os.Bundle
 import android.widget.Button

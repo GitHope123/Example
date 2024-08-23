@@ -1,4 +1,4 @@
-package com.example.example.ui.principal
+package com.example.example.ui.principal1
 
 import android.content.Intent
 import android.os.Bundle

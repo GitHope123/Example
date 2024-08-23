@@ -1,7 +1,7 @@
-package com.example.example.ui.tutor
+package com.example.example.ui.tutores
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.example.ui.profesor.Profesor
+import com.example.example.ui.profesores.Profesor
 
 class ProfesorDiffCallback : DiffUtil.ItemCallback<Profesor>() {
     override fun areItemsTheSame(oldItem: Profesor, newItem: Profesor): Boolean =

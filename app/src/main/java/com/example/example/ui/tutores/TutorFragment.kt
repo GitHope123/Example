@@ -1,4 +1,4 @@
-package com.example.example.ui.tutor
+package com.example.example.ui.tutores
 
 import android.app.Activity
 import android.content.Intent
@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
-import com.example.example.ui.profesor.Profesor
+import com.example.example.ui.profesores.Profesor
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
 

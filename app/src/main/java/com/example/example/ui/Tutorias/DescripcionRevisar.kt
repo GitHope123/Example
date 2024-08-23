@@ -1,4 +1,4 @@
-package com.example.example.ui.Tutoria
+package com.example.example.ui.Tutorias
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
