@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_primary_blue"
     android:padding="10dp"
-    tools:context=".ui.Estudiante.AddEstudiante">
+    tools:context=".ui.estudiantes.AddEstudiante">
 
     <LinearLayout
         android:layout_width="match_parent"

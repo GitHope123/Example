@@ -7,7 +7,7 @@
     android:background="@drawable/background_primary_blue"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".ui.Estudiante.EstudianteFragment">
+    tools:context=".ui.estudiantes.EstudianteFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

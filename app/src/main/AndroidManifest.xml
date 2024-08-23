@@ -22,34 +22,34 @@
         android:theme="@style/Theme.Example"
         tools:targetApi="31">
         <activity
-            android:name=".ui.Principal.EditPrincipal"
+            android:name=".ui.principal1.EditPrincipal"
             android:exported="false" />
         <activity
-            android:name=".ui.Incidencia.AgregarEstudiantes"
+            android:name=".ui.incidencia.AgregarEstudiantes"
             android:exported="false" />
         <activity
-            android:name=".ui.Tutoria.DescripcionRevisar"
+            android:name=".ui.Tutorias.DescripcionRevisar"
             android:exported="false" />
         <activity
-            android:name=".ui.Incidencia.DescripcionIncidencia"
+            android:name=".ui.incidencia.DescripcionIncidencia"
             android:exported="false" />
         <activity
-            android:name=".ui.Incidencia.AgregarIncidencia"
+            android:name=".ui.incidencia.AgregarIncidencia"
             android:exported="false" />
         <activity
-            android:name=".ui.Estudiante.AddEstudiante"
+            android:name=".ui.estudiantes.AddEstudiante"
             android:exported="false" />
         <activity
-            android:name=".ui.Profesor.AddProfesor"
+            android:name=".ui.profesores.AddProfesor"
             android:exported="false" />
         <activity
-            android:name=".ui.Tutor.AddTutor"
+            android:name=".ui.tutores.AddTutor"
             android:exported="false" />
         <activity
-            android:name=".ui.Estudiante.EditEstudiante"
+            android:name=".ui.estudiantes.EditEstudiante"
             android:exported="false" />
         <activity
-            android:name=".ui.Profesor.EditProfesor"
+            android:name=".ui.profesores.EditProfesor"
             android:exported="false" />
         <activity
             android:name=".InicioSesion"
