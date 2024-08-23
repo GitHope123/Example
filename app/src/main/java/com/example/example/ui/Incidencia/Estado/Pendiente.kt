@@ -47,6 +47,7 @@ class Pendiente : Fragment() {
                     val grado = document.getLong("grado")?.toInt() ?: 0
                     val seccion = document.getString("seccion") ?: ""
                     val detalle = document.getString("detalle") ?: ""
+                    val urlImagen = document.getString("urlImagen") ?: ""
 
                     incidenciasPendiente.add(IncidenciaClass(
                         id = id,
@@ -59,7 +60,8 @@ class Pendiente : Fragment() {
                         tipo = tipo,
                         gravedad = gravedad,
                         estado = estado,
-                        detalle = detalle
+                        detalle = detalle,
+                        imageUri = urlImagen
                     ))
                 }
             }

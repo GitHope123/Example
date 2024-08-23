@@ -1,5 +1,6 @@
 package com.example.example.ui.Incidencia.Estado
 
+import android.net.Uri
 import java.io.Serializable
 
 data class IncidenciaClass(
@@ -13,6 +14,7 @@ data class IncidenciaClass(
     val tipo: String = "",
     val gravedad: String = "",
     val estado: String = "",
-    val detalle: String = ""
+    val detalle: String = "",
+    val imageUri: String=""
 ) : Serializable
 

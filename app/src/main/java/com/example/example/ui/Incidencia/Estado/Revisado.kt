@@ -46,6 +46,7 @@ class Revisado : Fragment() {
                     val grado = document.getLong("grado")?.toInt() ?: 0
                     val seccion = document.getString("seccion") ?: ""
                     val detalle = document.getString("detalle") ?: ""
+                    val urlImagen = document.getString("urlImagen") ?: ""
 
                     incidenciasRevisado.add(IncidenciaClass(
                         id = id,
@@ -58,7 +59,8 @@ class Revisado : Fragment() {
                         tipo = tipo,
                         gravedad = gravedad,
                         estado = estado,
-                        detalle = detalle
+                        detalle = detalle,
+                        imageUri = urlImagen
                     ))
                 }
             }
