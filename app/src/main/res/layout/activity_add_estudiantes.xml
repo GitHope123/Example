@@ -24,6 +24,7 @@
             app:srcCompat="@drawable/icon_student" />
 
         <EditText
+            android:id="@+id/addNameStudent"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
@@ -43,6 +44,7 @@
 
 
         <EditText
+            android:id="@+id/addLastNameStudent"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginBottom="5dp"
@@ -60,6 +62,7 @@
             android:textSize="14sp"></EditText>
 
         <EditText
+            android:id="@+id/addPhone"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginBottom="5dp"
@@ -96,7 +99,7 @@
                 android:textColor="@color/Primary_white"
                 android:textSize="14sp"></TextView>
             <Spinner
-                android:id="@+id/spinnerGrado"
+                android:id="@+id/addSpinnerGradoStudent"
                 android:layout_width="match_parent"
                 android:layout_height="60sp"
                 android:outlineSpotShadowColor="@color/Primary_white"
@@ -125,7 +128,7 @@
                 android:textSize="14sp"></TextView>
 
             <Spinner
-                android:id="@+id/spinnerSection"
+                android:id="@+id/addSpinnerSectionStudent"
                 android:layout_width="match_parent"
                 android:layout_height="60sp"
                 android:outlineSpotShadowColor="@color/Primary_white"
@@ -133,6 +136,7 @@
         </LinearLayout>
 
         <EditText
+            android:id="@+id/addDniStudent"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginBottom="5dp"
@@ -151,7 +155,7 @@
             android:textSize="14sp"></EditText>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonAddStudent"
             android:layout_width="match_parent"
             android:layout_height="70sp"
             android:drawableLeft="@drawable/ic_upload"
