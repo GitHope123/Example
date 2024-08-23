@@ -33,9 +33,11 @@ class AgregarEstudiantes : AppCompatActivity() {
         setupRecyclerView()
         setupSearchView()
     }
+
     private fun preloadData() {
         fetchEstudiantes()
     }
+
     private fun init() {
         recyclerViewEstudiantes = findViewById(R.id.recyclerViewEstudiantes)
         searchViewEstudiante = findViewById(R.id.searchViewEstudiante)
@@ -69,7 +71,12 @@ class AgregarEstudiantes : AppCompatActivity() {
         val secciones = if (gradoSeleccionado == "Todas") {
             arrayOf("Todas")
         } else {
-            arrayOf("Todas", "A", "B", "C", "D", "E")
+            if (gradoSeleccionado == "1") {
+                arrayOf("Todas", "A", "B", "C", "D", "E")
+            } else {
+                arrayOf("Todas", "A", "B", "C", "D")
+            }
+
         }
         val adapterSecciones = ArrayAdapter(this, android.R.layout.simple_spinner_item, secciones)
         adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
