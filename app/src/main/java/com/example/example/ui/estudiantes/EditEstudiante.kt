@@ -179,6 +179,8 @@ class EditEstudiante : AppCompatActivity() {
         documentRef.delete()
             .addOnSuccessListener {
                 Toast.makeText(this,"Estudiante Eliminado",Toast.LENGTH_SHORT).show()
+                notifyEstudianteFragment()
+                finish()
             }
             .addOnFailureListener {
                 Toast.makeText(this,"Error al agregar",Toast.LENGTH_SHORT).show()

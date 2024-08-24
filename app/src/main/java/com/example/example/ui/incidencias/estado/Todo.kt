@@ -76,14 +76,15 @@ class Todo : Fragment() {
                     )
                 )
             }
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
             incidencias.sortByDescending {
                 try {
-                    dateFormat.parse(it.fecha) ?: Date(0)
+                    dateTimeFormat.parse("${it.fecha} ${it.hora}") ?: Date(0)
                 } catch (e: Exception) {
                     Date(0)  // Fecha por defecto si ocurre un error
                 }
             }
+
             incidenciaAdapter.updateData(incidencias)
         }
             .addOnFailureListener { exception ->
