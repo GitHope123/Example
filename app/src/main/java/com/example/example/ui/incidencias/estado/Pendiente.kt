@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class Pendiente : Fragment() {
     private lateinit var recyclerViewIncidencia: RecyclerView
@@ -68,6 +71,14 @@ class Pendiente : Fragment() {
                         detalle = detalle,
                         imageUri = urlImagen
                     ))
+                }
+            }
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            incidenciasPendiente.sortByDescending {
+                try {
+                    dateFormat.parse(it.fecha) ?: Date(0)
+                } catch (e: Exception) {
+                    Date(0)  // Fecha por defecto si ocurre un error
                 }
             }
             incidenciaAdapter.updateData(incidenciasPendiente)
