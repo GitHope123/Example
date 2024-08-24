@@ -53,6 +53,7 @@
     <string name="hint_evidencia">Evidencia</string>
     <string name="hint_registrar_incidencia">Registrar Incidencia</string>
     <string name="hint_fecha">Fecha del reporte</string>
+    <string name="hint_seleccionar">Seleccionar</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -61,6 +62,7 @@
 
 
     <string-array name="item_fecha_tutoria">
+        <item>Todos</item>
         <item>Hoy</item>
         <item>Ultimos 7 dias</item>
         <item>Este mes</item>
