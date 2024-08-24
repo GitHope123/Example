@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,14 +10,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_margin="20sp"
+        android:layout_margin="10sp"
         android:layout_height="match_parent"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/Primary_blue"
             android:background="@drawable/background_white_element_full"
             android:orientation="vertical">
             <TextView
@@ -37,30 +38,50 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:backgroundTint="@color/Primary_white"
-                android:background="@drawable/background_white_element_full"
+                android:layout_height="match_parent"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginBottom="50dp"
                 android:orientation="horizontal">
-                <ImageButton
-                    android:id="@+id/buttonOpenLink"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/montserrat_bold"
-                    style="@style/ButtonStyle"
-                    android:src="@drawable/icon_copy"
-                    android:text="Copiar"
-                    android:textColor="@color/Primary_white" />
 
-                <EditText
-                    android:id="@+id/editTextText"
-                    android:layout_width="200dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:ems="10"
-                    android:inputType="text"
-                    android:text="https://lookerstudio.google.com/reporting/55c2d7b2-0d63-4e02-895a-21ab9c7d018c"
-                    android:textColor="@color/Primary_white" />
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_white_element_full"
+                    android:backgroundTint="@color/Primary_white"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/buttonOpenLink"
+                        style="@style/ButtonStyle"
+                        android:layout_width="45dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:src="@drawable/icon_copy"
+                        android:text="Copiar"
+                        android:textColor="@color/Primary_white" />
+
+                    <EditText
+                        android:id="@+id/editTextText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="10dp"
+                        android:inputType="text"
+                        android:text="https://lookerstudio.google.com/reporting/55c2d7b2-0d63-4e02-895a-21ab9c7d018c"
+                        android:textColor="@color/Primary_white" />
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"/>
+
+                <ImageButton
+                    android:id="@+id/imageButtonCompartir"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/search_view_query_background"
+                    android:src="@drawable/icon_share_report" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -69,7 +90,6 @@
         <TextView
             android:id="@+id/textView6"
             android:layout_width="match_parent"
-            android:layout_margin="10dp"
             android:paddingVertical="30dp"
             android:paddingHorizontal="10dp"
             android:layout_height="wrap_content"
