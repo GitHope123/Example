@@ -36,19 +36,16 @@ class EditEstudiante : AppCompatActivity() {
     private var dni: Long = 0
     private var grado: Int = 0
     private lateinit var seccion: String
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_estudiante)
         findButtons()
         listener()
     }
-
     private fun listener() {
         buttonModificar.setOnClickListener {
-            modifyStudent()
+            modifyStudent(updatedGrado,updatedSeccion)
         }
-
         buttonEliminar.setOnClickListener {
             removeStudent()
         }
@@ -86,39 +83,35 @@ class EditEstudiante : AppCompatActivity() {
         val adapterGrados=ArrayAdapter(this,android.R.layout.simple_spinner_item,grados)
         adapterGrados.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
         spinnerGrado.adapter=adapterGrados
-        spinnerGrado.onItemSelectedListener= object: AdapterView.OnItemSelectedListener{
+        setSpinnerValue(spinnerGrado, grado.toString())
+              spinnerGrado.onItemSelectedListener= object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
                 position: Int,
                 id: Long
             ) {
-                setSpinnerValue(spinnerGrado, grado.toString())
-                val gradoSeleccionado=spinnerGrado.selectedItem.toString()
-                updatedSeccion(gradoSeleccionado)
+                updatedGrado=spinnerGrado.selectedItem.toString().trim().toIntOrNull()!!
+                updatedSeccion(updatedGrado)
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
 
         }
     }
-    private fun updatedSeccion(gradoSeleccionado:String){
-        val secciones= if(gradoSeleccionado=="Todas"){
-            arrayOf("Todas")
-        }else{
-            if(gradoSeleccionado=="1"){
-                arrayOf("Todas","A","B","C","D","E")
+    private fun updatedSeccion(gradoSeleccionado:Int){
+        val secciones= if(gradoSeleccionado.toString()=="1"){
+                arrayOf("A","B","C","D","E")
             }
             else{
-                arrayOf("Todas","A","B","C","D")
+                arrayOf("A","B","C","D")
             }
-        }
+
         val adapterSecciones=ArrayAdapter(this,android.R.layout.simple_spinner_item,secciones)
         adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerSeccion.adapter=adapterSecciones
-        spinnerSeccion.isEnabled=gradoSeleccionado != "Todas"
+        setSpinnerValue(spinnerSeccion, seccion)
         spinnerSeccion.onItemSelectedListener=object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -126,7 +119,8 @@ class EditEstudiante : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                setSpinnerValue(spinnerSeccion, seccion)
+                updatedSeccion=spinnerSeccion.selectedItem.toString().trim()
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -138,21 +132,18 @@ class EditEstudiante : AppCompatActivity() {
 
 
 
-    private fun modifyStudent() {
+    private fun modifyStudent(updatedGrado:Int,updatedSeccion:String) {
         updatedNombres = editTextNombres.text.toString().trim()
         updatedApellidos = editTextApellidos.text.toString().trim()
         updatedCelular = editTextCelular.text.toString().trim().toLongOrNull()!!
         updatedDni = editTextDni.text.toString().trim().toLongOrNull()!!
-        updatedGrado = spinnerGrado.selectedItem.toString().trim().toIntOrNull()!!
-        updatedSeccion = spinnerSeccion.selectedItem.toString().trim()
         val updatedEstudiante = mapOf(
             "nombres" to updatedNombres,
             "apellidos" to updatedApellidos,
             "celularApoderado" to updatedCelular,
             "dni" to updatedDni,
             "grado" to updatedGrado,
-            "seccion" to updatedSeccion,
-        )
+            "seccion" to updatedSeccion)
         if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
             updatedCelular.toString().length == 9 && updatedDni.toString().length == 8 &&
             updatedSeccion.isNotEmpty()

@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.example.R
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,7 +28,6 @@ class AddEstudiante : AppCompatActivity() {
     private lateinit var btnAdd: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_add_estudiantes)
         db = FirebaseFirestore.getInstance()
         initComponents()
@@ -49,7 +47,7 @@ class AddEstudiante : AppCompatActivity() {
     }
 
     private fun updateGrado() {
-        val grados = arrayOf("Todas","1", "2", "3", "4", "5")
+        val grados = arrayOf("1", "2", "3", "4", "5")
         val adapterGrados = ArrayAdapter(this, android.R.layout.simple_spinner_item, grados)
         adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerAddGrado.adapter = adapterGrados
@@ -68,17 +66,13 @@ class AddEstudiante : AppCompatActivity() {
         }
     }
     private fun updateSecciones(gradoSeleccionado:String){
-        val secciones=if(gradoSeleccionado=="Todas"){
-            arrayOf("Todas")
-        }
-        else{
-            if(gradoSeleccionado=="1"){
-                arrayOf("Todas","A","B","C","D","E")
+        val secciones= if(gradoSeleccionado=="1"){
+                arrayOf("A","B","C","D","E")
             }
             else{
-                arrayOf("Todas","A","B","C","D")
+                arrayOf("A","B","C","D")
             }
-        }
+
         val adapterSecciones = ArrayAdapter(this, android.R.layout.simple_spinner_item, secciones)
         adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerAddSection.adapter = adapterSecciones
@@ -95,8 +89,8 @@ class AddEstudiante : AppCompatActivity() {
     private fun saveStudentToFirebase() {
         addName = edTxtAddName.text.toString().trim()
         addLastName = edTxtAddLastName.text.toString().trim()
-        addPhone = edTxtAddPhone.text.toString().trim().toLongOrNull()!!
-        addDni=edTxtAddDni.text.toString().trim().toLongOrNull()!!
+        addPhone = edTxtAddPhone.text.toString().trim().toLongOrNull() ?: 0L
+        addDni=edTxtAddDni.text.toString().trim().toLongOrNull()?:0
         addGrado = spinnerAddGrado.selectedItem.toString().trim().toIntOrNull()!!
         addSection = spinnerAddSection.selectedItem.toString().trim()
         if (addName.isNotEmpty() && addLastName.isNotEmpty() &&
