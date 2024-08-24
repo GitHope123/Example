@@ -37,9 +37,6 @@
             android:name=".ui.incidencias.DescripcionIncidencia"
             android:exported="false" />
         <activity
-            android:name=".ui.incidencias.AgregarIncidencia"
-            android:exported="false" />
-        <activity
             android:name=".ui.estudiantes.AddEstudiante"
             android:exported="false" />
         <activity
