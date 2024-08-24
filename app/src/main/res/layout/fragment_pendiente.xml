@@ -16,8 +16,11 @@
         <SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
+            android:theme="@style/ThemeOverlay.SearchView"
             android:layout_marginVertical="10dp"
+            android:iconifiedByDefault="false"
+            android:queryHint="Buscar..."
             android:background="@drawable/search_view_query_background"
             app:showAsAction="always" />
 

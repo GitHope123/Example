@@ -22,6 +22,7 @@
                 android:id="@+id/searchViewTutor"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
+                android:theme="@style/ThemeOverlay.SearchView"
                 android:background="@drawable/search_view_query_background"
                 app:iconifiedByDefault="false"
                 app:queryHint="Buscar tutor..."

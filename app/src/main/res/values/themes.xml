@@ -92,6 +92,12 @@
         <item name="android:textColor">@color/Primary_black</item> <!-- Color de los ítems en el menú -->
         <item name="android:padding">8dp</item> <!-- Espaciado opcional -->
     </style>
+    <style name="ThemeOverlay.SearchView" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textColor">@color/Primary_white</item>
+        <item name="android:textColorHint">@color/Primary_white</item>
+         <item name="android:editTextColor">@color/Primary_white</item>
+
+    </style>
 
 
 </resources>

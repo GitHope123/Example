@@ -23,8 +23,10 @@
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:theme="@style/ThemeOverlay.SearchView"
                 android:background="@drawable/search_view_query_background"
                 app:iconifiedByDefault="false"
+                android:queryHint="Buscar..."
                 app:showAsAction="always"
                 android:layout_weight="20"/>
             <Space
