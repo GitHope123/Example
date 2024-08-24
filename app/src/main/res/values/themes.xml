@@ -11,7 +11,6 @@
 
         <!-- Button colors -->
         <item name="buttonStyle">@style/ButtonStyle</item>
-
         <!-- Default text appearance -->
         <item name="textAppearanceBody1">@style/TextAppearance.Body</item>
         <item name="textAppearanceBody2">@style/TextAppearance.Body</item>
@@ -28,16 +27,11 @@
     </style>
 
     <style name="Theme.Example" parent="Base.Theme.Example" />
-
     <!-- Custom button style -->
     <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
-        <!-- Establece el color de fondo del botón -->
         <item name="android:backgroundTint">@color/Primary_white</item>
-        <!-- Establece el color del texto del botón -->
         <item name="android:textColor">@color/Secondary_brown</item>
-        <!-- Asegúrate de que el texto no esté en mayúsculas -->
         <item name="android:textAllCaps">false</item>
-        <!-- Ajusta el espaciado entre letras (puedes ajustar el valor según tus necesidades) -->
         <item name="android:letterSpacing">0.05</item>
     </style>
 
@@ -85,6 +79,20 @@
     <style name="Theme.Example.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Example.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="SpinnerStyle" parent="Base.Widget.AppCompat.Spinner">
+        <item name="android:backgroundTint">@color/Primary_white</item> <!-- Fondo del spinner -->
+        <item name="android:textColor">@color/Primary_white</item> <!-- Color del texto seleccionado -->
+        <item name="android:layout_width">match_parent</item> <!-- Tamaño -->
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Estilo para los ítems del menú desplegable -->
+    <style name="SpinnerItemStyle" parent="Widget.AppCompat.TextView.SpinnerItem">
+        <item name="android:textColor">@color/Primary_black</item> <!-- Color de los ítems en el menú -->
+        <item name="android:padding">8dp</item> <!-- Espaciado opcional -->
+    </style>
+
 
 </resources>
 

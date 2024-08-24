@@ -35,8 +35,9 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:textAlignment="center"
-                android:background="@drawable/background_spinner" />
+                android:popupTheme="@style/SpinnerItemStyle"
+                android:background="@drawable/background_white_element_full"
+                android:textAlignment="center"/>
 
             <Space
                 android:layout_width="10dp"
@@ -47,8 +48,9 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:textAlignment="center"
-                android:background="@drawable/background_spinner" />
+                android:popupTheme="@style/SpinnerItemStyle"
+                android:background="@drawable/background_white_element_full"
+                android:textAlignment="center"/>
 
         </LinearLayout>
 

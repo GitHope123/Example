@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background_text_transparent"
-    android:backgroundTint="@color/Primary_transparent_blue_black"
+    android:background="@drawable/background_white_element_full"
+    android:backgroundTint="@color/Transparent_color"
+    android:layout_marginTop="5dp"
     tools:context=".ui.tutores.TutorFragment"> <!-- Agregar contexto para editor -->
 
     <LinearLayout
@@ -42,7 +43,7 @@
                     android:id="@+id/textViewTelefono"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="5dp"
                     android:drawableLeft="@drawable/icon_call"
                     android:drawablePadding="10dp"
                     android:drawableTint="@color/Primary_blue_sky"
@@ -56,7 +57,7 @@
                     android:id="@+id/textViewCorreo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="5dp"
                     android:drawableLeft="@drawable/icon_login_email"
                     android:drawablePadding="10dp"
                     android:drawableTint="@color/Primary_blue_sky"

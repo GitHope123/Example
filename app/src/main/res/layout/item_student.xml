@@ -3,27 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="5dp"
+    android:layout_marginTop="5dp"
     android:background="@drawable/background_white_element_full"
-    android:backgroundTint="@color/Primary_transparent_blue_black">
+    android:backgroundTint="@color/Transparent_color">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:padding="15dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_weight="1"
-                android:padding="5dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textViewNombreCompleto"
@@ -42,7 +41,7 @@
                     android:id="@+id/textViewCelularStudent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="5dp"
                     android:drawableLeft="@drawable/icon_dni"
                     android:drawablePadding="10dp"
                     android:drawableTint="@color/Primary_blue_sky"
@@ -55,7 +54,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -74,7 +73,7 @@
                     <TextView
                         android:id="@+id/studentSectionTextView"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat"
                         android:gravity="center_vertical"
                         android:textColor="@color/Primary_blue_sky"
@@ -83,16 +82,23 @@
 
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/imageButtonEditStudent"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="top|end"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/background_text_transparent"
-                android:backgroundTint="@color/transparent_color"
-                android:padding="4dp"
-                android:src="@drawable/icon_edit" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/imageButtonEditStudent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/background_text_transparent"
+                    android:backgroundTint="@color/transparent_color"
+                    android:padding="5dp"
+                    android:src="@drawable/icon_edit" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

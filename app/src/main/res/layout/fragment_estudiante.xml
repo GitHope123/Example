@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_primary_blue"
     android:orientation="vertical"
-    android:padding="10dp"
     tools:context=".ui.estudiantes.EstudianteFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -33,7 +33,7 @@
 
             <Spinner
                 android:id="@+id/spinnerGrado"
-                android:layout_width="60sp"
+                android:layout_width="70sp"
                 android:layout_height="55sp"
                 android:layout_weight="0.2"
                 android:background="@drawable/search_view_query_background"
@@ -45,7 +45,7 @@
 
             <Spinner
                 android:id="@+id/spinnerSeccion"
-                android:layout_width="60sp"
+                android:layout_width="70sp"
                 android:layout_height="55sp"
                 android:layout_weight="0.2"
                 android:background="@drawable/search_view_query_background" />
@@ -76,7 +76,6 @@
         android:src="@drawable/icon_add_student"
         android:layout_gravity="bottom|end"
         android:backgroundTint="@color/Primary_yellow"
-        android:layout_margin="20sp"
-        tools:contentDescription="@string/action_bottom">
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+        android:layout_margin="20dp"
+        tools:contentDescription="@string/action_bottom"/>
 </FrameLayout>

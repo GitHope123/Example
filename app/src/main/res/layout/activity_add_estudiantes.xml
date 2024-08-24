@@ -83,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@drawable/background_white_element_full"
-            android:backgroundTint="@color/Primary_blue"
+            android:backgroundTint="@color/Transparent_color"
             android:layout_marginBottom="5dp"
             android:orientation="horizontal">
 
@@ -100,19 +100,21 @@
                 android:textSize="14sp"></TextView>
             <Spinner
                 android:id="@+id/addSpinnerGradoStudent"
+                android:popupTheme="@style/SpinnerItemStyle"
+                style="@style/SpinnerStyle"
+                android:popupBackground="@color/Primary_white"
                 android:layout_width="match_parent"
                 android:layout_height="60sp"
-                android:outlineSpotShadowColor="@color/Primary_white"
-                android:prompt="@string/hint_degree"
-                android:backgroundTint="@color/Transparent_color"
-                />
+                android:spinnerMode="dropdown"
+                android:prompt="@string/hint_degree"/>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/background_white_element_full"
-            android:backgroundTint="@color/Primary_blue"
+            android:backgroundTint="@color/Transparent_color"
             android:orientation="horizontal">
 
             <TextView
@@ -131,7 +133,9 @@
                 android:id="@+id/addSpinnerSectionStudent"
                 android:layout_width="match_parent"
                 android:layout_height="60sp"
-                android:outlineSpotShadowColor="@color/Primary_white"
+                style="@style/SpinnerStyle"
+                android:popupTheme="@style/SpinnerItemStyle"
+                android:spinnerMode="dropdown"
                 android:prompt="@string/hint_degree" />
         </LinearLayout>
 

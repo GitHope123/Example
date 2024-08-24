@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.example.R
 import com.example.example.databinding.FragmentEstudianteBinding
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -36,7 +37,7 @@ class EstudianteFragment : Fragment() {
 
     private fun updateGrado() {
         val grados= arrayOf("Todas","1","2","3","4","5")
-        val adapterGrados=ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,grados)
+        val adapterGrados=ArrayAdapter(requireContext(), R.layout.spinner_item_selected,grados)
         adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerGrado.adapter=adapterGrados
         binding.spinnerGrado.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -76,7 +77,7 @@ class EstudianteFragment : Fragment() {
                 arrayOf("Todas","A","B","C","D")
             }
         }
-        val adapterSecciones = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, secciones)
+        val adapterSecciones = ArrayAdapter(requireContext(), R.layout.spinner_item_selected, secciones)
         adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerSeccion.adapter = adapterSecciones
         binding.spinnerSeccion.isEnabled = gradoSeleccionado != "Todas"

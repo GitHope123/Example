@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:background="@color/Primary_transparent_blue_black"
+    android:backgroundTint="@color/Transparent_color"
+    android:background="@drawable/background_white_element_full"
     android:orientation="horizontal"
     android:padding="10dp">
 
@@ -42,13 +43,14 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="30dp">
 
             <TextView
                 android:id="@+id/tvFecha"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:fontFamily="@font/montserrat"
                 android:text="13/08/2024"
                 android:textColor="@color/Primary_blue_sky"
                 android:textSize="12sp"
@@ -57,8 +59,9 @@
             <TextView
                 android:id="@+id/tvHora"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/montserrat"
+                android:gravity="center"
                 android:text="4:45pm"
                 android:textColor="@color/Primary_blue_sky"
                 android:textSize="12sp"
@@ -70,6 +73,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat_bold"
+                android:padding="7dp"
+                android:backgroundTint="@color/Transparent_color"
+                android:background="@drawable/background_white_element_full"
                 android:text="Pendiente"
                 android:textColor="@color/color_red"
                 android:textSize="12sp"

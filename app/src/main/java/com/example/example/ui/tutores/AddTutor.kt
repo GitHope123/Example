@@ -220,7 +220,7 @@ class AddTutor : AppCompatActivity() {
                 // Configurar adaptadores para spinners
                 val gradoAdapter = ArrayAdapter(
                     this,
-                    android.R.layout.simple_spinner_item,
+                    R.layout.spinner_item_selected,
                     availableGrados
                 ).apply {
                     setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -229,7 +229,7 @@ class AddTutor : AppCompatActivity() {
 
                 val seccionAdapter = ArrayAdapter(
                     this,
-                    android.R.layout.simple_spinner_item,
+                    R.layout.spinner_item_selected,
                     availableSecciones
                 ).apply {
                     setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

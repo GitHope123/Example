@@ -80,7 +80,7 @@ class EditEstudiante : AppCompatActivity() {
     }
     private fun updatedGrado(){
         val grados=arrayOf("1","2","3","4","5")
-        val adapterGrados=ArrayAdapter(this,android.R.layout.simple_spinner_item,grados)
+        val adapterGrados=ArrayAdapter(this,R.layout.spinner_item_selected,grados)
         adapterGrados.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
         spinnerGrado.adapter=adapterGrados
         setSpinnerValue(spinnerGrado, grado.toString())
@@ -108,7 +108,7 @@ class EditEstudiante : AppCompatActivity() {
                 arrayOf("A","B","C","D")
             }
 
-        val adapterSecciones=ArrayAdapter(this,android.R.layout.simple_spinner_item,secciones)
+        val adapterSecciones=ArrayAdapter(this,R.layout.spinner_item_selected,secciones)
         adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerSeccion.adapter=adapterSecciones
         setSpinnerValue(spinnerSeccion, seccion)
