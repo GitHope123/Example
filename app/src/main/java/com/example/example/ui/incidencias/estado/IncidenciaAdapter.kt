@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
 import com.example.example.ui.incidencias.DescripcionIncidencia
 import android.content.Context
+import android.widget.Filterable
 import android.widget.ImageView
+import com.example.example.ui.incidencias.EstudianteAgregar
 
 class IncidenciaAdapter(
     private var incidencias: List<IncidenciaClass>,
-    private val context: Context
+    private val context: Context,
 ) : RecyclerView.Adapter<IncidenciaAdapter.IncidenciaViewHolder>() {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IncidenciaViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_incidencia, parent, false)

@@ -9,8 +9,16 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10sp"
+    android:padding="5sp"
+    android:orientation="vertical"
     tools:ignore="MissingConstraints">
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginVertical="10dp"
+        android:background="@drawable/search_view_query_background"
+        app:showAsAction="always" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewIncidencia"

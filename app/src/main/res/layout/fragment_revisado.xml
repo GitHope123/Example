@@ -3,20 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     tools:context=".ui.incidencias.estado.Revisado">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10sp"
+        android:orientation="vertical"
+        android:padding="5sp"
         tools:ignore="MissingConstraints">
+
+        <SearchView
+            android:id="@+id/searchView"
+            app:showAsAction="always"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/search_view_query_background" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewIncidencia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_incidencia"
-            />
+            tools:listitem="@layout/item_incidencia" />
 
     </LinearLayout>
 
