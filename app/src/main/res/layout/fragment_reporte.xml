@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_primary_blue"
-    tools:context=".ui.Reporte.Reporte">
+    tools:context=".ui.reportes.Reporte">
 
 
     <LinearLayout

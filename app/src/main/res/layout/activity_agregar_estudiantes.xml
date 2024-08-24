@@ -8,7 +8,7 @@
     android:background="@drawable/background_primary_blue"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".ui.Incidencia.AgregarEstudiantes">
+    tools:context=".ui.incidencias.AgregarEstudiantes">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
