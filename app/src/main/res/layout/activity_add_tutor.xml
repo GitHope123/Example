@@ -19,6 +19,7 @@
             android:id="@+id/searchViewTutorAdd"
             android:layout_width="match_parent"
             android:layout_height="55dp"
+            android:theme="@style/ThemeOverlay.SearchView"
             android:background="@drawable/search_view_query_background"
             app:iconifiedByDefault="false"
             app:queryHint="Buscar profesor..."
@@ -36,6 +37,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:popupTheme="@style/SpinnerItemStyle"
+                android:backgroundTint="@color/Primary_blue_sky"
                 android:background="@drawable/background_white_element_full"
                 android:textAlignment="center"/>
 
@@ -49,6 +51,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:popupTheme="@style/SpinnerItemStyle"
+                android:backgroundTint="@color/Primary_blue_sky"
                 android:background="@drawable/background_white_element_full"
                 android:textAlignment="center"/>
 
