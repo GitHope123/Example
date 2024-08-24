@@ -91,7 +91,7 @@ class AddEstudiante : AppCompatActivity() {
         addLastName = edTxtAddLastName.text.toString().trim()
         addPhone = edTxtAddPhone.text.toString().trim().toLongOrNull() ?: 0L
         addDni=edTxtAddDni.text.toString().trim().toLongOrNull()?:0
-        addGrado = spinnerAddGrado.selectedItem.toString().trim().toIntOrNull()!!
+        addGrado = spinnerAddGrado.selectedItem.toString().trim().toIntOrNull()?:0
         addSection = spinnerAddSection.selectedItem.toString().trim()
         if (addName.isNotEmpty() && addLastName.isNotEmpty() &&
             addPhone.toString().length == 9 && addDni.toString().length == 8 &&addSection.isNotEmpty()

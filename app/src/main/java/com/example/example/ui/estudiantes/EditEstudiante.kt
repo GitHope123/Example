@@ -135,8 +135,8 @@ class EditEstudiante : AppCompatActivity() {
     private fun modifyStudent(updatedGrado:Int,updatedSeccion:String) {
         updatedNombres = editTextNombres.text.toString().trim()
         updatedApellidos = editTextApellidos.text.toString().trim()
-        updatedCelular = editTextCelular.text.toString().trim().toLongOrNull()!!
-        updatedDni = editTextDni.text.toString().trim().toLongOrNull()!!
+        updatedCelular = editTextCelular.text.toString().trim().toLongOrNull()?:0L
+        updatedDni = editTextDni.text.toString().trim().toLongOrNull()?:0L
         val updatedEstudiante = mapOf(
             "nombres" to updatedNombres,
             "apellidos" to updatedApellidos,
@@ -179,6 +179,8 @@ class EditEstudiante : AppCompatActivity() {
         documentRef.delete()
             .addOnSuccessListener {
                 Toast.makeText(this,"Estudiante Eliminado",Toast.LENGTH_SHORT).show()
+                notifyEstudianteFragment()
+                finish()
             }
             .addOnFailureListener {
                 Toast.makeText(this,"Error al agregar",Toast.LENGTH_SHORT).show()
