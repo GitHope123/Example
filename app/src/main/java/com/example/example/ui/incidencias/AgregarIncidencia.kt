@@ -281,8 +281,8 @@ class AgregarIncidencia : AppCompatActivity() {
 
         firestore.runTransaction { transaction ->
             val snapshot = transaction.get(studentRef)
-            val currentCount = snapshot.getLong("cantidadIncidencia") ?: 0
-            transaction.update(studentRef, "cantidadIncidencia", currentCount + 1)
+            val currentCount = snapshot.getLong("cantidadIncidencias") ?: 0
+            transaction.update(studentRef, "cantidadIncidencias", currentCount + 1)
         }.addOnSuccessListener {
             Toast.makeText(
                 this,
