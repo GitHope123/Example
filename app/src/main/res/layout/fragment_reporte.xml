@@ -14,7 +14,7 @@
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="wrap_content"
             android:layout_margin="10sp"
 
             android:background="@drawable/background_white_element_full"
@@ -41,10 +41,11 @@
                 android:backgroundTint="@color/Primary_white"
                 android:background="@drawable/background_white_element_full"
                 android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="50dp"
                 android:orientation="horizontal">
                 <ImageButton
                     android:id="@+id/buttonOpenLink"
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/montserrat_bold"
                     style="@style/ButtonStyle"
@@ -70,9 +71,11 @@
             android:layout_width="match_parent"
             android:layout_margin="10dp"
             android:paddingVertical="30dp"
+            android:paddingHorizontal="10dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAlignment="center"
+            android:textSize="12dp"
             android:fontFamily="@font/montserrat"
             android:backgroundTint="@color/Primary_blue"
             android:background="@drawable/background_white_element_full"
