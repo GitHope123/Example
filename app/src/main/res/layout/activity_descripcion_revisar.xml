@@ -267,7 +267,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/montserrat"
                 android:padding="10dp"
-                android:text="Detalles aqui\nD\nEDD\nDD\naqui\nD\nEDD\nDDaqui\nD\nEDD\nDDaqui\nD\nEDD\nDDaqui\nD\nEDD\nDD"
+                android:text="Detalles aqui"
                 android:textColor="@color/Primary_white"
                 android:textSize="14sp" />
 
@@ -287,12 +287,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Revisado"
+                    android:fontFamily="@font/montserrat_bold"
                     android:textColor="@color/Primary_white" />
-
                 <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/Secondary_red"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:buttonTint="@color/Primary_white"
                     />
             </LinearLayout>
 
@@ -301,8 +301,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Enviar"
+                android:fontFamily="@font/montserrat_bold"
+                style="@style/ButtonStyle"
+                android:backgroundTint="@color/Primary_yellow"
                 android:layout_marginBottom="30dp"
-                android:textColor="@color/Primary_black" />
+                android:textColor="@color/Secondary_brown" />
         </LinearLayout>
 
     </ScrollView>

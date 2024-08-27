@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.storage.ktx)
+    implementation(libs.androidx.recyclerview)
 
 
     // Unit testing library

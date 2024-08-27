@@ -1,7 +1,7 @@
 package com.example.example.ui.Tutorias
+
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,23 +9,24 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.example.example.R
 import com.example.example.databinding.FragmentTutoriaBinding
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 
 class Tutoria : Fragment() {
     private var _binding: FragmentTutoriaBinding? = null
     private val binding get() = _binding!!
+
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        _binding= FragmentTutoriaBinding.inflate(inflater, container, false)
+        _binding = FragmentTutoriaBinding.inflate(inflater, container, false)
+
         resetAutoComplete()
+        setupViewPagerAndTabs()
+
         return binding.root
-    }
-    override fun onResume() {
-        super.onResume()
-        resetAutoComplete()
     }
 
     private fun resetAutoComplete() {
@@ -33,11 +34,20 @@ class Tutoria : Fragment() {
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_tutoria, fechaTutoria)
         binding.autoComplete.setAdapter(arrayAdapter)
         binding.autoComplete.text.clear()
-        binding.autoComplete.setText("Todos",false)
+        binding.autoComplete.setText("Todos", false)
+    }
+
+    private fun setupViewPagerAndTabs() {
+        val viewPager: ViewPager = binding.viewPager
+        val tabLayout: TabLayout = binding.tabLayout
+
+        val adapter = AdapterFragments(childFragmentManager)
+        viewPager.adapter = adapter
+        tabLayout.setupWithViewPager(viewPager)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding=null
+        _binding = null
     }
 }
