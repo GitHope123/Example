@@ -25,7 +25,6 @@ class TutoriaAdapter(private var listaTutorias: List<TutoriaClass>) :
         private val textViewEstado: TextView = itemView.findViewById(R.id.textViewEstadoTutoria)
         private val imagenViewSiguiente: ImageButton = itemView.findViewById(R.id.ImagenViewSiguienteTutoria)
 
-        // Enlaza los datos con los elementos del UI
         fun bind(tutoria: TutoriaClass) {
             textViewFecha.text = tutoria.fecha
             textViewHora.text = tutoria.hora
@@ -46,7 +45,6 @@ class TutoriaAdapter(private var listaTutorias: List<TutoriaClass>) :
             }
         }
 
-        // Obtiene el color según el estado de la tutoría
         private fun getEstadoColorText(estado: String): Int {
             return when (estado) {
                 "Pendiente" -> ContextCompat.getColor(itemView.context, R.color.color_red)
@@ -55,7 +53,6 @@ class TutoriaAdapter(private var listaTutorias: List<TutoriaClass>) :
             }
         }
 
-        // Obtiene el color de la alerta según la gravedad
         private fun getAlertColor(gravedad: String): Int {
             return when (gravedad) {
                 "Moderado" -> ContextCompat.getColor(itemView.context, R.color.Primary_yellow)
@@ -64,31 +61,26 @@ class TutoriaAdapter(private var listaTutorias: List<TutoriaClass>) :
             }
         }
 
-        // Aplica el color tanto a la imagen como al texto de gravedad
         private fun setAlertColors(color: Int) {
             imagenViewAlerta.setColorFilter(color)
             textViewGravedad.setTextColor(color)
         }
     }
 
-    // Crea el ViewHolder para el RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TutoriaViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_tutoria, parent, false)
         return TutoriaViewHolder(view)
     }
 
-    // Asigna los datos al ViewHolder
     override fun onBindViewHolder(holder: TutoriaViewHolder, position: Int) {
         holder.bind(listaTutorias[position])
     }
 
-    // Actualiza la lista de tutorías y notifica los cambios
     fun updateData(newListTutoria: List<TutoriaClass>) {
         listaTutorias = newListTutoria
         notifyDataSetChanged() // Notifica al adaptador que los datos han cambiado
     }
 
-    // Devuelve el tamaño de la lista de tutorías
     override fun getItemCount(): Int {
         return listaTutorias.size
     }
