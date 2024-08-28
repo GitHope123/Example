@@ -1,8 +1,11 @@
 package com.example.example.ui.incidencias
 
 import android.os.Bundle
+import android.view.View
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -39,7 +42,6 @@ class DescripcionIncidencia : AppCompatActivity() {
         getPutExtra()
         init()
         set()
-
     }
 
     private fun getPutExtra() {
@@ -75,7 +77,8 @@ class DescripcionIncidencia : AppCompatActivity() {
                 .into(imagen)
         }
     }
-    private fun set(){
+
+    private fun set() {
         tvFecha.text = fecha
         tvHora.text = hora
         tvNombreCompleto.text = "$apellidoEstudiante $nombreEstudiante"
@@ -87,4 +90,5 @@ class DescripcionIncidencia : AppCompatActivity() {
         tvDetalle.text = detalle
 
     }
+
 }
