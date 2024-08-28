@@ -23,19 +23,12 @@ class Tutoria : Fragment() {
     ): View? {
         _binding = FragmentTutoriaBinding.inflate(inflater, container, false)
 
-        resetAutoComplete()
+
         setupViewPagerAndTabs()
 
         return binding.root
     }
 
-    private fun resetAutoComplete() {
-        val fechaTutoria = resources.getStringArray(R.array.item_fecha_tutoria)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_tutoria, fechaTutoria)
-        binding.autoComplete.setAdapter(arrayAdapter)
-        binding.autoComplete.text.clear()
-        binding.autoComplete.setText("Todos", false)
-    }
 
     private fun setupViewPagerAndTabs() {
         val viewPager: ViewPager = binding.viewPager

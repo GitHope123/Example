@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.example.R
 import com.example.example.databinding.FragmentTodosTutoriaBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -16,32 +18,53 @@ class TodosTutoria : Fragment() {
     private lateinit var tutoriaAdapter: TutoriaAdapter
     private val listaTutorias = mutableListOf<TutoriaClass>()
     private val tutoriaRepository = TutoriaRepository()
+    private var currentFilter: String = "Todos"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentTodosTutoriaBinding.inflate(inflater, container, false)
-
-        // Configuración del RecyclerView
-        binding.recyclerViewTutorias.layoutManager = LinearLayoutManager(context)
-        tutoriaAdapter = TutoriaAdapter(listaTutorias)
-        binding.recyclerViewTutorias.adapter = tutoriaAdapter
-
-        // Obtener el correo del tutor autenticado
+        init()
+        resetAutoComplete()
         val email = FirebaseAuth.getInstance().currentUser?.email
         email?.let {
-            loadTutoriasForTutor(it)
+            loadTutoriasForTutor(it, currentFilter) // Se pasa "Todos" como filtro por defecto
         }
-
         return binding.root
     }
 
-    private fun loadTutoriasForTutor(email: String) {
-        // Obtener grado y sección del tutor
+
+    private fun init() {
+
+        binding.recyclerViewTutorias.layoutManager = LinearLayoutManager(context)
+        tutoriaAdapter = TutoriaAdapter(listaTutorias)
+        binding.recyclerViewTutorias.adapter = tutoriaAdapter
+    }
+
+    private fun resetAutoComplete() {
+        val fechaTutoria = resources.getStringArray(R.array.item_fecha_tutoria)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.list_tutoria, fechaTutoria)
+        binding.autoComplete.setAdapter(arrayAdapter)
+        binding.autoComplete.text.clear()
+        binding.autoComplete.setText(currentFilter, false)
+        binding.autoComplete.setOnItemClickListener { parent, _, position, _ ->
+            val selectedItem = parent.getItemAtPosition(position) as String
+            applyFilter(selectedItem)
+        }
+    }
+
+    private fun applyFilter(selection: String) {
+        currentFilter= selection
+        val email = FirebaseAuth.getInstance().currentUser?.email
+        email?.let {
+            loadTutoriasForTutor(it, selection) // Usar 'selection' directamente
+        }
+    }
+
+    private fun loadTutoriasForTutor(email: String, filtroFecha: String) {
         tutoriaRepository.getGradoSeccionTutorByEmail(email) { grado, seccion ->
-            // Filtrar incidencias por grado, sección y estado 'Pendiente'
-            tutoriaRepository.getIncidenciasPorGradoSeccion(grado, seccion, "") { incidencias ->
+            tutoriaRepository.getIncidenciasPorGradoSeccion(grado, seccion, "", filtroFecha) { incidencias ->
                 if (isAdded) {
                     listaTutorias.clear()
                     listaTutorias.addAll(incidencias)
@@ -51,8 +74,19 @@ class TodosTutoria : Fragment() {
         }
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // Limpia la referencia a la vista enlazada
+    }
+
+    override fun onResume() {
+        super.onResume()
+        currentFilter = "Todos"
+        resetAutoComplete()
+        val email = FirebaseAuth.getInstance().currentUser?.email
+        email?.let {
+            loadTutoriasForTutor(it, currentFilter)
+        }
     }
 }

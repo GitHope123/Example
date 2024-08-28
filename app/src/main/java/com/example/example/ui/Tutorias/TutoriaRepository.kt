@@ -2,6 +2,7 @@ package com.example.example.ui.Tutorias
 
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -70,13 +71,17 @@ class TutoriaRepository {
             }
     }
 
-    // Obtener incidencias filtradas por grado, sección y estado
-    fun getIncidenciasPorGradoSeccion(grado: Int, seccion: String, estado: String, callback: (List<TutoriaClass>) -> Unit) {
+    fun getIncidenciasPorGradoSeccion(
+        grado: Int,
+        seccion: String,
+        estado: String,
+        filtroFecha: String,
+        callback: (List<TutoriaClass>) -> Unit
+    ) {
         var query = firestore.collection("Incidencia")
             .whereEqualTo("grado", grado)
             .whereEqualTo("seccion", seccion)
 
-        // Si el estado no está vacío, agregar filtro por estado
         if (estado.isNotEmpty()) {
             query = query.whereEqualTo("estado", estado)
         }
@@ -84,12 +89,74 @@ class TutoriaRepository {
         query.get()
             .addOnSuccessListener { querySnapshot ->
                 val incidencias = querySnapshot.documents.mapNotNull { it.toObject(TutoriaClass::class.java) }
-                callback(incidencias)
+
+                val filteredList = when (filtroFecha) {
+                    "Hoy" -> filterByToday(incidencias)
+                    "Ultimos 7 dias" -> filterByLast7Days(incidencias)
+                    "Este mes" -> filterByCurrentMonth(incidencias)
+                    "Este año" -> filterByCurrentYear(incidencias)
+                    else -> incidencias // No se aplica filtro de fecha
+                }
+
+                callback(filteredList)
             }
             .addOnFailureListener { exception ->
                 exception.printStackTrace()
-                callback(emptyList()) // Lista vacía en caso de error
+                callback(emptyList())
             }
+    }
+
+    private fun filterByToday(incidencias: List<TutoriaClass>): List<TutoriaClass> {
+        val today = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time
+
+        return incidencias.filter {
+            val date = parseDate(it.fecha, it.hora)
+            date != null && date.after(today) && date.before(Date())
+        }
+    }
+
+    private fun filterByLast7Days(incidencias: List<TutoriaClass>): List<TutoriaClass> {
+        val today = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time
+        val last7Days = Calendar.getInstance().apply {
+            add(Calendar.DAY_OF_YEAR, -7)
+        }.time
+
+        return incidencias.filter {
+            val date = parseDate(it.fecha, it.hora)
+            date != null && date.after(last7Days) && date.before(today)
+        }
+    }
+
+    private fun filterByCurrentMonth(incidencias: List<TutoriaClass>): List<TutoriaClass> {
+        val calendar = Calendar.getInstance()
+        val currentMonth = calendar.get(Calendar.MONTH)
+        val currentYear = calendar.get(Calendar.YEAR)
+
+        return incidencias.filter {
+            val date = parseDate(it.fecha, it.hora)
+            date != null && calendar.apply { time = date }.let {
+                it.get(Calendar.MONTH) == currentMonth && it.get(Calendar.YEAR) == currentYear
+            }
+        }
+    }
+
+    private fun filterByCurrentYear(incidencias: List<TutoriaClass>): List<TutoriaClass> {
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+
+        return incidencias.filter {
+            val date = parseDate(it.fecha, it.hora)
+            date != null && Calendar.getInstance().apply { time = date }.get(Calendar.YEAR) == currentYear
+        }
     }
 
     // Función auxiliar para analizar la fecha y hora
