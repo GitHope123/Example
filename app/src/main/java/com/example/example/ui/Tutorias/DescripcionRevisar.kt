@@ -6,12 +6,9 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.example.R
-import com.google.android.gms.fido.fido2.api.common.RequestOptions
 
 class DescripcionRevisar : AppCompatActivity() {
     private lateinit var tutoria: TutoriaClass

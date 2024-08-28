@@ -110,7 +110,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
 
         android:orientation="vertical">
@@ -127,16 +127,6 @@
             android:textSize="12sp"
             android:fontFamily="@font/montserrat_bold"
             />
-        <ImageButton
-            android:id="@+id/ImagenViewSiguienteTutoria"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/ic_ir"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center"
-            app:tint="@color/Transparent_color"
-            android:background="@color/transparent_color"
-            android:padding="5dp"/>
     </LinearLayout>
 
 </LinearLayout>
