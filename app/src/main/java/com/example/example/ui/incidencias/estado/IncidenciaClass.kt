@@ -14,6 +14,6 @@ data class IncidenciaClass(
     val gravedad: String = "",
     val estado: String = "",
     val detalle: String = "",
-    val imageUri: String=""
+    val imageUri: String="" 
 ) : Serializable
 

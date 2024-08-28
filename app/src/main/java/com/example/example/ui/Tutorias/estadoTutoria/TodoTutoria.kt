@@ -8,12 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.example.R
 
-class PendienteTutoria : Fragment() {
-
+class TodoTutoria : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_pendiente_tutoria, container, false)
+        return inflater.inflate(R.layout.fragment_todo_tutoria, container, false)
     }
 }
