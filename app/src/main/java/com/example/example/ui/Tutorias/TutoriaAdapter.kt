@@ -23,7 +23,6 @@ class TutoriaAdapter(private var listaTutorias: List<TutoriaClass>) :
         private val textViewProfesor: TextView = itemView.findViewById(R.id.textViewProfesorTutoria)
         private val textViewCurso: TextView = itemView.findViewById(R.id.textViewCursoTutoria)
         private val textViewEstado: TextView = itemView.findViewById(R.id.textViewEstadoTutoria)
-        private val imagenViewSiguiente: ImageButton = itemView.findViewById(R.id.ImagenViewSiguienteTutoria)
 
         fun bind(tutoria: TutoriaClass) {
             textViewFecha.text = tutoria.fecha
@@ -32,10 +31,10 @@ class TutoriaAdapter(private var listaTutorias: List<TutoriaClass>) :
             textViewProfesor.text = "${tutoria.nombreProfesor} ${tutoria.apellidoProfesor}"
             textViewCurso.text = "${tutoria.grado} ${tutoria.seccion}"
             textViewEstado.text = tutoria.estado
-            textViewEstado.setTextColor(getEstadoColorText(tutoria.estado)) // Asigna el color basado en el estado
+            textViewEstado.setTextColor(getEstadoColorText(tutoria.estado))
 
             textViewGravedad.text = tutoria.gravedad
-            setAlertColors(getAlertColor(tutoria.gravedad)) // Asigna el color basado en la gravedad
+            setAlertColors(getAlertColor(tutoria.gravedad))
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, DescripcionRevisar::class.java).apply {
@@ -78,7 +77,7 @@ class TutoriaAdapter(private var listaTutorias: List<TutoriaClass>) :
 
     fun updateData(newListTutoria: List<TutoriaClass>) {
         listaTutorias = newListTutoria
-        notifyDataSetChanged() // Notifica al adaptador que los datos han cambiado
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
