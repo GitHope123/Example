@@ -1,5 +1,6 @@
 package com.example.example.ui.Tutorias
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,8 +38,11 @@ class TutoriaAdapter(private var listaTutorias: List<TutoriaClass>) :
             textViewGravedad.text = tutoria.gravedad
             setAlertColors(getAlertColor(tutoria.gravedad)) // Asigna el color basado en la gravedad
 
-            imagenViewSiguiente.setOnClickListener {
-                // Implementa la acción del botón aquí, como abrir una nueva actividad o fragmento
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, DescripcionRevisar::class.java).apply {
+                    putExtra("TUTORIA_EXTRA", tutoria) // Pasa el objeto TutoriaClass a la actividad
+                }
+                itemView.context.startActivity(intent)
             }
         }
 

@@ -39,7 +39,6 @@ class RevisadoTutoria : Fragment() {
 
 
     private fun init() {
-
         binding.recyclerViewTutorias.layoutManager = LinearLayoutManager(context)
         tutoriaAdapter = TutoriaAdapter(listaTutorias)
         binding.recyclerViewTutorias.adapter = tutoriaAdapter
