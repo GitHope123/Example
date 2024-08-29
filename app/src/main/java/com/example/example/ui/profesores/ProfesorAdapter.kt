@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
 
 class ProfesorAdapter(
-    private val profesores: List<Profesor>, private val onEditClickListener: (Profesor) -> Unit
+    private val profesores: List<Profesor>,
+    private val onEditClickListener: (Profesor) -> Unit,
+    private val isEditButtonVisible: Int // Parámetro para visibilidad del editButton
 ) : RecyclerView.Adapter<ProfesorAdapter.ProfesorViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfesorViewHolder {
@@ -34,14 +36,15 @@ class ProfesorAdapter(
         private val editButton: ImageButton = itemView.findViewById(R.id.imageButtonEdit)
 
         fun bind(profesor: Profesor) {
-            // Concatenate first and last names
             val nombreCompleto = "${profesor.apellidos} ${profesor.nombres}"
             textViewNombreCompleto.text = nombreCompleto
-            textViewTelefono.text =
-                profesor.celular.toString() // Ensure long is converted to string
+            textViewTelefono.text = profesor.celular.toString()
             textViewCorreo.text = profesor.correo
 
-            // Set the click listener for editing
+            // Ajusta la visibilidad del editButton
+            editButton.visibility = isEditButtonVisible
+
+            // Configura el click listener del editButton
             editButton.setOnClickListener {
                 val context = itemView.context
                 val intent = Intent(context, EditProfesor::class.java).apply {
@@ -51,11 +54,13 @@ class ProfesorAdapter(
                     putExtra("celular", profesor.celular)
                     putExtra("materia", profesor.materia)
                     putExtra("correo", profesor.correo)
+                    putExtra("password", profesor.password)
                 }
                 context.startActivity(intent)
             }
+
             itemView.setOnClickListener {
-                onEditClickListener(profesor) // Trigger the passed-in listener
+                onEditClickListener(profesor)
             }
         }
     }

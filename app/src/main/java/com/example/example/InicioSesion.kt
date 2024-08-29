@@ -2,153 +2,81 @@ package com.example.example
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
+import com.example.example.databinding.ActivityInicioSesionBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 
 class InicioSesion : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var signInLauncher: ActivityResultLauncher<Intent>
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var binding: ActivityInicioSesionBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_inicio_sesion)
+        binding = ActivityInicioSesionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-
-        setupGoogleSignIn()
         auth = FirebaseAuth.getInstance()
-        setupSignInLauncher()
-        setupButtons()
-    }
+        firestore = FirebaseFirestore.getInstance()
 
-    private fun setupGoogleSignIn() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-    }
+        binding.buttonIniciarSesion.setOnClickListener {
+            val email = binding.editTextUsername.text.toString().trim()
+            val password = binding.editTextPassword.text.toString().trim()
 
-    private fun setupSignInLauncher() {
-        signInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                handleGoogleSignInResult(result.data)
+            if (email.isEmpty() || password.isEmpty()) {
+                showToast("Por favor, complete todos los campos.")
             } else {
-                Log.e("InicioSesion", "Google sign-in failed: result not OK")
+                iniciarSesionConFirebase(email, password)
             }
         }
     }
-    private fun setupButtons() {
-        val iniciarSesion = findViewById<Button>(R.id.buttonIniciarSesion)
-        val iniciarSesionGoogle = findViewById<Button>(R.id.buttonGoogle)
-        iniciarSesion.setOnClickListener { loginWithEmailAndPassword() }
-        iniciarSesionGoogle.setOnClickListener { signInWithGoogle() }
-    }
-    private fun loginWithEmailAndPassword() {
-        val email = findViewById<EditText>(R.id.editTextUsername).text.toString()
-        val password = findViewById<EditText>(R.id.editTextPassword).text.toString()
 
-        if (email.isBlank() || password.isBlank()) {
-            showToast("Por favor, ingrese todos los campos.")
-            return
-        }
+    private fun iniciarSesionConFirebase(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    handleSuccessfulLogin(email)
+                    navigateToBarraLateral(email, "administrador")
                 } else {
-                    handleSignInError(task.exception)
+                    verificarUsuarioEnFirestore(email, password)
                 }
             }
     }
 
-    private fun handleSuccessfulLogin(email: String) {
-        val user = auth.currentUser
-        if (user != null && email.endsWith("@gmail.com")) {
-            navigateToBarraLateral()
-        } else {
-            handleSignOut()
-        }
-    }
-
-    private fun signInWithGoogle() {
-        val signInIntent = googleSignInClient.signInIntent
-        signInLauncher.launch(signInIntent)
-    }
-
-    private fun handleGoogleSignInResult(data: Intent?) {
-        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-        try {
-            val account = task.getResult(ApiException::class.java)!!
-            firebaseAuthWithGoogle(account)
-        } catch (e: ApiException) {
-            Log.e("InicioSesion", "Google sign-in failed", e)
-            showToast("Error al iniciar sesión.")
-        }
-    }
-
-    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
-        val idToken = account.idToken ?: run {
-            showToast("Error al obtener el token de Google.")
-            return
-        }
-
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val email = auth.currentUser?.email
-                    if (email != null && email.endsWith("@gmail.com")) {
-                        navigateToBarraLateral()
-                    } else {
-                        handleSignOut()
+    private fun verificarUsuarioEnFirestore(email: String, password: String) {
+        firestore.collection("Profesor")
+            .whereEqualTo("correo", email)
+            .whereEqualTo("password", password)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful && !task.result.isEmpty) {
+                    val document = task.result.documents.firstOrNull()
+                    document?.let {
+                        val isTutor = it.getBoolean("tutor") ?: false
+                        val userType = if (isTutor) "tutor" else "profesor"
+                        showToast("Inicio de sesión exitoso.")
+                        navigateToBarraLateral(email, userType)
                     }
                 } else {
-                    handleSignInError(task.exception)
-                    handleSignOut()
+                    showToast("Error al iniciar sesión. Verifica tus datos.")
                 }
+            }
+            .addOnFailureListener { exception ->
+                showToast("Error al verificar usuario: ${exception.localizedMessage}")
             }
     }
 
-    private fun handleSignInError(exception: Exception?) {
-        val errorMessage = when (exception) {
-            is FirebaseAuthInvalidCredentialsException -> "Credenciales inválidas. Verifique el correo electrónico y la contraseña."
-            is FirebaseAuthInvalidUserException -> "Usuario no registrado. Verifique el correo electrónico."
-            is ApiException -> "Error de autenticación de Google: ${exception.statusCode}"
-            else -> "Error al iniciar sesión. Inténtelo de nuevo."
-        }
-        Log.e("InicioSesion", errorMessage, exception)
-        showToast(errorMessage)
-    }
-
-    private fun handleSignOut() {
-        auth.signOut()
-        googleSignInClient.signOut()
-        showToast("Acceso restringido. Inténtelo de nuevo.")
-    }
-
-    private fun navigateToBarraLateral() {
-        val intent = Intent(this, BarraLateral::class.java)
-        startActivity(intent)
+    private fun navigateToBarraLateral(email: String, userType: String) {
+        startActivity(Intent(this, BarraLateral::class.java).apply {
+            putExtra("USER_PROFESOR", email)
+            putExtra("USER_TYPE", userType)
+        })
         finish()
     }
 
     private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

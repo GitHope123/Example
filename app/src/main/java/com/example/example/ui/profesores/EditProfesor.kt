@@ -15,6 +15,7 @@
         private lateinit var editTextCelular: EditText
         private lateinit var editTextMateria: EditText
         private lateinit var editTextCorreo: EditText
+        private lateinit var editTextPassword: EditText
         private lateinit var buttonGuardar: Button
         private lateinit var buttonEliminar: Button
         private lateinit var idProfesor: String
@@ -23,11 +24,13 @@
         private var celular: Long = 0
         private lateinit var materia: String
         private lateinit var correo: String
+        private lateinit var password: String
         private lateinit var updatedNombres: String
         private lateinit var updatedApellidos: String
+        private var updatedCelular: Long = 0
         private lateinit var updatedMateria: String
         private lateinit var updatedCorreo: String
-        private var updatedCelular: Long = 0
+        private lateinit var updatePassword: String
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_edit_profesor)
@@ -37,6 +40,8 @@
             celular = intent.getLongExtra("celular", 0) // Use getLongExtra for Long
             materia = intent.getStringExtra("materia") ?: ""
             correo = intent.getStringExtra("correo") ?: ""
+            password = intent.getStringExtra("password")?: ""
+
             init()
             loadData()
             listener()
@@ -50,6 +55,7 @@
             editTextCelular = findViewById(R.id.editTextCelular)
             editTextMateria = findViewById(R.id.editTextMateria)
             editTextCorreo = findViewById(R.id.editTextCorreo)
+            editTextPassword = findViewById(R.id.editTextPassword)
             buttonGuardar = findViewById(R.id.buttonModificar)
             buttonEliminar = findViewById(R.id.buttonEliminar)
 
@@ -62,6 +68,7 @@
             editTextCelular.setText(celular.toString())
             editTextMateria.setText(materia)
             editTextCorreo.setText(correo)
+            editTextPassword.setText(password)
 
 
         }
@@ -73,6 +80,7 @@
                 updatedMateria = editTextMateria.text.toString()
                 updatedCorreo = editTextCorreo.text.toString()
                 updatedCelular = editTextCelular.text.toString().toLong()
+                updatePassword = editTextPassword.text.toString()
                 updateData()
             }
             buttonEliminar.setOnClickListener {
@@ -85,7 +93,7 @@
         private fun updateData() {
             if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
                 updatedCelular != null && updatedMateria.isNotEmpty() &&
-                updatedCorreo.isNotEmpty() && updatedCelular.toString().length == 9
+                updatedCorreo.isNotEmpty() && updatedCelular.toString().length == 9 && updatePassword.isNotEmpty()
             ) {
                 if(updatedCorreo.endsWith("@gmail.com")){
                     val updatedProfesor = mapOf(
@@ -93,7 +101,8 @@
                         "apellidos" to updatedApellidos,
                         "celular" to updatedCelular,
                         "materia" to updatedMateria,
-                        "correo" to updatedCorreo
+                        "correo" to updatedCorreo,
+                        "password" to updatePassword
                     )
 
                     firestore.collection("Profesor").document(idProfesor)

@@ -23,11 +23,11 @@
         <item
             android:id="@+id/nav_incidencia"
             android:icon="@drawable/icon_incidencia"
-            android:title="Incidencia" />
+            android:title="Incidencias" /> <!-- Corrección: cambiando a plural -->
         <item
             android:id="@+id/nav_tutoria"
             android:icon="@drawable/ic_group"
-            android:title="Tutoria" />
+            android:title="Tutoría" /> <!-- Corrección: añadiendo tilde -->
         <item
             android:id="@+id/nav_reporte"
             android:icon="@drawable/icon_report"

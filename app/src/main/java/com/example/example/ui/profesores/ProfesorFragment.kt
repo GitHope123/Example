@@ -1,4 +1,5 @@
 package com.example.example.ui.profesores
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.databinding.FragmentProfesorBinding
+import com.example.example.ui.tutores.TutorFragment
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -21,32 +23,48 @@ class ProfesorFragment : Fragment() {
     private val profesorList = mutableListOf<Profesor>()
     private val filteredProfesorList = mutableListOf<Profesor>()
     private lateinit var profesorAdapter: ProfesorAdapter
+    private var userType: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            userType = it.getString("USER_TYPE")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentProfesorBinding.inflate(inflater, container, false)
         setupRecyclerView()
         fetchProfesores()
         setupSearchView()
-        binding.addButtomProfesor.setOnClickListener {
-            startActivity(Intent(context, AddProfesor::class.java))
-        }
+        setupButtons()
         return binding.root
     }
 
     private fun setupRecyclerView() {
-        profesorAdapter = ProfesorAdapter(filteredProfesorList) {
-            // Handle edit action for the professor here if needed
+        val isEditButtonVisible = when (userType) {
+            "administrador" -> View.VISIBLE
+            else -> View.INVISIBLE
         }
+
+        profesorAdapter = ProfesorAdapter(
+            profesores = filteredProfesorList,
+            onEditClickListener = { profesor ->
+                Toast.makeText(context, "Edit button clicked for ${profesor.nombres}", Toast.LENGTH_SHORT).show()
+            },
+            isEditButtonVisible = isEditButtonVisible // Pasa la visibilidad del editButton
+        )
+
         binding.recyclerViewProfesores.apply {
             adapter = profesorAdapter
             layoutManager = LinearLayoutManager(context)
         }
     }
+
 
     private fun setupSearchView() {
         binding.searchView.setOnClickListener {
@@ -65,7 +83,6 @@ class ProfesorFragment : Fragment() {
                 return true
             }
         })
-        
     }
 
     private fun filterProfesores(query: String) {
@@ -79,7 +96,6 @@ class ProfesorFragment : Fragment() {
         filteredProfesorList.addAll(filteredList)
         profesorAdapter.notifyDataSetChanged()
     }
-
 
     private fun fetchProfesores() {
         firestore.collection("Profesor")
@@ -101,21 +117,49 @@ class ProfesorFragment : Fragment() {
             }
     }
 
-    fun refreshData() {
-        fetchProfesores()
+
+    private fun setupButtons() {
+        binding.addButtomProfesor.setOnClickListener {
+            startActivity(Intent(context, AddProfesor::class.java))
+        }
+
+        val isAddButtonVisible = when (userType) {
+            "administrador"-> View.VISIBLE
+            else -> View.VISIBLE
+        }
+        binding.addButtomProfesor.visibility = isAddButtonVisible
+
+        // Determina la visibilidad del editButton
+        val isEditButtonVisible = when (userType) {
+            "administrador" -> View.VISIBLE
+            else -> View.VISIBLE
+        }
+
+        // Asegúrate de que la lista de profesores está disponible
+        profesorAdapter = ProfesorAdapter(
+            profesores = filteredProfesorList,
+            onEditClickListener = { profesor ->
+                Toast.makeText(context, "Edit button clicked for ${profesor.nombres}", Toast.LENGTH_SHORT).show()
+            },
+            isEditButtonVisible = isEditButtonVisible // Pasa la visibilidad del editButton
+        )
+
+        binding.recyclerViewProfesores.adapter = profesorAdapter
     }
 
     private fun DocumentSnapshot.toProfesor(): Profesor? {
         return try {
             Profesor(
-                idProfesor = id, // Use the document ID as idProfesor
+                idProfesor = id,
                 nombres = getString("nombres") ?: "",
                 apellidos = getString("apellidos") ?: "",
-                celular = getLong("celular") ?: 0L, // Directly get Long value
+                celular = getLong("celular") ?: 0L,
                 materia = getString("materia") ?: "",
                 correo = getString("correo") ?: "",
                 grado = getLong("grado") ?: 0L,
-                seccion = getString("seccion")?: ""
+                seccion = getString("seccion") ?: "",
+                password = getString("password")?:""
+
             )
         } catch (e: Exception) {
             Log.e("ProfesorFragment", "Error converting document to Profesor", e)
@@ -123,25 +167,37 @@ class ProfesorFragment : Fragment() {
         }
     }
 
-
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    fun refreshData() {
+        fetchProfesores()
+    }
+
     override fun onResume() {
         super.onResume()
-        refreshData() // Refresh data when the fragment becomes visible
+        refreshData()
     }
+
     override fun onPause() {
         super.onPause()
-        clearSearchView() // Limpiar el SearchView al pausar el fragmento
+        clearSearchView()
     }
 
     private fun clearSearchView() {
-        binding.searchView.setQuery("", false) // Limpiar el texto sin activar la búsqueda nuevamente
-        binding.searchView.clearFocus() // Opcional: para eliminar el foco del SearchView
+        binding.searchView.setQuery("", false)
+        binding.searchView.clearFocus()
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(userType: String) =
+            ProfesorFragment().apply {
+                arguments = Bundle().apply {
+                    putString("USER_TYPE", userType)
+                }
+            }
     }
 }

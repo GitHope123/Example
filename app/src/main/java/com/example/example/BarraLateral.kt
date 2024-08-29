@@ -1,20 +1,19 @@
 package com.example.example
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.widget.TextView
-import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
+import com.example.example.databinding.ActivityBarraLateralBinding
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import com.example.example.databinding.ActivityBarraLateralBinding
-import com.example.example.ui.principal1.Principal
-import com.google.firebase.auth.FirebaseAuth
 
 class BarraLateral : AppCompatActivity() {
 
@@ -24,31 +23,11 @@ class BarraLateral : AppCompatActivity() {
 
     private val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
         val user = firebaseAuth.currentUser
-        if (user != null) {
-            // Obtén el nombre del usuario si está disponible
-            val userName = user.displayName ?: "Usuario"
-            val email = user.email ?: "No disponible"
+        val userName = user?.displayName ?: "Usuario"
+        val email = user?.email ?: "No disponible"
 
-            // Registra la información en el log
-            Log.d("BarraLateral", "Correo electrónico del usuario: $email")
-
-            // Configura las vistas del header en el NavigationView
-            val navView: NavigationView = binding.navView
-            val headerView = navView.getHeaderView(0)
-            val userWelcome = headerView.findViewById<TextView>(R.id.textViewUser)
-            val emailTextView = headerView.findViewById<TextView>(R.id.textViewEmail)
-            val formattedText = userName
-                .toLowerCase()
-                .split(" ")
-                .take(2)
-                .joinToString(" ") { it.capitalize() }
-            // Actualiza los textos en el header
-            userWelcome.text = "Bienvenido, $formattedText!"
-            emailTextView.text = email
-        } else {
-            Log.d("BarraLateral", "No hay usuario autenticado")
-            // Manejo cuando no hay usuario autenticado, posiblemente redirigir a pantalla de login
-        }
+        Log.d("BarraLateral", "Correo electrónico del usuario: $email")
+        updateHeader(userName, email)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,14 +36,10 @@ class BarraLateral : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
-
-        // Configura el AuthStateListener
         auth.addAuthStateListener(authStateListener)
 
-        // Configura la barra de acción
         setSupportActionBar(binding.appBarBarraLateral.toolbar)
 
-        // Configura el Navigation Drawer
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navController = findNavController(R.id.nav_host_fragment_content_barra_lateral)
         appBarConfiguration = AppBarConfiguration(
@@ -81,32 +56,86 @@ class BarraLateral : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
-        // Recibir el email desde el Intent y pasar al fragmento
-        val email = intent.getStringExtra("user_email")
-        val fragment = Principal().apply {
-            arguments = Bundle().apply {
-                putString("email", email)
-            }
-        }
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.nav_host_fragment_content_barra_lateral, fragment)
-            .commit()
+        // Manejo del tipo de usuario después de configurar el NavController
+        configureMenuBasedOnUserType(intent.getStringExtra("USER_TYPE"))
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.barra_lateral, menu)
-        return true
+    private fun updateHeader(userName: String, email: String) {
+        val navView: NavigationView = binding.navView
+        val headerView = navView.getHeaderView(0)
+        val userWelcome = headerView.findViewById<TextView>(R.id.textViewUser)
+        val emailTextView = headerView.findViewById<TextView>(R.id.textViewEmail)
+
+        val formattedText = userName.split(" ").joinToString(" ") { it.capitalize() }
+        userWelcome.text = "Bienvenido, $formattedText!"
+        emailTextView.text = email
+    }
+
+    private fun configureMenuBasedOnUserType(userType: String?) {
+        val navMenu = binding.navView.menu
+        when (userType) {
+            "administrador" -> {
+                showAllMenuItems(navMenu)
+            }
+            "tutor" -> {
+                showTutorMenuItems(navMenu)
+            }
+            "profesor" -> {
+                showProfesorMenuItems(navMenu)
+            }
+            else -> {
+                showDefaultMenuItems(navMenu)
+            }
+        }
+    }
+
+    private fun showAllMenuItems(navMenu: Menu) {
+        navMenu.findItem(R.id.nav_principal).isVisible = true
+        navMenu.findItem(R.id.nav_profesor).isVisible = true
+        navMenu.findItem(R.id.nav_estudiantes).isVisible = true
+        navMenu.findItem(R.id.nav_tutor).isVisible = true
+        navMenu.findItem(R.id.nav_incidencia).isVisible = true
+        navMenu.findItem(R.id.nav_tutoria).isVisible = true
+        navMenu.findItem(R.id.nav_reporte).isVisible = true
+    }
+
+    private fun showTutorMenuItems(navMenu: Menu) {
+        navMenu.findItem(R.id.nav_principal).isVisible = true
+        navMenu.findItem(R.id.nav_profesor).isVisible = true
+        navMenu.findItem(R.id.nav_estudiantes).isVisible = true
+        navMenu.findItem(R.id.nav_tutor).isVisible = true
+        navMenu.findItem(R.id.nav_incidencia).isVisible = true
+        navMenu.findItem(R.id.nav_tutoria).isVisible = true
+        navMenu.findItem(R.id.nav_reporte).isVisible = false
+    }
+
+    private fun showProfesorMenuItems(navMenu: Menu) {
+        navMenu.findItem(R.id.nav_principal).isVisible = true
+        navMenu.findItem(R.id.nav_profesor).isVisible = true
+        navMenu.findItem(R.id.nav_estudiantes).isVisible = true
+        navMenu.findItem(R.id.nav_tutor).isVisible = true
+        navMenu.findItem(R.id.nav_incidencia).isVisible = true
+        navMenu.findItem(R.id.nav_tutoria).isVisible = false
+        navMenu.findItem(R.id.nav_reporte).isVisible = false
+    }
+
+    private fun showDefaultMenuItems(navMenu: Menu) {
+        navMenu.findItem(R.id.nav_principal).isVisible = true
+        navMenu.findItem(R.id.nav_profesor).isVisible = false
+        navMenu.findItem(R.id.nav_estudiantes).isVisible = false
+        navMenu.findItem(R.id.nav_tutor).isVisible = false
+        navMenu.findItem(R.id.nav_incidencia).isVisible = false
+        navMenu.findItem(R.id.nav_tutoria).isVisible = false
+        navMenu.findItem(R.id.nav_reporte).isVisible = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        auth.removeAuthStateListener(authStateListener)
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_barra_lateral)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // Elimina el AuthStateListener
-        auth.removeAuthStateListener(authStateListener)
-    }
 }
-

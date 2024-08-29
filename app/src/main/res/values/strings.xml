@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">C.P.S.J</string>
+    <string name="app_name">Incidencia</string>
     <string name="title_activity_barra_lateral">barraLateral</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -61,6 +61,10 @@
     <string name="desc_tutor_image">Imagen tutor</string>
 
 
+
+
+
+
     <string-array name="item_fecha_tutoria">
         <item>Todos</item>
         <item>Hoy</item>
@@ -76,4 +80,19 @@
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_medium">14sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
+
+
+
+    <string name="authentication_failed_message">No se pudo autenticar el usuario. Intenta de nuevo.</string>
+    <string name="firestore_error_message">Error al consultar la base de datos. Por favor, intenta de nuevo.</string>
+    <string name="empty_fields_message">Por favor, ingrese todos los campos.</string>
+    <string name="user_not_found_message">Usuario no registrado</string>
+        <string name="invalid_credentials_message">Credenciales inválidas. Verifique el correo electrónico y la contraseña.</string>
+        <string name="invalid_user_message">Usuario no registrado. Verifique el correo electrónico.</string>
+        <string name="sign_in_error_message">Error al iniciar sesión. Inténtelo de nuevo.</string>
+        <string name="sign_out_message">Acceso restringido. Inténtelo de nuevo.</string>
+
+
+
+
 </resources>

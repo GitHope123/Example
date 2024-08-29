@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
+import com.example.example.ui.profesores.AddProfesor
 import com.example.example.ui.profesores.Profesor
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,23 +28,45 @@ class TutorFragment : Fragment() {
     private lateinit var searchViewTutor: SearchView
     private lateinit var addButtonTutor: FloatingActionButton
     private var originalList: List<Profesor> = emptyList() // List for all the fetched data
+    private var userType: String? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            userType = it.getString("USER_TYPE")
+        }
+    }
+    companion object {
+        @JvmStatic
+        fun newInstance(userType: String) =
+            TutorFragment().apply {
+                arguments = Bundle().apply {
+                    putString("USER_TYPE", userType)
+                }
+            }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_tutor, container, false)
+        val view = inflater.inflate(R.layout.fragment_tutor, container, false)
+
+        // Initialize views here
+        recyclerViewTutores = view.findViewById(R.id.recyclerViewTutores)
+        searchViewTutor = view.findViewById(R.id.searchViewTutor) as SearchView
+        addButtonTutor = view.findViewById(R.id.addButtonTutor)
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerViewTutores = view.findViewById(R.id.recyclerViewTutores)
         recyclerViewTutores.layoutManager = LinearLayoutManager(requireContext())
 
         tutorAdapter = TutorAdapter(
             onEditClickListener = { profesor ->
-
+                // Implement edit functionality
             },
             onRemoveClickListener = { profesor ->
                 // Aquí llamas a Firestore para eliminar el tutor
@@ -72,16 +97,12 @@ class TutorFragment : Fragment() {
 
         fetchProfesores()
 
-        addButtonTutor = view.findViewById(R.id.addButtonTutor)
-        searchViewTutor = view.findViewById(R.id.searchViewTutor) as SearchView
-
-        // Expand search view on click
+        // Set up SearchView
         searchViewTutor.setOnClickListener {
             searchViewTutor.isIconified = false
             searchViewTutor.requestFocus()
         }
 
-        // Listen to text changes in the search bar
         searchViewTutor.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 handleSearch(query.orEmpty())
@@ -99,7 +120,41 @@ class TutorFragment : Fragment() {
             val intent = Intent(requireContext(), AddTutor::class.java)
             startActivityForResult(intent, ADD_TUTOR_REQUEST_CODE)
         }
+
+        // Setup buttons visibility
+        setupButtons()
     }
+
+    private fun setupButtons() {
+        addButtonTutor = view?.findViewById(R.id.addButtonTutor) ?: return
+        val textViewGradosSeccion: TextView = view?.findViewById(R.id.textViewGradosSeccionTutor) ?: return
+        val imageButtonQuitarTutor: ImageButton = view?.findViewById(R.id.imageButtonQuitarTutor) ?: return
+
+
+        val isAddButtonVisible = userType == "administrador"
+        val isImageButtonQuitarTutorVisible = userType == "administrador"
+        val isTextViewGradosSeccionVisible = true
+
+        // Set visibility of buttons based on userType
+        addButtonTutor.visibility = if (isAddButtonVisible) View.VISIBLE else View.GONE
+        textViewGradosSeccion.visibility = if (isTextViewGradosSeccionVisible) View.VISIBLE else View.GONE
+        imageButtonQuitarTutor.visibility = if (isImageButtonQuitarTutorVisible) View.VISIBLE else View.GONE
+
+        // Initialize the adapter with the correct visibility for buttons
+        tutorAdapter = TutorAdapter(
+            onEditClickListener = { profesor ->
+            },
+            onRemoveClickListener = { profesor ->
+            },
+            isButtonVisible = isAddButtonVisible,
+            isTextViewGradosSeccionVisible = isTextViewGradosSeccionVisible,
+            isImageButtonQuitarTutor = isImageButtonQuitarTutorVisible
+        )
+
+        recyclerViewTutores.adapter = tutorAdapter
+    }
+
+
 
     private fun handleSearch(query: String) {
         if (query.isBlank()) {

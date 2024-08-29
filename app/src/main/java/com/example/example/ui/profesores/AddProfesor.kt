@@ -14,6 +14,7 @@ class AddProfesor : AppCompatActivity() {
     private lateinit var editTextCelular: EditText
     private lateinit var editTextMateria: EditText
     private lateinit var editTextCorreo: EditText
+    private lateinit var editTextPassword: EditText
     private lateinit var buttonAgregar: Button
 
     private lateinit var db: FirebaseFirestore
@@ -44,6 +45,7 @@ class AddProfesor : AppCompatActivity() {
         editTextCelular = findViewById(R.id.editTextCelular)
         editTextMateria = findViewById(R.id.editTextMateria)
         editTextCorreo = findViewById(R.id.editTextCorreo)
+        editTextPassword = findViewById(R.id.editTextPassword)
         buttonAgregar = findViewById(R.id.button2)
     }
 
@@ -54,10 +56,11 @@ class AddProfesor : AppCompatActivity() {
         val celularStr = editTextCelular.text.toString().trim()
         val materia = editTextMateria.text.toString().trim()
         val correo = editTextCorreo.text.toString().trim()
+        val password = editTextPassword.text.toString().trim()
 
         // Validate inputs
         if (nombres.isEmpty() || apellidos.isEmpty() || celularStr.isEmpty() ||
-            materia.isEmpty() || correo.isEmpty()||celularStr.length!=9) {
+            materia.isEmpty() || correo.isEmpty()||celularStr.length!=9||password.isEmpty()) {
             showToast("Por favor, complete todos los campos")
             isSaving = false
             return
@@ -87,7 +90,8 @@ class AddProfesor : AppCompatActivity() {
             correo = correo,
             tutor = false,
             grado = 0,
-            seccion = ""
+            seccion = "",
+            password = ""
         )
 
         // Save the data to Firebase Firestore
@@ -121,6 +125,7 @@ class AddProfesor : AppCompatActivity() {
         editTextCelular.text.clear()
         editTextMateria.text.clear()
         editTextCorreo.text.clear()
+        editTextPassword.text.clear()
     }
 
     private fun showToast(message: String) {

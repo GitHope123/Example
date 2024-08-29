@@ -96,6 +96,23 @@
             android:textColor="@android:color/white"
             android:textColorHint="@color/Primary_white"
             android:textSize="14dp" />
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/background_text_transparent"
+            android:backgroundTint="@color/Transparent_color"
+            android:drawableLeft="@drawable/icon_login_password"
+            android:drawablePadding="10sp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="Contraseña"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/Primary_white"
+            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_marginTop="80dp"
