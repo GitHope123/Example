@@ -105,6 +105,7 @@ class DescripcionRevisar : AppCompatActivity() {
                 tvEstado.text = "Revisado"
                 checkBoxRevisado.isEnabled = false
                 btnEnviar.isEnabled = false
+                finish()
             }
             .addOnFailureListener { e ->
                 e.printStackTrace()
