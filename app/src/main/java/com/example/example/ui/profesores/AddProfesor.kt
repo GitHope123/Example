@@ -62,6 +62,11 @@ class AddProfesor : AppCompatActivity() {
             isSaving = false
             return
         }
+        if(!correo.endsWith("@gmail.com")){
+           Toast.makeText(this,"Su correo debe terminar en @gmail.com",Toast.LENGTH_SHORT).show()
+            isSaving = false
+            return
+        }
 
         // Parse celular as a Long, handle potential errors
         val celular: Long = try {

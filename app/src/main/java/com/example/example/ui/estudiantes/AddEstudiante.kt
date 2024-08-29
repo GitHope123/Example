@@ -96,7 +96,6 @@ class AddEstudiante : AppCompatActivity() {
         if (addName.isNotEmpty() && addLastName.isNotEmpty() &&
             addPhone.toString().length == 9 && addDni.toString().length == 8 &&addSection.isNotEmpty()
             ) {
-            if ((addGrado.toString() != "2" || addGrado.toString() != "3" || addGrado.toString() != "4" || addGrado.toString() != "5") && ((addSection != "E"))) {
                 val student = Estudiante(
                     idEstudiante = "",
                     nombres = addName,
@@ -124,12 +123,6 @@ class AddEstudiante : AppCompatActivity() {
                     .addOnFailureListener {
                         Toast.makeText(this,"Error al agregar al estudiante",Toast.LENGTH_SHORT).show()
                     }
-
-
-            } else {
-                Toast.makeText(this, "Esta aula no existe", Toast.LENGTH_SHORT).show()
-            }
-
 
         } else {
             Toast.makeText(this, "Complete todos los campos", Toast.LENGTH_SHORT).show()
