@@ -12,5 +12,6 @@ data class Profesor(
     var correo: String = "",        // Correo electrónico del profesor
     var tutor: Boolean = false,     // Indica si el profesor es tutor
     var grado: Long? = null,        // Grado del profesor (puede ser null)
-    var seccion: String = ""        // Sección del profesor (puede ser null)
+    var seccion: String = "",        // Sección del profesor (puede ser null)
+    var password:String=""
 ) :Serializable

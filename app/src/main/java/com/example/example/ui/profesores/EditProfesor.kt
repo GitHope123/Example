@@ -87,31 +87,41 @@
                 updatedCelular != null && updatedMateria.isNotEmpty() &&
                 updatedCorreo.isNotEmpty() && updatedCelular.toString().length == 9
             ) {
+                if(updatedCorreo.endsWith("@gmail.com")){
+                    val updatedProfesor = mapOf(
+                        "nombres" to updatedNombres,
+                        "apellidos" to updatedApellidos,
+                        "celular" to updatedCelular,
+                        "materia" to updatedMateria,
+                        "correo" to updatedCorreo
+                    )
 
-                val updatedProfesor = mapOf(
-                    "nombres" to updatedNombres,
-                    "apellidos" to updatedApellidos,
-                    "celular" to updatedCelular,
-                    "materia" to updatedMateria,
-                    "correo" to updatedCorreo
-                )
+                    firestore.collection("Profesor").document(idProfesor)
+                        .update(updatedProfesor)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Profesor actualizado con éxito", Toast.LENGTH_SHORT)
+                                .show()
+                            // Notify ProfesorFragment to refresh its data
+                            notifyProfesorFragment()
+                            finish() // Close the activity
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(
+                                this,
+                                "Error al actualizar el profesor: ${e.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
 
-                firestore.collection("Profesor").document(idProfesor)
-                    .update(updatedProfesor)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Profesor actualizado con éxito", Toast.LENGTH_SHORT)
-                            .show()
-                        // Notify ProfesorFragment to refresh its data
-                        notifyProfesorFragment()
-                        finish() // Close the activity
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(
-                            this,
-                            "Error al actualizar el profesor: ${e.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
+                }
+                else{
+                    Toast.makeText(
+                        this,
+                        "Su correo debe terminar con @gmail.com",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
             } else {
                 Toast.makeText(
                     this,
