@@ -7,7 +7,7 @@ data class TutoriaClass(
     val apellidoEstudiante: String = "",
     val apellidoProfesor: String = "",
     val detalle: String = "",
-    val estado: String = "",
+    var estado: String = "",
     val fecha: String = "",
     val grado: Int = 0,
     val gravedad: String = "",

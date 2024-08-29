@@ -11,45 +11,6 @@ class TutoriaRepository {
     private val firestore = FirebaseFirestore.getInstance()
     private val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
-    // Cargar todas las tutorías
-    fun loadAllTutorias(callback: (List<TutoriaClass>) -> Unit) {
-        firestore.collection("Incidencia").get()
-            .addOnSuccessListener { result ->
-                val listaTutorias = result.mapNotNull { document ->
-                    try {
-                        TutoriaClass(
-                            id = document.id,
-                            apellidoEstudiante = document.getString("apellidoEstudiante") ?: "",
-                            apellidoProfesor = document.getString("apellidoProfesor") ?: "",
-                            detalle = document.getString("detalle") ?: "",
-                            estado = document.getString("estado") ?: "",
-                            fecha = document.getString("fecha") ?: "",
-                            grado = document.getLong("grado")?.toInt() ?: 0,
-                            gravedad = document.getString("gravedad") ?: "",
-                            hora = document.getString("hora") ?: "",
-                            nombreEstudiante = document.getString("nombreEstudiante") ?: "",
-                            nombreProfesor = document.getString("nombreProfesor") ?: "",
-                            seccion = document.getString("seccion") ?: "",
-                            tipo = document.getString("tipo") ?: "",
-                            urlImagen = document.getString("urlImagen") ?: ""
-                        )
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        null
-                    }
-                }.sortedByDescending { tutoria ->
-                    parseDate(tutoria.fecha, tutoria.hora) ?: Date(0)
-                }
-
-                callback(listaTutorias)
-            }
-            .addOnFailureListener { exception ->
-                exception.printStackTrace()
-                callback(emptyList())
-            }
-    }
-
-    // Obtener grado y sección por correo electrónico del tutor
     fun getGradoSeccionTutorByEmail(email: String, callback: (grado: Int, seccion: String) -> Unit) {
         firestore.collection("Profesor")
             .whereEqualTo("correo", email)
@@ -88,7 +49,24 @@ class TutoriaRepository {
 
         query.get()
             .addOnSuccessListener { querySnapshot ->
-                val incidencias = querySnapshot.documents.mapNotNull { it.toObject(TutoriaClass::class.java) }
+                val incidencias = querySnapshot.documents.mapNotNull { document ->
+                    TutoriaClass(
+                        id = document.id,
+                        apellidoEstudiante = document.getString("apellidoEstudiante") ?: "",
+                        apellidoProfesor = document.getString("apellidoProfesor") ?: "",
+                        detalle = document.getString("detalle") ?: "",
+                        estado = document.getString("estado") ?: "",
+                        fecha = document.getString("fecha") ?: "",
+                        grado = document.getLong("grado")?.toInt() ?: 0,
+                        gravedad = document.getString("gravedad") ?: "",
+                        hora = document.getString("hora") ?: "",
+                        nombreEstudiante = document.getString("nombreEstudiante") ?: "",
+                        nombreProfesor = document.getString("nombreProfesor") ?: "",
+                        seccion = document.getString("seccion") ?: "",
+                        tipo = document.getString("tipo") ?: "",
+                        urlImagen = document.getString("urlImagen") ?: ""
+                    )
+                }
 
                 val filteredList = when (filtroFecha) {
                     "Hoy" -> filterByToday(incidencias)

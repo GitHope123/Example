@@ -4,7 +4,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -38,7 +37,7 @@ class TutoriaAdapter(private var listaTutorias: List<TutoriaClass>) :
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, DescripcionRevisar::class.java).apply {
-                    putExtra("TUTORIA_EXTRA", tutoria) // Pasa el objeto TutoriaClass a la actividad
+                    putExtra("TUTORIA_EXTRA", tutoria)
                 }
                 itemView.context.startActivity(intent)
             }

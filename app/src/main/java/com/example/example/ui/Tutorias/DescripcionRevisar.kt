@@ -6,9 +6,11 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.example.R
+import com.google.firebase.firestore.FirebaseFirestore
 
 class DescripcionRevisar : AppCompatActivity() {
     private lateinit var tutoria: TutoriaClass
@@ -26,15 +28,16 @@ class DescripcionRevisar : AppCompatActivity() {
     private lateinit var imagen: ImageView
     private lateinit var checkBoxRevisado: CheckBox
     private lateinit var btnEnviar: Button
+    private val firestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_descripcion_revisar)
-        // Inicializar views
         initViews()
         getIntentData()
         setData()
         ocultar()
+        setupListeners()
     }
 
     private fun initViews() {
@@ -84,5 +87,30 @@ class DescripcionRevisar : AppCompatActivity() {
             tvRevisado.visibility=View.GONE
             btnEnviar.visibility=View.GONE
         }
+    }
+    private fun setupListeners() {
+        checkBoxRevisado.setOnCheckedChangeListener { _, isChecked ->
+            btnEnviar.isEnabled = isChecked
+        }
+
+        btnEnviar.setOnClickListener {
+            updateEstadoInDatabase()
+        }
+    }
+
+    private fun updateEstadoInDatabase() {
+        val incidenciaRef = firestore.collection("Incidencia").document(tutoria.id)
+        incidenciaRef.update("estado", "Revisado")
+            .addOnSuccessListener {
+                tvEstado.text = "Revisado"
+                checkBoxRevisado.isEnabled = false
+                btnEnviar.isEnabled = false
+            }
+            .addOnFailureListener { e ->
+                e.printStackTrace()
+            }
+            .addOnFailureListener { e ->
+                btnEnviar.isEnabled = true
+            }
     }
 }
