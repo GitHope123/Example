@@ -9,6 +9,7 @@ import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -39,38 +40,45 @@ class Revisado : Fragment() {
         loadAllIncidencias()
     }
     private fun loadAllIncidencias() {
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+        val userEmail = currentUser?.email ?: return
         firestore.collection("Incidencia").get().addOnSuccessListener { result ->
             incidenciasRevisado.clear()
             for (document in result) {
+                val email = document.getString("correoRegistrar") ?: ""
                 val estado = document.getString("estado") ?: ""
                 if (estado == "Revisado") {
-                    val id = document.id  // Obtener el ID del documento
-                    val fecha = document.getString("fecha") ?: ""
-                    val hora = document.getString("hora") ?: ""
-                    val nombreEstudiante = document.getString("nombreEstudiante") ?: ""
-                    val apellidoEstudiante = document.getString("apellidoEstudiante") ?: ""
-                    val tipo = document.getString("tipo") ?: ""
-                    val gravedad = document.getString("gravedad") ?: ""
-                    val grado = document.getLong("grado")?.toInt() ?: 0
-                    val seccion = document.getString("seccion") ?: ""
-                    val detalle = document.getString("detalle") ?: ""
-                    val urlImagen = document.getString("urlImagen") ?: ""
+                    if(email == userEmail) {
+                        val id = document.id  // Obtener el ID del documento
+                        val fecha = document.getString("fecha") ?: ""
+                        val hora = document.getString("hora") ?: ""
+                        val nombreEstudiante = document.getString("nombreEstudiante") ?: ""
+                        val apellidoEstudiante = document.getString("apellidoEstudiante") ?: ""
+                        val tipo = document.getString("tipo") ?: ""
+                        val gravedad = document.getString("gravedad") ?: ""
+                        val grado = document.getLong("grado")?.toInt() ?: 0
+                        val seccion = document.getString("seccion") ?: ""
+                        val detalle = document.getString("detalle") ?: ""
+                        val urlImagen = document.getString("urlImagen") ?: ""
 
-                    incidenciasRevisado.add(IncidenciaClass(
-                        id = id,
-                        fecha = fecha,
-                        hora = hora,
-                        nombreEstudiante = nombreEstudiante,
-                        apellidoEstudiante = apellidoEstudiante,
-                        grado = grado,
-                        seccion = seccion,
-                        tipo = tipo,
-                        gravedad = gravedad,
-                        estado = estado,
-                        detalle = detalle,
-                        imageUri = urlImagen
-                    ))
-                }
+                        incidenciasRevisado.add(
+                            IncidenciaClass(
+                                id = id,
+                                fecha = fecha,
+                                hora = hora,
+                                nombreEstudiante = nombreEstudiante,
+                                apellidoEstudiante = apellidoEstudiante,
+                                grado = grado,
+                                seccion = seccion,
+                                tipo = tipo,
+                                gravedad = gravedad,
+                                estado = estado,
+                                detalle = detalle,
+                                imageUri = urlImagen
+                            )
+                        )
+                    } }
             }
             val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
             incidenciasRevisado.sortByDescending {

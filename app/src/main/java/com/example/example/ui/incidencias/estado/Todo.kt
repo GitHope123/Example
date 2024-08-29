@@ -9,6 +9,7 @@ import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -44,37 +45,43 @@ class Todo : Fragment() {
     }
 
     private fun loadAllIncidencias() {
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+        val userEmail = currentUser?.email ?: return
         firestore.collection("Incidencia").get().addOnSuccessListener { result ->
             incidencias.clear()
             for (document in result) {
-                val id = document.id  // Obtener el ID del documento
-                val fecha = document.getString("fecha") ?: ""
-                val hora = document.getString("hora") ?: ""
-                val nombreEstudiante = document.getString("nombreEstudiante") ?: ""
-                val apellidoEstudiante = document.getString("apellidoEstudiante") ?: ""
-                val tipo = document.getString("tipo") ?: ""
-                val gravedad = document.getString("gravedad") ?: ""
-                val grado = document.getLong("grado")?.toInt() ?: 0
-                val seccion = document.getString("seccion") ?: ""
-                val detalle = document.getString("detalle") ?: ""
-                val estado = document.getString("estado") ?: ""
-                val urlImagen = document.getString("urlImagen") ?: ""
-                incidencias.add(
-                    IncidenciaClass(
-                        id = id,
-                        fecha = fecha,
-                        hora = hora,
-                        nombreEstudiante = nombreEstudiante,
-                        apellidoEstudiante = apellidoEstudiante,
-                        grado = grado,
-                        seccion = seccion,
-                        tipo = tipo,
-                        gravedad = gravedad,
-                        estado = estado,
-                        detalle = detalle,
-                        imageUri = urlImagen
+                val email = document.getString("correoRegistrar") ?: ""
+                if (email == userEmail) {
+                    val id = document.id  // Obtener el ID del documento
+                    val fecha = document.getString("fecha") ?: ""
+                    val hora = document.getString("hora") ?: ""
+                    val nombreEstudiante = document.getString("nombreEstudiante") ?: ""
+                    val apellidoEstudiante = document.getString("apellidoEstudiante") ?: ""
+                    val tipo = document.getString("tipo") ?: ""
+                    val gravedad = document.getString("gravedad") ?: ""
+                    val grado = document.getLong("grado")?.toInt() ?: 0
+                    val seccion = document.getString("seccion") ?: ""
+                    val detalle = document.getString("detalle") ?: ""
+                    val estado = document.getString("estado") ?: ""
+                    val urlImagen = document.getString("urlImagen") ?: ""
+                    incidencias.add(
+                        IncidenciaClass(
+                            id = id,
+                            fecha = fecha,
+                            hora = hora,
+                            nombreEstudiante = nombreEstudiante,
+                            apellidoEstudiante = apellidoEstudiante,
+                            grado = grado,
+                            seccion = seccion,
+                            tipo = tipo,
+                            gravedad = gravedad,
+                            estado = estado,
+                            detalle = detalle,
+                            imageUri = urlImagen
+                        )
                     )
-                )
+                }
             }
             val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
             incidencias.sortByDescending {

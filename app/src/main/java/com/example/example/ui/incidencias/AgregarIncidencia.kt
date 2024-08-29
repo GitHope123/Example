@@ -225,6 +225,7 @@ class AgregarIncidencia : AppCompatActivity() {
                     val incidencia = hashMapOf(
                         "fecha" to obtenerFechaActual(),
                         "hora" to obtenerHoraActual(),
+                        "correoRegistrar" to userEmail,
                         "nombreEstudiante" to studentName,
                         "apellidoEstudiante" to studentLastName,
                         "grado" to studentGrade,

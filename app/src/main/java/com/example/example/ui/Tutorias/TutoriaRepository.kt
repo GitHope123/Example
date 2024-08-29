@@ -137,7 +137,6 @@ class TutoriaRepository {
         }
     }
 
-    // Función auxiliar para analizar la fecha y hora
     private fun parseDate(fecha: String, hora: String): Date? {
         return try {
             dateTimeFormat.parse("$fecha $hora")
