@@ -40,6 +40,7 @@ class Principal : Fragment() {
         val root: View = binding.root
         idUsuario = BarraLateral.GlobalData.idUsuario
         userType = BarraLateral.GlobalData.datoTipoUsuario
+
         Toast.makeText(requireContext(),"$idUsuario", Toast.LENGTH_SHORT).show()
         Toast.makeText(requireContext(),"$userType", Toast.LENGTH_SHORT).show()
 
@@ -83,7 +84,7 @@ class Principal : Fragment() {
                     .document(idUsuario)
                     .get()
                     .addOnSuccessListener {doc->
-                        id = doc.getString("id") ?: "N/A"
+                        id = doc.id
                         nombre = doc.getString("nombres") ?: "N/A"
                         apellido = doc.getString("apellidos") ?: "N/A"
                         celular = doc.get("celular").toString()
