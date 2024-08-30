@@ -12,9 +12,10 @@ class AddProfesor : AppCompatActivity() {
     private lateinit var editTextNombres: EditText
     private lateinit var editTextApellidos: EditText
     private lateinit var editTextCelular: EditText
-    private lateinit var editTextMateria: EditText
+    private lateinit var editTextCargo: EditText
     private lateinit var editTextCorreo: EditText
     private lateinit var editTextPassword: EditText
+    private lateinit var editTextDni:EditText
     private lateinit var buttonAgregar: Button
 
     private lateinit var db: FirebaseFirestore
@@ -43,10 +44,12 @@ class AddProfesor : AppCompatActivity() {
         editTextNombres = findViewById(R.id.editTextNombres)
         editTextApellidos = findViewById(R.id.editTextApellidos)
         editTextCelular = findViewById(R.id.editTextCelular)
-        editTextMateria = findViewById(R.id.editTextMateria)
+        editTextCargo = findViewById(R.id.editTextMateria)
         editTextCorreo = findViewById(R.id.editTextCorreo)
         editTextPassword = findViewById(R.id.editTextPassword)
+        editTextDni=findViewById(R.id.editTextDni)
         buttonAgregar = findViewById(R.id.button2)
+
     }
 
     private fun saveProfesorToFirebase() {
@@ -54,13 +57,14 @@ class AddProfesor : AppCompatActivity() {
         val nombres = editTextNombres.text.toString().trim()
         val apellidos = editTextApellidos.text.toString().trim()
         val celularStr = editTextCelular.text.toString().trim()
-        val materia = editTextMateria.text.toString().trim()
+        val cargo = editTextCargo.text.toString().trim()
         val correo = editTextCorreo.text.toString().trim()
         val password = editTextPassword.text.toString().trim()
+        var dni=editTextDni.text.toString().trim()
 
         // Validate inputs
         if (nombres.isEmpty() || apellidos.isEmpty() || celularStr.isEmpty() ||
-            materia.isEmpty() || correo.isEmpty()||celularStr.length!=9||password.isEmpty()) {
+            cargo.isEmpty() || correo.isEmpty()||celularStr.length!=9||password.isEmpty()||dni.length!=8) {
             showToast("Por favor, complete todos los campos")
             isSaving = false
             return
@@ -86,7 +90,7 @@ class AddProfesor : AppCompatActivity() {
             nombres = nombres,
             apellidos = apellidos,
             celular = celular,
-            materia = materia,
+            cargo = cargo,
             correo = correo,
             tutor = false,
             grado = 0,
@@ -123,9 +127,10 @@ class AddProfesor : AppCompatActivity() {
         editTextNombres.text.clear()
         editTextApellidos.text.clear()
         editTextCelular.text.clear()
-        editTextMateria.text.clear()
+        editTextCargo.text.clear()
         editTextCorreo.text.clear()
         editTextPassword.text.clear()
+        editTextDni.text.clear()
     }
 
     private fun showToast(message: String) {

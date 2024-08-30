@@ -74,7 +74,7 @@
             android:drawablePadding="10dp"
             android:fontFamily="@font/montserrat"
             android:gravity="center_vertical"
-            android:hint="Materia"
+            android:hint="Cargo"
             android:padding="10dp"
             android:textColor="@android:color/white"
             android:textColorHint="@color/Primary_white"
@@ -113,6 +113,23 @@
             android:textColor="@android:color/white"
             android:textColorHint="@color/Primary_white"
             android:textSize="14sp" />
+        <EditText
+            android:id="@+id/editTextDni"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/background_text_transparent"
+            android:backgroundTint="@color/Transparent_color"
+            android:drawableLeft="@drawable/icon_dni"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="DNI"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/Primary_white"
+            android:textSize="14dp"
+            android:maxLength="9"/>
 
         <LinearLayout
             android:layout_marginTop="80dp"

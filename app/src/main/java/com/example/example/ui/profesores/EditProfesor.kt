@@ -13,7 +13,8 @@
         private lateinit var editTextNombres: EditText
         private lateinit var editTextApellidos: EditText
         private lateinit var editTextCelular: EditText
-        private lateinit var editTextMateria: EditText
+        private lateinit var editTextCargo: EditText
+        private lateinit var editTextDni:EditText
         private lateinit var editTextCorreo: EditText
         private lateinit var editTextPassword: EditText
         private lateinit var buttonGuardar: Button
@@ -25,12 +26,14 @@
         private lateinit var materia: String
         private lateinit var correo: String
         private lateinit var password: String
+        private  var dni:Long=0
         private lateinit var updatedNombres: String
         private lateinit var updatedApellidos: String
         private var updatedCelular: Long = 0
-        private lateinit var updatedMateria: String
+        private lateinit var updatedCargo: String
         private lateinit var updatedCorreo: String
         private lateinit var updatePassword: String
+        private  var updatedDni:Long=0
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_edit_profesor)
@@ -38,10 +41,10 @@
             nombres = intent.getStringExtra("nombres") ?: ""
             apellidos = intent.getStringExtra("apellidos") ?: ""
             celular = intent.getLongExtra("celular", 0) // Use getLongExtra for Long
-            materia = intent.getStringExtra("materia") ?: ""
+            materia = intent.getStringExtra("cargo") ?: ""
             correo = intent.getStringExtra("correo") ?: ""
             password = intent.getStringExtra("password")?: ""
-
+            dni=intent.getLongExtra("dni",0)
             init()
             loadData()
             listener()
@@ -53,31 +56,29 @@
             editTextNombres = findViewById(R.id.editTextNombres)
             editTextApellidos = findViewById(R.id.editTextApellidos)
             editTextCelular = findViewById(R.id.editTextCelular)
-            editTextMateria = findViewById(R.id.editTextMateria)
+            editTextCargo = findViewById(R.id.editTextMateria)
             editTextCorreo = findViewById(R.id.editTextCorreo)
             editTextPassword = findViewById(R.id.editTextPassword)
+            editTextDni=findViewById(R.id.editTextDni)
             buttonGuardar = findViewById(R.id.buttonModificar)
             buttonEliminar = findViewById(R.id.buttonEliminar)
-
-
         }
 
         private fun loadData() {
             editTextNombres.setText(nombres)
             editTextApellidos.setText(apellidos)
             editTextCelular.setText(celular.toString())
-            editTextMateria.setText(materia)
+            editTextCargo.setText(materia)
             editTextCorreo.setText(correo)
             editTextPassword.setText(password)
-
-
+            editTextDni.setText(dni.toString())
         }
 
         private fun listener() {
             buttonGuardar.setOnClickListener {
                 updatedNombres = editTextNombres.text.toString()
                 updatedApellidos = editTextApellidos.text.toString()
-                updatedMateria = editTextMateria.text.toString()
+                updatedCargo = editTextCargo.text.toString()
                 updatedCorreo = editTextCorreo.text.toString()
                 updatedCelular = editTextCelular.text.toString().toLong()
                 updatePassword = editTextPassword.text.toString()
@@ -92,17 +93,17 @@
 
         private fun updateData() {
             if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
-                updatedCelular != null && updatedMateria.isNotEmpty() &&
-                updatedCorreo.isNotEmpty() && updatedCelular.toString().length == 9 && updatePassword.isNotEmpty()
-            ) {
+                updatedCelular != null && updatedCargo.isNotEmpty() &&
+                updatedCorreo.isNotEmpty() && updatedCelular.toString().length == 9 && updatePassword.isNotEmpty() && updatedDni.toString().length==8) {
                 if(updatedCorreo.endsWith("@gmail.com")){
                     val updatedProfesor = mapOf(
                         "nombres" to updatedNombres,
                         "apellidos" to updatedApellidos,
                         "celular" to updatedCelular,
-                        "materia" to updatedMateria,
+                        "cargo" to updatedCargo,
                         "correo" to updatedCorreo,
-                        "password" to updatePassword
+                        "password" to updatePassword,
+                        "dni" to updatedDni
                     )
 
                     firestore.collection("Profesor").document(idProfesor)
