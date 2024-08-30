@@ -2,6 +2,7 @@ package com.example.example
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.example.databinding.ActivityInicioSesionBinding
@@ -13,6 +14,8 @@ class InicioSesion : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private lateinit var binding: ActivityInicioSesionBinding
+    private lateinit var userType:String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,41 +39,45 @@ class InicioSesion : AppCompatActivity() {
 
     private fun iniciarSesionConFirebase(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    navigateToBarraLateral(email, "administrador")
-                } else {
-                    verificarUsuarioEnFirestore(email, password)
-                }
+            .addOnSuccessListener { task1 ->
+                    userType="Administrador"
+                navigateToBarraLateral(userType)
             }
-    }
+            .addOnFailureListener {
+                firestore.collection("Profesor")
+                    .whereEqualTo("correo", email)
+                    .whereEqualTo("password", password)
+                    .get()
+                    .addOnCompleteListener { task ->
+                        if(task.isSuccessful){
+                            val document=task.result
+                            if(!document.isEmpty){
+                                //Obtener atributos de este documento
 
-    private fun verificarUsuarioEnFirestore(email: String, password: String) {
-        firestore.collection("Profesor")
-            .whereEqualTo("correo", email)
-            .whereEqualTo("password", password)
-            .get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful && !task.result.isEmpty) {
-                    val document = task.result.documents.firstOrNull()
-                    document?.let {
-                        val isTutor = it.getBoolean("tutor") ?: false
-                        val userType = if (isTutor) "tutor" else "profesor"
-                        showToast("Inicio de sesión exitoso.")
-                        navigateToBarraLateral(email, userType)
+                                val doc=document.first()
+                                val tutor=doc.getBoolean("tutor")
+                                if(tutor == true){
+                                    userType="Tutor"
+                                    navigateToBarraLateral(userType)
+                                }
+                                else{
+                                    userType="Profesor"
+                                    navigateToBarraLateral(userType)
+                                }
+                            }
+                            else{
+                                Toast.makeText(this,"Este correo no se encuentra registrado",Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
-                } else {
-                    showToast("Error al iniciar sesión. Verifica tus datos.")
-                }
-            }
-            .addOnFailureListener { exception ->
-                showToast("Error al verificar usuario: ${exception.localizedMessage}")
+                    .addOnFailureListener { exception ->
+                        Toast.makeText(this,"Este correo no se encuentra registrado",Toast.LENGTH_SHORT).show()
+                    }
             }
     }
 
-    private fun navigateToBarraLateral(email: String, userType: String) {
+    private fun navigateToBarraLateral(userType:String) {
         startActivity(Intent(this, BarraLateral::class.java).apply {
-            putExtra("USER_PROFESOR", email)
             putExtra("USER_TYPE", userType)
         })
         finish()

@@ -74,13 +74,13 @@ class BarraLateral : AppCompatActivity() {
     private fun configureMenuBasedOnUserType(userType: String?) {
         val navMenu = binding.navView.menu
         when (userType) {
-            "administrador" -> {
+            "Administrador" -> {
                 showAllMenuItems(navMenu)
             }
-            "tutor" -> {
+            "Tutor" -> {
                 showTutorMenuItems(navMenu)
             }
-            "profesor" -> {
+            "Profesor" -> {
                 showProfesorMenuItems(navMenu)
             }
             else -> {
@@ -90,12 +90,12 @@ class BarraLateral : AppCompatActivity() {
     }
 
     private fun showAllMenuItems(navMenu: Menu) {
-        navMenu.findItem(R.id.nav_principal).isVisible = true
+        navMenu.findItem(R.id.nav_principal).isVisible = false
         navMenu.findItem(R.id.nav_profesor).isVisible = true
         navMenu.findItem(R.id.nav_estudiantes).isVisible = true
         navMenu.findItem(R.id.nav_tutor).isVisible = true
         navMenu.findItem(R.id.nav_incidencia).isVisible = true
-        navMenu.findItem(R.id.nav_tutoria).isVisible = true
+        navMenu.findItem(R.id.nav_tutoria).isVisible = false
         navMenu.findItem(R.id.nav_reporte).isVisible = true
     }
 
