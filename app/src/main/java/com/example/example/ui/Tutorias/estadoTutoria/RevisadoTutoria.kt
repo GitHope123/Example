@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.BarraLateral
+import com.example.example.InicioSesion
 import com.example.example.R
 import com.example.example.databinding.FragmentRevisadoTutoriaBinding
 import com.example.example.databinding.FragmentTodosTutoriaBinding
@@ -61,7 +62,7 @@ class RevisadoTutoria : Fragment() {
 
     private fun applyFilter(selection: String) {
         currentFilter= selection
-        idUsuario = BarraLateral.GlobalData.idUsuario
+        idUsuario = InicioSesion.GlobalData.idUsuario
         loadTutoriasForTutor(idUsuario, selection)
     }
 
@@ -87,7 +88,7 @@ class RevisadoTutoria : Fragment() {
         super.onResume()
         currentFilter = "Todos"
         resetAutoComplete()
-        idUsuario = BarraLateral.GlobalData.idUsuario
+        idUsuario = InicioSesion.GlobalData.idUsuario
         loadTutoriasForTutor(idUsuario, currentFilter)
     }
 }

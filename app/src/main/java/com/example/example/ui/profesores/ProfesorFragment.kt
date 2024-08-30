@@ -10,6 +10,7 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.example.InicioSesion
 import com.example.example.databinding.FragmentProfesorBinding
 import com.example.example.ui.tutores.TutorFragment
 import com.google.firebase.firestore.DocumentSnapshot
@@ -23,14 +24,9 @@ class ProfesorFragment : Fragment() {
     private val profesorList = mutableListOf<Profesor>()
     private val filteredProfesorList = mutableListOf<Profesor>()
     private lateinit var profesorAdapter: ProfesorAdapter
-    private var userType: String? = null
+    private lateinit var userType: String
+    private var visibilityUser:Boolean=false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            userType = it.getString("USER_TYPE")
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +34,10 @@ class ProfesorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfesorBinding.inflate(inflater, container, false)
+        userType= InicioSesion.GlobalData.datoTipoUsuario
+        if(userType=="Administrador"){
+            visibilityUser=true
+        }
         setupRecyclerView()
         fetchProfesores()
         setupSearchView()
@@ -46,17 +46,12 @@ class ProfesorFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val isEditButtonVisible = when (userType) {
-            "Administrador" -> View.VISIBLE
-            else -> View.INVISIBLE
-        }
 
         profesorAdapter = ProfesorAdapter(
             profesores = filteredProfesorList,
             onEditClickListener = { profesor ->
-                Toast.makeText(context, "Edit button clicked for ${profesor.nombres}", Toast.LENGTH_SHORT).show()
             },
-            isEditButtonVisible = isEditButtonVisible // Pasa la visibilidad del editButton
+            isEditButtonVisible = visibilityUser
         )
 
         binding.recyclerViewProfesores.apply {
@@ -124,16 +119,18 @@ class ProfesorFragment : Fragment() {
         }
 
         val isAddButtonVisible = when (userType) {
-            "administrador"-> View.VISIBLE
-            else -> View.VISIBLE
+            "Administrador"-> View.VISIBLE
+            else -> View.GONE
         }
         binding.addButtomProfesor.visibility = isAddButtonVisible
 
         // Determina la visibilidad del editButton
-        val isEditButtonVisible = when (userType) {
-            "administrador" -> View.VISIBLE
-            else -> View.VISIBLE
+    /*    val isEditButtonVisible = when (userType) {
+            "Administrador" -> View.VISIBLE
+            else -> View.GONE
         }
+
+     */
 
         // Asegúrate de que la lista de profesores está disponible
         profesorAdapter = ProfesorAdapter(
@@ -141,7 +138,7 @@ class ProfesorFragment : Fragment() {
             onEditClickListener = { profesor ->
                 Toast.makeText(context, "Edit button clicked for ${profesor.nombres}", Toast.LENGTH_SHORT).show()
             },
-            isEditButtonVisible = isEditButtonVisible // Pasa la visibilidad del editButton
+            isEditButtonVisible =visibilityUser // Pasa la visibilidad del editButton
         )
 
         binding.recyclerViewProfesores.adapter = profesorAdapter
@@ -189,15 +186,5 @@ class ProfesorFragment : Fragment() {
     private fun clearSearchView() {
         binding.searchView.setQuery("", false)
         binding.searchView.clearFocus()
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(userType: String) =
-            ProfesorFragment().apply {
-                arguments = Bundle().apply {
-                    putString("USER_TYPE", userType)
-                }
-            }
     }
 }

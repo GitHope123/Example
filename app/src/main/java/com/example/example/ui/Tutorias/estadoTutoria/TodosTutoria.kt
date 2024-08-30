@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.BarraLateral
+import com.example.example.InicioSesion
 import com.example.example.R
 import com.example.example.databinding.FragmentTodosTutoriaBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -59,7 +60,7 @@ class TodosTutoria : Fragment() {
 
     private fun applyFilter(selection: String) {
         currentFilter= selection
-        idUsuario = BarraLateral.GlobalData.idUsuario
+        idUsuario = InicioSesion.GlobalData.idUsuario
             loadTutoriasForTutor(idUsuario, selection) // Usar 'selection' directamente
     }
 
@@ -85,7 +86,7 @@ class TodosTutoria : Fragment() {
         super.onResume()
         currentFilter = "Todos"
         resetAutoComplete()
-        idUsuario = BarraLateral.GlobalData.idUsuario
+        idUsuario = InicioSesion.GlobalData.idUsuario
         loadTutoriasForTutor(idUsuario, currentFilter)
     }
 }

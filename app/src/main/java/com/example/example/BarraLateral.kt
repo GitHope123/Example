@@ -34,8 +34,6 @@ class BarraLateral : AppCompatActivity() {
         datoId= intent.getStringExtra("ID").toString()
         datoTipoUsuario=intent.getStringExtra("USER_TYPE").toString()
 
-        GlobalData.idUsuario = datoId
-        GlobalData.datoTipoUsuario = datoTipoUsuario
 
         if(datoTipoUsuario=="Administrador"){
             var username1="Administrador"
@@ -166,10 +164,7 @@ class BarraLateral : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_barra_lateral)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-    object GlobalData {
-        var idUsuario: String=""
-        var datoTipoUsuario: String=""
-    }
+
 
 }
 

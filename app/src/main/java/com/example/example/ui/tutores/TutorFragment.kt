@@ -13,10 +13,12 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.example.InicioSesion
 import com.example.example.R
 import com.example.example.ui.profesores.AddProfesor
 import com.example.example.ui.profesores.Profesor
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 
 class TutorFragment : Fragment() {
@@ -28,29 +30,14 @@ class TutorFragment : Fragment() {
     private lateinit var searchViewTutor: SearchView
     private lateinit var addButtonTutor: FloatingActionButton
     private var originalList: List<Profesor> = emptyList() // List for all the fetched data
-    private var userType: String? = null
+    private lateinit var userType:String
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            userType = it.getString("USER_TYPE")
-        }
-    }
-    companion object {
-        @JvmStatic
-        fun newInstance(userType: String) =
-            TutorFragment().apply {
-                arguments = Bundle().apply {
-                    putString("USER_TYPE", userType)
-                }
-            }
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_tutor, container, false)
-
+        userType=InicioSesion.GlobalData.datoTipoUsuario
         // Initialize views here
         recyclerViewTutores = view.findViewById(R.id.recyclerViewTutores)
         searchViewTutor = view.findViewById(R.id.searchViewTutor) as SearchView
@@ -88,9 +75,9 @@ class TutorFragment : Fragment() {
                         }
                 }
             },
-            isButtonVisible = false,
+            isButtonVisible = userType=="Administrador",
             isTextViewGradosSeccionVisible = true,
-            isImageButtonQuitarTutor = true
+            isImageButtonQuitarTutor = userType=="Administrador"
         )
 
         recyclerViewTutores.adapter = tutorAdapter
@@ -131,8 +118,8 @@ class TutorFragment : Fragment() {
         val imageButtonQuitarTutor: ImageButton = view?.findViewById(R.id.imageButtonQuitarTutor) ?: return
 
 
-        val isAddButtonVisible = userType == "administrador"
-        val isImageButtonQuitarTutorVisible = userType == "administrador"
+        val isAddButtonVisible = userType == "Administrador"
+        val isImageButtonQuitarTutorVisible = userType == "Administrador"
         val isTextViewGradosSeccionVisible = true
 
         // Set visibility of buttons based on userType
