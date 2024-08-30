@@ -132,7 +132,7 @@ class BarraLateral : AppCompatActivity() {
         navMenu.findItem(R.id.nav_tutor).isVisible = true
         navMenu.findItem(R.id.nav_incidencia).isVisible = true
         navMenu.findItem(R.id.nav_tutoria).isVisible = true
-        navMenu.findItem(R.id.nav_reporte).isVisible = false
+        navMenu.findItem(R.id.nav_reporte).isVisible = true
     }
 
     private fun showProfesorMenuItems(navMenu: Menu) {
@@ -142,7 +142,7 @@ class BarraLateral : AppCompatActivity() {
         navMenu.findItem(R.id.nav_tutor).isVisible = true
         navMenu.findItem(R.id.nav_incidencia).isVisible = true
         navMenu.findItem(R.id.nav_tutoria).isVisible = false
-        navMenu.findItem(R.id.nav_reporte).isVisible = false
+        navMenu.findItem(R.id.nav_reporte).isVisible = true
     }
 
     private fun showDefaultMenuItems(navMenu: Menu) {
@@ -152,7 +152,7 @@ class BarraLateral : AppCompatActivity() {
         navMenu.findItem(R.id.nav_tutor).isVisible = false
         navMenu.findItem(R.id.nav_incidencia).isVisible = false
         navMenu.findItem(R.id.nav_tutoria).isVisible = false
-        navMenu.findItem(R.id.nav_reporte).isVisible = false
+        navMenu.findItem(R.id.nav_reporte).isVisible = true
     }
 
     override fun onDestroy() {
