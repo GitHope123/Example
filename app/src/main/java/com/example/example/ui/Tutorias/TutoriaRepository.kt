@@ -97,19 +97,13 @@ class TutoriaRepository {
     }
 
     private fun filterByLast7Days(incidencias: List<TutoriaClass>): List<TutoriaClass> {
-        val today = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }.time
         val last7Days = Calendar.getInstance().apply {
             add(Calendar.DAY_OF_YEAR, -7)
         }.time
 
         return incidencias.filter {
             val date = parseDate(it.fecha, it.hora)
-            date != null && date.after(last7Days) && date.before(today)
+            date != null && date.after(last7Days) && !date.after(Date())
         }
     }
 
