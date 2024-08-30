@@ -160,15 +160,6 @@ class BarraLateral : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
     }
-   /* private fun navigateToFragmentWithUserType(userType: String) {
-        val bundle = Bundle().apply {
-            putString("USER_TYPE", userType)
-            putString("ID",datoId)
-        }
-        findNavController(R.id.nav_host_fragment_content_barra_lateral).navigate(R.id.fragment_principal, bundle)
-    }
-
-    */
 
 
     override fun onSupportNavigateUp(): Boolean {
@@ -179,5 +170,6 @@ class BarraLateral : AppCompatActivity() {
         var idUsuario: String=""
         var datoTipoUsuario: String=""
     }
+
 }
 

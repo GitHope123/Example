@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.example.BarraLateral.GlobalData
 import com.example.example.databinding.ActivityInicioSesionBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,7 +26,6 @@ class InicioSesion : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
-
         binding.buttonIniciarSesion.setOnClickListener {
             val email = binding.editTextUsername.text.toString().trim()
             val password = binding.editTextPassword.text.toString().trim()
@@ -34,8 +34,10 @@ class InicioSesion : AppCompatActivity() {
                 showToast("Por favor, complete todos los campos.")
             } else {
                 iniciarSesionConFirebase(email, password)
+
             }
         }
+
     }
 
     private fun iniciarSesionConFirebase(email: String, password: String) {
@@ -63,6 +65,8 @@ class InicioSesion : AppCompatActivity() {
                                     userType = "Profesor"
                                     navigateToBarraLateral(userType)
                                 }
+                                GlobalData.idUsuario = id
+                                GlobalData.datoTipoUsuario = userType
                             }
                         } else {
                             Toast.makeText(this, "Este correo no se encuentra registrado", Toast.LENGTH_SHORT).show()
@@ -86,5 +90,9 @@ class InicioSesion : AppCompatActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+    object GlobalData {
+        var idUsuario: String=""
+        var datoTipoUsuario: String=""
     }
 }

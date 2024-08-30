@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.example.BarraLateral
+import com.example.example.InicioSesion
 import com.example.example.databinding.FragmentPrincipalBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,9 +39,8 @@ class Principal : Fragment() {
     ): View {
         _binding = FragmentPrincipalBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        idUsuario = BarraLateral.GlobalData.idUsuario
-        userType = BarraLateral.GlobalData.datoTipoUsuario
-
+        idUsuario = InicioSesion.GlobalData.idUsuario
+        userType = InicioSesion.GlobalData.datoTipoUsuario
         Toast.makeText(requireContext(),"$idUsuario", Toast.LENGTH_SHORT).show()
         Toast.makeText(requireContext(),"$userType", Toast.LENGTH_SHORT).show()
 
@@ -84,7 +84,7 @@ class Principal : Fragment() {
                     .document(idUsuario)
                     .get()
                     .addOnSuccessListener {doc->
-                        id = doc.id
+                        id = doc.getString("id") ?: "N/A"
                         nombre = doc.getString("nombres") ?: "N/A"
                         apellido = doc.getString("apellidos") ?: "N/A"
                         celular = doc.get("celular").toString()
