@@ -104,7 +104,6 @@ class AddProfesor : AppCompatActivity() {
             .addOnSuccessListener { documentReference ->
                 // Update the profesor object with the document ID
                 val updatedProfesor = profesor.copy(idProfesor = documentReference.id)
-
                 // Optionally, update the document with the ID (if needed)
                 documentReference.update("idProfesor", updatedProfesor.idProfesor)
                     .addOnSuccessListener {
