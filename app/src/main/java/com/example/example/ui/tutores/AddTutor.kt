@@ -11,7 +11,6 @@ import com.example.example.ui.profesores.Profesor
 import com.google.firebase.firestore.FirebaseFirestore
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import androidx.appcompat.widget.SearchView
 
 class AddTutor : AppCompatActivity() {
@@ -25,6 +24,10 @@ class AddTutor : AppCompatActivity() {
     private lateinit var tutorAdapter: TutorAdapter
     private var selectedProfesorId: String? = null
     private val db = FirebaseFirestore.getInstance()
+
+    private val grados = listOf("1", "2", "3", "4", "5")
+    private val secciones = listOf<Int>()
+
     private lateinit var allCombinations: Set<String>
     private lateinit var usedCombinations: Set<String>
     private val searchHandler = Handler(Looper.getMainLooper())
@@ -34,7 +37,6 @@ class AddTutor : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_tutor)
 
-
         // Inicializar vistas
         recyclerView = findViewById(R.id.recyclerViewSeleccionarTutor)
         searchView = findViewById(R.id.searchViewTutorAdd)
@@ -42,7 +44,7 @@ class AddTutor : AppCompatActivity() {
         buttonCancelar = findViewById(R.id.buttonCancelarTutor)
         spinnerGrado = findViewById(R.id.spinnerGrado)
         spinnerSeccion = findViewById(R.id.spinnerSeccion)
-        updateGrado()
+
         // Configurar RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -59,14 +61,10 @@ class AddTutor : AppCompatActivity() {
             isTextViewGradosSeccionVisible = false,
             isImageButtonQuitarTutor = false
         )
-
-
-
-        // textViewGradosSeccionTutor no visible
         recyclerView.adapter = tutorAdapter
         fetchProfesores()
+        setupSpinners()
 
-        // Configurar el SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 handleSearchQuery(query)
@@ -93,7 +91,6 @@ class AddTutor : AppCompatActivity() {
             }
         })
 
-        // Configurar listeners de botones
         buttonAceptar.setOnClickListener {
             updateSelectedTutor()
         }
@@ -143,6 +140,7 @@ class AddTutor : AppCompatActivity() {
                 }
             }
             .addOnFailureListener { exception ->
+                Log.e("FetchProfesores", "Error al obtener profesores: ${exception.message}", exception)
                 Toast.makeText(this, "Error al obtener profesores: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
@@ -187,50 +185,15 @@ class AddTutor : AppCompatActivity() {
                 }
         } ?: Toast.makeText(this, "No hay tutor seleccionado.", Toast.LENGTH_SHORT).show()
     }
-    private fun updateGrado(){
-        val grados = arrayOf("1", "2", "3", "4", "5")
-        val adapterGrados = ArrayAdapter(this, R.layout.spinner_item_selected, grados)
-        adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerGrado.adapter = adapterGrados
-        spinnerGrado.onItemSelectedListener=object:AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val gradoSeleccionado=spinnerGrado.selectedItem.toString()
-                updateSecciones(gradoSeleccionado)
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-        }
-    }
-    private fun updateSecciones(gradoSeleccionado:String){
-        val secciones= if(gradoSeleccionado=="1"){
-            arrayOf("A","B","C","D","E")
-        }
-        else{
-            arrayOf("A","B","C","D")
-        }
 
-        val adapterSecciones = ArrayAdapter(this, R.layout.spinner_item_selected, secciones)
-        adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerSeccion.adapter = adapterSecciones
-        spinnerSeccion.isEnabled = gradoSeleccionado != "Todas"
-
-    }
-
-   /* private fun setupSpinners() {
+    private fun setupSpinners() {
         // Inicializar combinaciones
-        /*allCombinations = grados.flatMap { grado ->
+        allCombinations = grados.flatMap { grado ->
             secciones.map { seccion ->
 
                 "$grado$seccion"
             }
         }.toSet()
-
-         */
 
         // Obtener combinaciones usadas
         db.collection("Profesor")
@@ -275,6 +238,4 @@ class AddTutor : AppCompatActivity() {
                 Toast.makeText(this, "Error al cargar grados y secciones", Toast.LENGTH_SHORT).show()
             }
     }
-
-    */
 }
