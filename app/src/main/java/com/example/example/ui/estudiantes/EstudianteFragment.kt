@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.example.InicioSesion
 import com.example.example.R
 import com.example.example.databinding.FragmentEstudianteBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -24,20 +25,15 @@ class EstudianteFragment : Fragment() {
     private lateinit var estudianteAdapter: EstudianteAdapter
     private val filterEstudiantes = mutableListOf<Estudiante>()
     private val fullEstudiantesList = mutableListOf<Estudiante>()
-    private var userType: String? = null
+    private lateinit var userType: String
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            userType = it.getString("USER_TYPE")
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentEstudianteBinding.inflate(inflater, container, false)
+        userType=InicioSesion.GlobalData.datoTipoUsuario
         updateGrado()
         setupRecyclerView()
         setupSearchView()
@@ -120,7 +116,7 @@ class EstudianteFragment : Fragment() {
             onEditClickListenerEstudiante = { estudiante ->
                 // Aquí puedes agregar la lógica para editar al estudiante
             },
-            isEditButtonVisible = userType == "administrador" // Usa el valor de userType
+            isEditButtonVisible = userType == "Administrador" // Usa el valor de userType
         )
 
         // Configura el RecyclerView
@@ -191,13 +187,13 @@ class EstudianteFragment : Fragment() {
 
         // Configura la visibilidad del botón de agregar
         val isAddButtonVisible = when (userType) {
-            "administrador" -> View.VISIBLE
+            "Administrador" -> View.VISIBLE
             else -> View.INVISIBLE
         }
         binding.addButtonEstudiante.visibility = isAddButtonVisible
 
         // Actualiza el adaptador con la visibilidad del botón de editar
-        estudianteAdapter.isEditButtonVisible = userType == "administrador"
+        estudianteAdapter.isEditButtonVisible = userType == "Administrador"
         estudianteAdapter.notifyDataSetChanged()
     }
 

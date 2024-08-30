@@ -12,7 +12,7 @@ import com.example.example.R
 class ProfesorAdapter(
     private val profesores: List<Profesor>,
     private val onEditClickListener: (Profesor) -> Unit,
-    private val isEditButtonVisible: Int // Parámetro para visibilidad del editButton
+    private val isEditButtonVisible: Boolean // Parámetro para visibilidad del editButton
 ) : RecyclerView.Adapter<ProfesorAdapter.ProfesorViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfesorViewHolder {
@@ -42,7 +42,7 @@ class ProfesorAdapter(
             textViewCorreo.text = profesor.correo
 
             // Ajusta la visibilidad del editButton
-            editButton.visibility = isEditButtonVisible
+            editButton.visibility = if(isEditButtonVisible)View.VISIBLE else View.GONE
 
             // Configura el click listener del editButton
             editButton.setOnClickListener {

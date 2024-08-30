@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.BarraLateral
+import com.example.example.InicioSesion
 import com.example.example.R
 import com.example.example.databinding.FragmentPendienteTutoriaBinding
-import com.example.example.databinding.FragmentTodosTutoriaBinding
 import com.example.example.ui.Tutorias.TutoriaAdapter
 import com.example.example.ui.Tutorias.TutoriaClass
 import com.example.example.ui.Tutorias.TutoriaRepository
@@ -62,7 +62,7 @@ class PendienteTutoria : Fragment() {
 
     private fun applyFilter(selection: String) {
         currentFilter= selection
-        idUsuario = BarraLateral.GlobalData.idUsuario
+        idUsuario = InicioSesion.GlobalData.idUsuario
         loadTutoriasForTutor(idUsuario, selection)
     }
 
@@ -88,7 +88,7 @@ class PendienteTutoria : Fragment() {
         super.onResume()
         currentFilter = "Todos"
         resetAutoComplete()
-        idUsuario = BarraLateral.GlobalData.idUsuario
+        idUsuario = InicioSesion.GlobalData.idUsuario
         loadTutoriasForTutor(idUsuario, currentFilter)
     }
 }

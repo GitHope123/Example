@@ -5,19 +5,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.example.BarraLateral.GlobalData
 import com.example.example.databinding.ActivityInicioSesionBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class InicioSesion : AppCompatActivity() {
-
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private lateinit var binding: ActivityInicioSesionBinding
     private lateinit var userType: String
     private lateinit var id: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +42,7 @@ class InicioSesion : AppCompatActivity() {
             .addOnSuccessListener { task1 ->
                 userType = "Administrador"
                 navigateToBarraLateral(userType)
+                GlobalData.datoTipoUsuario = userType
             }
             .addOnFailureListener {
                 firestore.collection("Profesor")

@@ -41,9 +41,6 @@ class Principal : Fragment() {
         val root: View = binding.root
         idUsuario = InicioSesion.GlobalData.idUsuario
         userType = InicioSesion.GlobalData.datoTipoUsuario
-        Toast.makeText(requireContext(),"$idUsuario", Toast.LENGTH_SHORT).show()
-        Toast.makeText(requireContext(),"$userType", Toast.LENGTH_SHORT).show()
-
         firestore = FirebaseFirestore.getInstance()
 
         // No cargar datos aquí para evitar operaciones innecesarias

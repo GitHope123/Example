@@ -9,6 +9,7 @@ import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.BarraLateral
+import com.example.example.InicioSesion
 import com.example.example.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -43,7 +44,7 @@ class Revisado : Fragment() {
         loadAllIncidencias()
     }
     private fun loadAllIncidencias() {
-        idUsuario = BarraLateral.GlobalData.idUsuario
+        idUsuario = InicioSesion.GlobalData.idUsuario
         firestore.collection("Incidencia").get().addOnSuccessListener { result ->
             incidenciasRevisado.clear()
             for (document in result) {

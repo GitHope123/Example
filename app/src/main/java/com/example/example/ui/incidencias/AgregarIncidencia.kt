@@ -26,6 +26,7 @@ import com.google.firebase.storage.StorageReference
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.example.BarraLateral
+import com.example.example.InicioSesion
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -212,7 +213,7 @@ class AgregarIncidencia : AppCompatActivity() {
     }
 
     private fun guardarDatosIncidencia(urlImagen: String?) {
-        idUsuario = BarraLateral.GlobalData.idUsuario
+        idUsuario = InicioSesion.GlobalData.idUsuario
         val estado = "Pendiente"
         firestore.collection("Profesor")
             .document(idUsuario)
