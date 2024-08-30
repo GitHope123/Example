@@ -124,21 +124,12 @@ class ProfesorFragment : Fragment() {
         }
         binding.addButtomProfesor.visibility = isAddButtonVisible
 
-        // Determina la visibilidad del editButton
-    /*    val isEditButtonVisible = when (userType) {
-            "Administrador" -> View.VISIBLE
-            else -> View.GONE
-        }
 
-     */
 
-        // Asegúrate de que la lista de profesores está disponible
         profesorAdapter = ProfesorAdapter(
             profesores = filteredProfesorList,
-            onEditClickListener = { profesor ->
-                Toast.makeText(context, "Edit button clicked for ${profesor.nombres}", Toast.LENGTH_SHORT).show()
-            },
-            isEditButtonVisible =visibilityUser // Pasa la visibilidad del editButton
+            onEditClickListener = { profesor -> },
+            isEditButtonVisible =visibilityUser
         )
 
         binding.recyclerViewProfesores.adapter = profesorAdapter
