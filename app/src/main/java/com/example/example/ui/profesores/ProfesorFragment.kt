@@ -47,7 +47,7 @@ class ProfesorFragment : Fragment() {
 
     private fun setupRecyclerView() {
         val isEditButtonVisible = when (userType) {
-            "administrador" -> View.VISIBLE
+            "Administrador" -> View.VISIBLE
             else -> View.INVISIBLE
         }
 

@@ -15,6 +15,7 @@ class InicioSesion : AppCompatActivity() {
     private lateinit var firestore: FirebaseFirestore
     private lateinit var binding: ActivityInicioSesionBinding
     private lateinit var userType:String
+    private lateinit var id:String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,10 +53,9 @@ class InicioSesion : AppCompatActivity() {
                         if(task.isSuccessful){
                             val document=task.result
                             if(!document.isEmpty){
-                                //Obtener atributos de este documento
-
                                 val doc=document.first()
                                 val tutor=doc.getBoolean("tutor")
+                                id= doc.getString("id").toString()
                                 if(tutor == true){
                                     userType="Tutor"
                                     navigateToBarraLateral(userType)
@@ -69,6 +69,9 @@ class InicioSesion : AppCompatActivity() {
                                 Toast.makeText(this,"Este correo no se encuentra registrado",Toast.LENGTH_SHORT).show()
                             }
                         }
+                        else{
+                            Toast.makeText(this,"Este correo no se encuentra registrado",Toast.LENGTH_SHORT).show()
+                        }
                     }
                     .addOnFailureListener { exception ->
                         Toast.makeText(this,"Este correo no se encuentra registrado",Toast.LENGTH_SHORT).show()
@@ -79,6 +82,9 @@ class InicioSesion : AppCompatActivity() {
     private fun navigateToBarraLateral(userType:String) {
         startActivity(Intent(this, BarraLateral::class.java).apply {
             putExtra("USER_TYPE", userType)
+            if(userType=="Profesor"||userType=="Tutor"){
+                putExtra("ID",id)
+            }
         })
         finish()
     }

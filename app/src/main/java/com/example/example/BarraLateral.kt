@@ -1,43 +1,67 @@
 package com.example.example
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.example.databinding.ActivityBarraLateralBinding
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.firestore.FirebaseFirestore
 
 class BarraLateral : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityBarraLateralBinding
-    private lateinit var auth: FirebaseAuth
+    private lateinit var datoId:String
+    private lateinit var datoTipoUsuario:String
+    private lateinit var firestore: FirebaseFirestore
 
-    private val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
-        val user = firebaseAuth.currentUser
-        val userName = user?.displayName ?: "Usuario"
-        val email = user?.email ?: "No disponible"
 
-        Log.d("BarraLateral", "Correo electrónico del usuario: $email")
-        updateHeader(userName, email)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBarraLateralBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        datoId= intent.getStringExtra("ID").toString()
+        firestore = FirebaseFirestore.getInstance()
+        datoTipoUsuario=intent.getStringExtra("USER_TYPE").toString()
+        GlobalData.idUsuario = datoId
+        GlobalData.datoTipoUsuario = datoTipoUsuario
+        if(datoTipoUsuario=="Administrador"){
+            var username1="Administrador"
+            var correo1="administrador@gmail.com"
+            updateHeader(username1,correo1)
+        }
+        else{
+            firestore.collection("Profesor")
+                .document(datoId)
+                .get()
+                .addOnCompleteListener{ task->
+                    if(task.isSuccessful){
+                        val document=task.result
+                        if(document.exists()){
+                            val nombre=document.getString("nombres")
+                            val correo=document.getString("correo")
+                            updateHeader(nombre.toString(),correo.toString())
+                        }
+                    }
+                    else{
+                        Toast.makeText(this,"Este correo no se encuentra registrado", Toast.LENGTH_SHORT).show()
+                    }
+                    }
+                .addOnFailureListener {
+                    Toast.makeText(this,"ERROR", Toast.LENGTH_SHORT).show()
 
-        auth = FirebaseAuth.getInstance()
-        auth.addAuthStateListener(authStateListener)
-
+                }
+                }
+      //  auth.addAuthStateListener(authStateListener)
         setSupportActionBar(binding.appBarBarraLateral.toolbar)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
@@ -59,6 +83,7 @@ class BarraLateral : AppCompatActivity() {
         // Manejo del tipo de usuario después de configurar el NavController
         configureMenuBasedOnUserType(intent.getStringExtra("USER_TYPE"))
     }
+
 
     private fun updateHeader(userName: String, email: String) {
         val navView: NavigationView = binding.navView
@@ -131,11 +156,25 @@ class BarraLateral : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        auth.removeAuthStateListener(authStateListener)
     }
+   /* private fun navigateToFragmentWithUserType(userType: String) {
+        val bundle = Bundle().apply {
+            putString("USER_TYPE", userType)
+            putString("ID",datoId)
+        }
+        findNavController(R.id.nav_host_fragment_content_barra_lateral).navigate(R.id.fragment_principal, bundle)
+    }
+
+    */
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_barra_lateral)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+    object GlobalData {
+        var idUsuario: String=""
+        var datoTipoUsuario: String=""
+    }
 }
+

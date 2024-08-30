@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.example.BarraLateral
 import com.example.example.databinding.FragmentPrincipalBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,17 +26,23 @@ class Principal : Fragment() {
     private lateinit var celular: String
     private lateinit var correo: String
     private lateinit var id: String
+    private lateinit var idUsuario:String
+    private lateinit var userType:String
 
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPrincipalBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        idUsuario = BarraLateral.GlobalData.idUsuario
+        userType = BarraLateral.GlobalData.datoTipoUsuario
+        Toast.makeText(requireContext(),"$idUsuario", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(),"$userType", Toast.LENGTH_SHORT).show()
 
-        auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
         // No cargar datos aquí para evitar operaciones innecesarias
@@ -52,8 +59,10 @@ class Principal : Fragment() {
     }
 
     private fun loadProfessorData() {
+
         lifecycleScope.launch {
             try {
+                /*
                 val currentUser = auth.currentUser
                 val userEmail = currentUser?.email ?: return@launch
 
@@ -66,19 +75,30 @@ class Principal : Fragment() {
                         .await()
                 }
 
+
+
                 if (documents.isEmpty) return@launch
+                  */
+                firestore.collection("Profesor")
+                    .document(idUsuario)
+                    .get()
+                    .addOnSuccessListener {doc->
+                        id = doc.getString("id") ?: "N/A"
+                        nombre = doc.getString("nombres") ?: "N/A"
+                        apellido = doc.getString("apellidos") ?: "N/A"
+                        celular = doc.get("celular").toString()
+                        correo = doc.getString("correo") ?: "N/A"
+                        val isTutor = doc.getBoolean("tutor") ?: false
+                            binding.apply {
+                                textViewNombreCompletoUsuario.text = nombre
+                                textViewApellidosUsuario.text = apellido
+                                textViewCelularUsuario.text = celular
+                                textViewCorreoUsuario.text = correo
+                                textViewTutorBooleam.text = if (isTutor) "Tutor" else "Docente"
+                            }
+                    }
 
-                val doc = documents.first()
-
-                // Asignar las variables en un solo bloque
-                id = doc.getString("id") ?: "N/A"
-                nombre = doc.getString("nombres") ?: "N/A"
-                apellido = doc.getString("apellidos") ?: "N/A"
-                celular = doc.get("celular").toString()
-                correo = doc.getString("correo") ?: "N/A"
-                val isTutor = doc.getBoolean("tutor") ?: false
-
-                // Actualizar la UI directamente en el hilo principal
+                /*
                 withContext(Dispatchers.Main) {
                     binding.apply {
                         textViewNombreCompletoUsuario.text = nombre
@@ -88,6 +108,8 @@ class Principal : Fragment() {
                         textViewTutorBooleam.text = if (isTutor) "Tutor" else "Docente"
                     }
                 }
+
+                 */
 
             } catch (e: Exception) {
                 e.printStackTrace()
