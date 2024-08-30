@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.example.BarraLateral
 import com.example.example.R
 import com.example.example.databinding.FragmentPendienteTutoriaBinding
 import com.example.example.databinding.FragmentTodosTutoriaBinding
@@ -22,6 +23,9 @@ class PendienteTutoria : Fragment() {
     private val listaTutorias = mutableListOf<TutoriaClass>()
     private val tutoriaRepository = TutoriaRepository()
     private var currentFilter: String = "Todos"
+    private lateinit var idUsuario:String
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,14 +62,12 @@ class PendienteTutoria : Fragment() {
 
     private fun applyFilter(selection: String) {
         currentFilter= selection
-        val email = FirebaseAuth.getInstance().currentUser?.email
-        email?.let {
-            loadTutoriasForTutor(it, selection) // Usar 'selection' directamente
-        }
+        idUsuario = BarraLateral.GlobalData.idUsuario
+        loadTutoriasForTutor(idUsuario, selection)
     }
 
-    private fun loadTutoriasForTutor(email: String, filtroFecha: String) {
-        tutoriaRepository.getGradoSeccionTutorByEmail(email) { grado, seccion ->
+    private fun loadTutoriasForTutor(id: String, filtroFecha: String) {
+        tutoriaRepository.getGradoSeccionTutorByEmail(id) { grado, seccion ->
             tutoriaRepository.getIncidenciasPorGradoSeccion(grado, seccion, "Pendiente", filtroFecha) { incidencias ->
                 if (isAdded) {
                     listaTutorias.clear()
@@ -86,9 +88,7 @@ class PendienteTutoria : Fragment() {
         super.onResume()
         currentFilter = "Todos"
         resetAutoComplete()
-        val email = FirebaseAuth.getInstance().currentUser?.email
-        email?.let {
-            loadTutoriasForTutor(it, currentFilter)
-        }
+        idUsuario = BarraLateral.GlobalData.idUsuario
+        loadTutoriasForTutor(idUsuario, currentFilter)
     }
 }

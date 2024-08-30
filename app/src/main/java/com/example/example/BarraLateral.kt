@@ -29,11 +29,14 @@ class BarraLateral : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityBarraLateralBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        datoId= intent.getStringExtra("ID").toString()
         firestore = FirebaseFirestore.getInstance()
+
+        datoId= intent.getStringExtra("ID").toString()
         datoTipoUsuario=intent.getStringExtra("USER_TYPE").toString()
+
         GlobalData.idUsuario = datoId
         GlobalData.datoTipoUsuario = datoTipoUsuario
+
         if(datoTipoUsuario=="Administrador"){
             var username1="Administrador"
             var correo1="administrador@gmail.com"

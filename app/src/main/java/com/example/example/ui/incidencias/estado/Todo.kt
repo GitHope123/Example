@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.example.BarraLateral
 import com.example.example.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,6 +24,8 @@ class Todo : Fragment() {
     private var incidencias: MutableList<IncidenciaClass> = mutableListOf()
     private var incidenciasFilter: MutableList<IncidenciaClass> = mutableListOf()
     private lateinit var searchView: SearchView
+    private lateinit var idUsuario:String
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,14 +48,12 @@ class Todo : Fragment() {
     }
 
     private fun loadAllIncidencias() {
-        val auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
-        val userEmail = currentUser?.email ?: return
+        idUsuario = BarraLateral.GlobalData.idUsuario
         firestore.collection("Incidencia").get().addOnSuccessListener { result ->
             incidencias.clear()
             for (document in result) {
-                val email = document.getString("correoRegistrar") ?: ""
-                if (email == userEmail) {
+                val idProfesor = document.getString("idProfesor") ?: ""
+                if (idProfesor == idUsuario) {
                     val id = document.id  // Obtener el ID del documento
                     val fecha = document.getString("fecha") ?: ""
                     val hora = document.getString("hora") ?: ""

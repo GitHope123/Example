@@ -25,6 +25,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.example.BarraLateral
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -52,6 +53,8 @@ class AgregarIncidencia : AppCompatActivity() {
     private lateinit var storageRef: StorageReference
     private lateinit var imageViewEvidencia: ImageView
     private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
+    private lateinit var idUsuario:String
+
     private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -209,23 +212,20 @@ class AgregarIncidencia : AppCompatActivity() {
     }
 
     private fun guardarDatosIncidencia(urlImagen: String?) {
-        val currentUser = auth.currentUser
-        val userEmail = currentUser?.email ?: return
+        idUsuario = BarraLateral.GlobalData.idUsuario
         val estado = "Pendiente"
-
         firestore.collection("Profesor")
-            .whereEqualTo("correo", userEmail)
+            .document(idUsuario)
             .get()
             .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val doc = documents.first()
-                    val nombresProfesor = doc.getString("nombres") ?: "Nombres no encontrados"
-                    val apellidosProfesor = doc.getString("apellidos") ?: "Apellidos no encontrados"
+                if (documents.exists()) {
+                    val nombresProfesor = documents.getString("nombres") ?: "Nombres no encontrados"
+                    val apellidosProfesor = documents.getString("apellidos") ?: "Apellidos no encontrados"
 
                     val incidencia = hashMapOf(
                         "fecha" to obtenerFechaActual(),
                         "hora" to obtenerHoraActual(),
-                        "correoRegistrar" to userEmail,
+                        "idProfesor" to idUsuario,
                         "nombreEstudiante" to studentName,
                         "apellidoEstudiante" to studentLastName,
                         "grado" to studentGrade,

@@ -11,14 +11,12 @@ class TutoriaRepository {
     private val firestore = FirebaseFirestore.getInstance()
     private val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
-    fun getGradoSeccionTutorByEmail(email: String, callback: (grado: Int, seccion: String) -> Unit) {
+    fun getGradoSeccionTutorByEmail(idUsuario: String, callback: (grado: Int, seccion: String) -> Unit) {
         firestore.collection("Profesor")
-            .whereEqualTo("correo", email)
-            .limit(1)
+            .document(idUsuario)
             .get()
-            .addOnSuccessListener { querySnapshot ->
-                if (!querySnapshot.isEmpty) {
-                    val document = querySnapshot.documents[0]
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
                     val grado = document.getLong("grado")?.toInt() ?: 0
                     val seccion = document.getString("seccion") ?: ""
                     callback(grado, seccion)

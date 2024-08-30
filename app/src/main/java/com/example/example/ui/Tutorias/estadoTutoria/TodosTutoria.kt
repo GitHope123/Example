@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.example.BarraLateral
 import com.example.example.R
 import com.example.example.databinding.FragmentTodosTutoriaBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -19,6 +20,8 @@ class TodosTutoria : Fragment() {
     private val listaTutorias = mutableListOf<TutoriaClass>()
     private val tutoriaRepository = TutoriaRepository()
     private var currentFilter: String = "Todos"
+    private lateinit var idUsuario:String
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,14 +59,12 @@ class TodosTutoria : Fragment() {
 
     private fun applyFilter(selection: String) {
         currentFilter= selection
-        val email = FirebaseAuth.getInstance().currentUser?.email
-        email?.let {
-            loadTutoriasForTutor(it, selection) // Usar 'selection' directamente
-        }
+        idUsuario = BarraLateral.GlobalData.idUsuario
+            loadTutoriasForTutor(idUsuario, selection) // Usar 'selection' directamente
     }
 
-    private fun loadTutoriasForTutor(email: String, filtroFecha: String) {
-        tutoriaRepository.getGradoSeccionTutorByEmail(email) { grado, seccion ->
+    private fun loadTutoriasForTutor(id: String, filtroFecha: String) {
+        tutoriaRepository.getGradoSeccionTutorByEmail(id) { grado, seccion ->
             tutoriaRepository.getIncidenciasPorGradoSeccion(grado, seccion, "", filtroFecha) { incidencias ->
                 if (isAdded) {
                     listaTutorias.clear()
@@ -84,9 +85,7 @@ class TodosTutoria : Fragment() {
         super.onResume()
         currentFilter = "Todos"
         resetAutoComplete()
-        val email = FirebaseAuth.getInstance().currentUser?.email
-        email?.let {
-            loadTutoriasForTutor(it, currentFilter)
-        }
+        idUsuario = BarraLateral.GlobalData.idUsuario
+        loadTutoriasForTutor(idUsuario, currentFilter)
     }
 }
