@@ -142,11 +142,12 @@ class ProfesorFragment : Fragment() {
                 nombres = getString("nombres") ?: "",
                 apellidos = getString("apellidos") ?: "",
                 celular = getLong("celular") ?: 0L,
-                materia = getString("materia") ?: "",
+                cargo = getString("cargo") ?: "",
                 correo = getString("correo") ?: "",
                 grado = getLong("grado") ?: 0L,
                 seccion = getString("seccion") ?: "",
-                password = getString("password")?:""
+                password = getString("password")?:"",
+                dni=getLong("dni")?:0L
 
             )
         } catch (e: Exception) {

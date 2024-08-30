@@ -52,9 +52,10 @@ class ProfesorAdapter(
                     putExtra("nombres", profesor.nombres)
                     putExtra("apellidos", profesor.apellidos)
                     putExtra("celular", profesor.celular)
-                    putExtra("materia", profesor.materia)
+                    putExtra("cargo", profesor.cargo)
                     putExtra("correo", profesor.correo)
                     putExtra("password", profesor.password)
+                    putExtra("dni",profesor.dni)
                 }
                 context.startActivity(intent)
             }
