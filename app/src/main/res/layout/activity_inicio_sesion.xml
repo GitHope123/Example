@@ -71,7 +71,7 @@
             android:fontFamily="@font/montserrat"
             android:inputType="textPassword"
             android:padding="10sp"
-            android:text="123456"
+            android:text="12345"
             android:textColor="@color/Primary_white"
             android:textSize="14sp" />
 

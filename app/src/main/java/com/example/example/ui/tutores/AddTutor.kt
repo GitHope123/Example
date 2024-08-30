@@ -26,7 +26,7 @@ class AddTutor : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
 
     private val grados = listOf("1", "2", "3", "4", "5")
-    private val secciones = listOf("A", "B", "C", "D", "E")
+    private val secciones = listOf<Int>()
 
     private lateinit var allCombinations: Set<String>
     private lateinit var usedCombinations: Set<String>
@@ -61,6 +61,8 @@ class AddTutor : AppCompatActivity() {
             isTextViewGradosSeccionVisible = false,
             isImageButtonQuitarTutor = false
         )
+
+
 
         // textViewGradosSeccionTutor no visible
         recyclerView.adapter = tutorAdapter
@@ -194,6 +196,7 @@ class AddTutor : AppCompatActivity() {
         // Inicializar combinaciones
         allCombinations = grados.flatMap { grado ->
             secciones.map { seccion ->
+
                 "$grado$seccion"
             }
         }.toSet()

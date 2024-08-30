@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
+    android:layout_margin="2dp"
     android:backgroundTint="@color/Transparent_color"
     android:background="@drawable/background_white_element_full"
     android:orientation="horizontal"
-    android:padding="10dp">
+    android:padding="5dp">
 
     <LinearLayout
         android:layout_width="80dp"
@@ -38,13 +38,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.55"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="30dp">
-
             <TextView
                 android:id="@+id/tvFechaTutoria"
                 android:layout_width="wrap_content"
@@ -54,33 +53,32 @@
                 android:text="13/08/2024"
                 android:textColor="@color/Primary_blue_sky"
                 android:textSize="12sp"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"/>
 
             <TextView
                 android:id="@+id/tvHoraTutoria"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="41dp"
+                android:layout_toEndOf="@+id/tvFechaTutoria"
                 android:fontFamily="@font/montserrat"
                 android:gravity="center"
                 android:text="4:45pm"
                 android:textColor="@color/Primary_blue_sky"
-                android:textSize="12sp"
-                android:layout_toEndOf="@id/tvFechaTutoria"
-                android:layout_marginStart="15dp" />
-
+                android:textSize="12sp" />
             <TextView
                 android:id="@+id/tvEstadoTutoria"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/background_white_element_full"
+                android:backgroundTint="@color/Transparent_color"
                 android:fontFamily="@font/montserrat_bold"
                 android:padding="7dp"
-                android:backgroundTint="@color/Transparent_color"
-                android:background="@drawable/background_white_element_full"
                 android:text="Pendiente"
                 android:textColor="@color/color_red"
-                android:textSize="12sp"
-                android:layout_alignParentEnd="true" />
-
+                android:textSize="12sp" />
         </RelativeLayout>
 
 
