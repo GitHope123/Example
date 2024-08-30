@@ -37,7 +37,6 @@ class AddTutor : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_tutor)
 
-        // Inicializar vistas
         recyclerView = findViewById(R.id.recyclerViewSeleccionarTutor)
         searchView = findViewById(R.id.searchViewTutorAdd)
         buttonAceptar = findViewById(R.id.buttonAceptarTutor)
@@ -45,9 +44,7 @@ class AddTutor : AppCompatActivity() {
         spinnerGrado = findViewById(R.id.spinnerGrado)
         spinnerSeccion = findViewById(R.id.spinnerSeccion)
 
-        // Configurar RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
-
         tutorAdapter = TutorAdapter(
             onEditClickListener = { profesor ->
                 profesor.idProfesor?.let { id ->
@@ -61,15 +58,10 @@ class AddTutor : AppCompatActivity() {
             isTextViewGradosSeccionVisible = false,
             isImageButtonQuitarTutor = false
         )
-
-
-
-        // textViewGradosSeccionTutor no visible
         recyclerView.adapter = tutorAdapter
         fetchProfesores()
         setupSpinners()
 
-        // Configurar el SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 handleSearchQuery(query)
