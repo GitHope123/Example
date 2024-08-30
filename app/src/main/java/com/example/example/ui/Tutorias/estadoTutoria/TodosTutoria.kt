@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.example.BarraLateral
 import com.example.example.InicioSesion
 import com.example.example.R
 import com.example.example.databinding.FragmentTodosTutoriaBinding
@@ -61,7 +60,7 @@ class TodosTutoria : Fragment() {
     private fun applyFilter(selection: String) {
         currentFilter= selection
         idUsuario = InicioSesion.GlobalData.idUsuario
-            loadTutoriasForTutor(idUsuario, selection) // Usar 'selection' directamente
+        loadTutoriasForTutor(idUsuario, selection) // Usar 'selection' directamente
     }
 
     private fun loadTutoriasForTutor(id: String, filtroFecha: String) {
