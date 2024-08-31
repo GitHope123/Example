@@ -132,6 +132,7 @@ class TutorFragment : Fragment() {
                         tutor = document.getBoolean("tutor") ?: false
                         grado = document.get("grado")?.toString()?.toLongOrNull() ?: 0L
                         seccion = document.getString("seccion") ?: ""
+                        dni = document.getLong("dni")?:0L
                     }
                 }
 
