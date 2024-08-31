@@ -60,11 +60,11 @@ class AddProfesor : AppCompatActivity() {
         val cargo = editTextCargo.text.toString().trim()
         val correo = editTextCorreo.text.toString().trim()
         val password = editTextPassword.text.toString().trim()
-        var dni=editTextDni.text.toString().trim()
+        val dniStr=editTextDni.text.toString().trim()
 
         // Validate inputs
         if (nombres.isEmpty() || apellidos.isEmpty() || celularStr.isEmpty() ||
-            cargo.isEmpty() || correo.isEmpty()||celularStr.length!=9||password.isEmpty()||dni.length!=8) {
+            cargo.isEmpty() || correo.isEmpty()||celularStr.length!=9||password.isEmpty()||dniStr.length!=8) {
             showToast("Por favor, complete todos los campos")
             isSaving = false
             return
@@ -83,6 +83,13 @@ class AddProfesor : AppCompatActivity() {
             isSaving = false
             return
         }
+        val dni: Long = try {
+            celularStr.toLong()
+        } catch (e: NumberFormatException) {
+            showToast("Dni invalido")
+            isSaving = false
+            return
+        }
 
         // Create a Profesor object with tutor set to false by default
         val profesor = Profesor(
@@ -95,7 +102,8 @@ class AddProfesor : AppCompatActivity() {
             tutor = false,
             grado = 0,
             seccion = "",
-            password = ""
+            password = "",
+            dni = dni
         )
 
         // Save the data to Firebase Firestore
