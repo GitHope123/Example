@@ -65,7 +65,7 @@
             android:maxLength="9"/>
 
         <EditText
-            android:id="@+id/editTextMateria"
+            android:id="@+id/editTextCargo"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="@drawable/background_text_transparent"

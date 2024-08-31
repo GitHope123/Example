@@ -126,12 +126,13 @@ class TutorFragment : Fragment() {
                         idProfesor = document.id
                         nombres = document.getString("nombres") ?: ""
                         apellidos = document.getString("apellidos") ?: ""
-                        celular = document.getLong("celular") ?: 0
+                        celular = document.getLong("celular") ?: 0L
                         cargo = document.getString("cargo") ?: ""
                         correo = document.getString("correo") ?: ""
                         tutor = document.getBoolean("tutor") ?: false
                         grado = document.get("grado")?.toString()?.toLongOrNull() ?: 0L
                         seccion = document.getString("seccion") ?: ""
+                        dni = document.getLong("dni")?:0L
                     }
                 }
 
