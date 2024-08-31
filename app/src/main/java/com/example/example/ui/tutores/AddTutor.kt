@@ -25,8 +25,6 @@ class AddTutor : AppCompatActivity() {
     private lateinit var tutorAdapter: TutorAdapter
     private var selectedProfesorId: String? = null
     private val db = FirebaseFirestore.getInstance()
-    private lateinit var allCombinations: Set<String>
-    private lateinit var usedCombinations: Set<String>
     private val searchHandler = Handler(Looper.getMainLooper())
     private var searchRunnable: Runnable? = null
     private var grados: ArrayList<String> = arrayListOf()
