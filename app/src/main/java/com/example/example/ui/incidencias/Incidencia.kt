@@ -14,7 +14,6 @@ import com.google.android.material.tabs.TabLayout
 
 class Incidencia : Fragment() {
 
-    private lateinit var adapter :AdapterEstado
     private lateinit var btnAgregar : FloatingActionButton
     var tabLayout : TabLayout?=null
     var viewPager: ViewPager?=null

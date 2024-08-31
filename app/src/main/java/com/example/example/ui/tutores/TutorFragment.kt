@@ -69,7 +69,8 @@ class TutorFragment : Fragment() {
             },
             isButtonVisible = userType=="Administrador",
             isTextViewGradosSeccionVisible = true,
-            isImageButtonQuitarTutor = isAddButtonVisible
+            isImageButtonQuitarTutor = isAddButtonVisible,
+            ButtonSeleccionar= false
         )
 
         recyclerViewTutores.adapter = tutorAdapter
