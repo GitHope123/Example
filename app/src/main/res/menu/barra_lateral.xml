@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_cerrarSesion"
+        android:id="@+id/action_cerrarSesionaction_cerrarSesion"
         android:orderInCategory="100"
         android:title="@string/action_cerrar"
         app:showAsAction="never" />

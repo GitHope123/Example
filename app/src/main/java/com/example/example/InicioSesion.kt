@@ -2,7 +2,9 @@ package com.example.example
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.example.databinding.ActivityInicioSesionBinding
@@ -23,6 +25,23 @@ class InicioSesion : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
+
+        val passwordEditText = binding.editTextPassword
+        val eyeIcon = findViewById<ImageView>(R.id.eyeIcon)
+        var isPasswordVisible = false
+
+        eyeIcon.setOnClickListener {
+            isPasswordVisible = !isPasswordVisible
+            if (isPasswordVisible) {
+                passwordEditText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                eyeIcon.setImageResource(R.drawable.ic_eye_on) // Cambia a un icono visible
+            } else {
+                passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                eyeIcon.setImageResource(R.drawable.ic_eye_off) // Cambia a un icono oculto
+            }
+            passwordEditText.setSelection(passwordEditText.text.length)
+
+        }
         binding.buttonIniciarSesion.setOnClickListener {
             val email = binding.editTextUsername.text.toString().trim()
             val password = binding.editTextPassword.text.toString().trim()
