@@ -34,7 +34,6 @@ class AddTutor : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_tutor)
 
-        // Inicializar vistas
         recyclerView = findViewById(R.id.recyclerViewSeleccionarTutor)
         searchView = findViewById(R.id.searchViewTutorAdd)
         buttonAceptar = findViewById(R.id.buttonAceptarTutor)
@@ -42,7 +41,6 @@ class AddTutor : AppCompatActivity() {
         spinnerGrado = findViewById(R.id.spinnerGrado)
         spinnerSeccion = findViewById(R.id.spinnerSeccion)
 
-        // Configurar RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         tutorAdapter = TutorAdapter(
