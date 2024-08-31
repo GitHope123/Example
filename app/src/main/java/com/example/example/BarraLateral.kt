@@ -1,9 +1,12 @@
 package com.example.example
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.example.databinding.ActivityBarraLateralBinding
@@ -13,6 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class BarraLateral : AppCompatActivity() {
@@ -21,6 +25,7 @@ class BarraLateral : AppCompatActivity() {
     private lateinit var binding: ActivityBarraLateralBinding
     private lateinit var datoId:String
     private lateinit var datoTipoUsuario:String
+    private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
 
 
@@ -83,6 +88,32 @@ class BarraLateral : AppCompatActivity() {
 
         // Manejo del tipo de usuario después de configurar el NavController
         configureMenuBasedOnUserType(intent.getStringExtra("USER_TYPE"))
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.barra_lateral, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_cerrarSesionaction_cerrarSesion -> {
+                showLogoutConfirmationDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showLogoutConfirmationDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Cerrar sesión")
+            .setMessage("¿Estás seguro de que deseas cerrar sesión?")
+            .setPositiveButton("Sí") { _, _ ->
+                val intent = Intent(this, InicioSesion::class.java)
+                startActivity(intent)
+                finish()
+            }
+            .setNegativeButton("No", null)
+            .show()
     }
 
 
