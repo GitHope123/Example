@@ -54,16 +54,16 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/textViewCorreo"
+                    android:id="@+id/textViewCargo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:drawableLeft="@drawable/icon_login_email"
+                    android:drawableLeft="@drawable/icon_cargo"
                     android:drawablePadding="10dp"
                     android:drawableTint="@color/Primary_blue_sky"
                     android:fontFamily="@font/montserrat"
                     android:gravity="center_vertical"
-                    android:text="Correo"
+                    android:text="Cargo "
                     android:textColor="@color/Primary_blue_sky"
                     android:textSize="12sp" />
 
