@@ -23,7 +23,7 @@
         private lateinit var nombres: String
         private lateinit var apellidos: String
         private var celular: Long = 0
-        private lateinit var materia: String
+        private lateinit var cargo: String
         private lateinit var correo: String
         private lateinit var password: String
         private  var dni:Long=0
@@ -41,7 +41,7 @@
             nombres = intent.getStringExtra("nombres") ?: ""
             apellidos = intent.getStringExtra("apellidos") ?: ""
             celular = intent.getLongExtra("celular", 0) // Use getLongExtra for Long
-            materia = intent.getStringExtra("cargo") ?: ""
+            cargo = intent.getStringExtra("cargo") ?: ""
             correo = intent.getStringExtra("correo") ?: ""
             password = intent.getStringExtra("password")?: ""
             dni=intent.getLongExtra("dni",0)
@@ -56,7 +56,7 @@
             editTextNombres = findViewById(R.id.editTextNombres)
             editTextApellidos = findViewById(R.id.editTextApellidos)
             editTextCelular = findViewById(R.id.editTextCelular)
-            editTextCargo = findViewById(R.id.editTextMateria)
+            editTextCargo = findViewById(R.id.editTextCargo)
             editTextCorreo = findViewById(R.id.editTextCorreo)
             editTextPassword = findViewById(R.id.editTextPassword)
             editTextDni=findViewById(R.id.editTextDni)
@@ -68,7 +68,7 @@
             editTextNombres.setText(nombres)
             editTextApellidos.setText(apellidos)
             editTextCelular.setText(celular.toString())
-            editTextCargo.setText(materia)
+            editTextCargo.setText(cargo)
             editTextCorreo.setText(correo)
             editTextPassword.setText(password)
             editTextDni.setText(dni.toString())
@@ -82,6 +82,7 @@
                 updatedCorreo = editTextCorreo.text.toString()
                 updatedCelular = editTextCelular.text.toString().toLong()
                 updatePassword = editTextPassword.text.toString()
+                updatedDni=editTextDni.text.toString().toLong()
                 updateData()
             }
             buttonEliminar.setOnClickListener {
