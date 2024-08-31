@@ -84,7 +84,7 @@ class AddProfesor : AppCompatActivity() {
             return
         }
         val dni: Long = try {
-            celularStr.toLong()
+            dniStr.toLong()
         } catch (e: NumberFormatException) {
             showToast("Dni invalido")
             isSaving = false
