@@ -129,7 +129,7 @@
             android:textColor="@android:color/white"
             android:textColorHint="@color/Primary_white"
             android:textSize="14dp"
-            android:maxLength="9"/>
+            android:maxLength="8"/>
 
         <LinearLayout
             android:layout_marginTop="80dp"

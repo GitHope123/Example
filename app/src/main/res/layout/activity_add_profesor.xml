@@ -98,7 +98,7 @@
             android:drawablePadding="10sp"
             android:fontFamily="@font/montserrat"
             android:gravity="center_vertical"
-            android:hint="Materia"
+            android:hint="Cargo"
             android:padding="10dp"
             android:textColor="@android:color/white"
             android:textColorHint="@color/Primary_white"

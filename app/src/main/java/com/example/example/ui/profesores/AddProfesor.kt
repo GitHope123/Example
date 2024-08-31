@@ -102,7 +102,7 @@ class AddProfesor : AppCompatActivity() {
             tutor = false,
             grado = 0,
             seccion = "",
-            password = "",
+            password = password,
             dni = dni
         )
 
