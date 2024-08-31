@@ -38,4 +38,5 @@ class Incidencia : Fragment() {
             startActivity(intent)
         }
     }
+
 }

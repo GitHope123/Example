@@ -60,23 +60,6 @@ class Principal : Fragment() {
 
         lifecycleScope.launch {
             try {
-                /*
-                val currentUser = auth.currentUser
-                val userEmail = currentUser?.email ?: return@launch
-
-                // Ejecutar la consulta Firestore en el hilo IO y optimizar la espera
-                val documents = withContext(Dispatchers.IO) {
-                    firestore.collection("Profesor")
-                        .whereEqualTo("correo", userEmail)
-                        .limit(1)
-                        .get()
-                        .await()
-                }
-
-
-
-                if (documents.isEmpty) return@launch
-                  */
                 firestore.collection("Profesor")
                     .document(idUsuario)
                     .get()
@@ -96,18 +79,6 @@ class Principal : Fragment() {
                             }
                     }
 
-                /*
-                withContext(Dispatchers.Main) {
-                    binding.apply {
-                        textViewNombreCompletoUsuario.text = nombre
-                        textViewApellidosUsuario.text = apellido
-                        textViewCelularUsuario.text = celular
-                        textViewCorreoUsuario.text = correo
-                        textViewTutorBooleam.text = if (isTutor) "Tutor" else "Docente"
-                    }
-                }
-
-                 */
 
             } catch (e: Exception) {
                 e.printStackTrace()

@@ -150,4 +150,11 @@ class TutorFragment : Fragment() {
             fetchProfesores() // Refresh the list after adding a new tutor
         }
     }
+    fun refreshData() {
+        fetchProfesores()
+    }
+    override fun onResume() {
+        super.onResume()
+        refreshData()
+    }
 }
