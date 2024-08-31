@@ -32,14 +32,14 @@ class ProfesorAdapter(
         private val textViewNombreCompleto: TextView =
             itemView.findViewById(R.id.textViewNombreCompletos)
         private val textViewTelefono: TextView = itemView.findViewById(R.id.textViewTelefono)
-        private val textViewCorreo: TextView = itemView.findViewById(R.id.textViewCorreo)
+        private val textViewCorreo: TextView = itemView.findViewById(R.id.textViewCargo)
         private val editButton: ImageButton = itemView.findViewById(R.id.imageButtonEdit)
 
         fun bind(profesor: Profesor) {
             val nombreCompleto = "${profesor.apellidos} ${profesor.nombres}"
             textViewNombreCompleto.text = nombreCompleto
             textViewTelefono.text = profesor.celular.toString()
-            textViewCorreo.text = profesor.correo
+            textViewCorreo.text = profesor.cargo
 
             // Ajusta la visibilidad del editButton
             editButton.visibility = if(isEditButtonVisible)View.VISIBLE else View.GONE

@@ -172,7 +172,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textViewCorreo"
+                android:id="@+id/textViewCargo"
                 android:layout_width="130dp"
                 android:layout_height="70dp"
                 android:drawableLeft="@drawable/icon_login_email"
