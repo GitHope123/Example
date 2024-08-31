@@ -59,7 +59,8 @@ class AddTutor : AppCompatActivity() {
             },
             isButtonVisible = true,
             isTextViewGradosSeccionVisible = false,
-            isImageButtonQuitarTutor = false
+            isImageButtonQuitarTutor = false,
+            ButtonSeleccionar=true
         )
         recyclerView.adapter = tutorAdapter
         fetchProfesores()

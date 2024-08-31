@@ -17,7 +17,8 @@ class TutorAdapter(
     private val onRemoveClickListener: (Profesor) -> Unit, // Callback for removing a tutor
     private val isButtonVisible: Boolean,
     private val isTextViewGradosSeccionVisible: Boolean,
-    private val isImageButtonQuitarTutor: Boolean
+    private val isImageButtonQuitarTutor: Boolean,
+    private val ButtonSeleccionar:Boolean
 ) : ListAdapter<Profesor, TutorAdapter.ProfesorViewHolder>(ProfesorDiffCallback()) {
 
     private var selectedProfesorId: String? = null
@@ -42,6 +43,8 @@ class TutorAdapter(
             imageButtonSeleccionar.visibility = if (isButtonVisible) View.VISIBLE else View.GONE
             textViewGradosSeccionTutor.visibility = if (isTextViewGradosSeccionVisible) View.VISIBLE else View.GONE
             imageButtonQuitarTutor.visibility = if (isImageButtonQuitarTutor) View.VISIBLE else View.GONE
+            imageButtonSeleccionar.visibility= if (ButtonSeleccionar) View.VISIBLE else View.GONE
+
 
             val idProfesor = profesor.idProfesor ?: return
             val isSelected = idProfesor == selectedProfesorId
