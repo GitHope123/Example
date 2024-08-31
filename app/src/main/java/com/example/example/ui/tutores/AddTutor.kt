@@ -59,7 +59,7 @@ class AddTutor : AppCompatActivity() {
         )
         recyclerView.adapter = tutorAdapter
         fetchProfesores()
-        updateGrado()
+        getGradosYSeccionesAsignados()
 
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -97,47 +97,106 @@ class AddTutor : AppCompatActivity() {
         }
     }
 
-    private fun updateGrado() {
-        grados = arrayListOf("1", "2", "3", "4", "5")
-        val adapterGrados = ArrayAdapter(this, R.layout.spinner_item_selected, grados)
+    private fun getGradosYSeccionesAsignados() {
+        val gradosYSeccionesAsignados = mutableListOf<Pair<String, String>>()
+        val gradosDisponibles = arrayListOf("1", "2", "3", "4", "5")
+
+        db.collection("Profesor")
+            .whereEqualTo("tutor", true)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val grado = document.getLong("grado").toString()
+                    val seccion = document.getString("seccion") ?: ""
+                    gradosYSeccionesAsignados.add(Pair(grado, seccion))
+                }
+                // Definir secciones disponibles por grado
+                val seccionesDisponiblesPorGrado = mapOf(
+                    "1" to arrayListOf("A", "B", "C", "D", "E"),
+                    "2" to arrayListOf("A", "B", "C", "D"),
+                    "3" to arrayListOf("A", "B", "C", "D"),
+                    "4" to arrayListOf("A", "B", "C", "D"),
+                    "5" to arrayListOf("A", "B", "C", "D")
+                )
+
+                // Construir lista de grados con secciones disponibles
+                val gradosConSeccionesDisponibles = mutableListOf<String>()
+
+                for (grado in gradosDisponibles) {
+                    val seccionesAsignadas = gradosYSeccionesAsignados
+                        .filter { it.first == grado }
+                        .map { it.second }
+                    val seccionesDisponibles = seccionesDisponiblesPorGrado[grado] ?: emptyList()
+
+                    // Verificar secciones disponibles para cada grado
+                    for (seccion in seccionesDisponibles) {
+                        if (!seccionesAsignadas.contains(seccion)) {
+                            gradosConSeccionesDisponibles.add("Grado $grado - Sección $seccion")
+                        }
+                    }
+                }
+
+                // Mostrar en un Toast los grados y secciones disponibles
+                val mensaje = if (gradosConSeccionesDisponibles.isNotEmpty()) {
+                    gradosConSeccionesDisponibles.joinToString(separator = "\n")
+                } else {
+                    "Todos los grados y secciones están completamente asignados."
+                }
+
+                Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
+
+
+                updateGrado(gradosYSeccionesAsignados)
+            }
+            .addOnFailureListener { exception ->
+                Log.w("FirestoreError", "Error getting documents: ", exception)
+            }
+    }
+
+    private fun updateGrado(gradosYSeccionesAsignados: List<Pair<String, String>>) {
+        val gradosDisponibles = arrayListOf("1", "2", "3", "4", "5")
+
+        // Filtrar grados que aún tienen secciones disponibles
+        val gradosFiltrados = gradosDisponibles.filter { grado ->
+            val seccionesAsignadas = gradosYSeccionesAsignados
+                .filter { it.first == grado }
+                .map { it.second }
+            val seccionesDisponibles = when (grado) {
+                "1" -> arrayListOf("A", "B", "C", "D", "E")
+                else -> arrayListOf("A", "B", "C", "D")
+            }
+            seccionesDisponibles.any { !seccionesAsignadas.contains(it) }
+        }
+
+        // Configurar el Spinner de grados con los grados disponibles
+        val adapterGrados = ArrayAdapter(this, R.layout.spinner_item_selected, gradosFiltrados)
         adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerGrado.adapter = adapterGrados
         spinnerGrado.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val gradoSeleccionado = spinnerGrado.selectedItem.toString()
-                updateSecciones(gradoSeleccionado)
+                updateSecciones(gradoSeleccionado, gradosYSeccionesAsignados)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
-    private fun updateSecciones(gradoSeleccionado: String) {
-        secciones = if (gradoSeleccionado == "1") {
-            arrayListOf("A", "B", "C", "D", "E")
-        } else {
-            arrayListOf("A", "B", "C", "D")
+    private fun updateSecciones(gradoSeleccionado: String, gradosYSeccionesAsignados: List<Pair<String, String>>) {
+        val seccionesDisponibles = when (gradoSeleccionado) {
+            "1" -> arrayListOf("A", "B", "C", "D", "E")
+            else -> arrayListOf("A", "B", "C", "D")
         }
 
-        val adapterSecciones = ArrayAdapter(this, R.layout.spinner_item_selected, secciones)
+        // Filtrar secciones disponibles para el grado seleccionado
+        val seccionesDisponiblesParaGrado = seccionesDisponibles.filter { seccion ->
+            gradosYSeccionesAsignados.none { it.first == gradoSeleccionado && it.second == seccion }
+        }
+
+        // Configurar el Spinner de secciones con las secciones disponibles
+        val adapterSecciones = ArrayAdapter(this, R.layout.spinner_item_selected, seccionesDisponiblesParaGrado)
         adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerSeccion.adapter = adapterSecciones
-        spinnerSeccion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
     }
 
     private fun fetchProfesores() {
