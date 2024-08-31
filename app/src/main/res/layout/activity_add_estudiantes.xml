@@ -61,24 +61,6 @@
             android:textColorHint="@color/Primary_white"
             android:textSize="14sp"></EditText>
 
-        <EditText
-            android:id="@+id/addPhone"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/background_white_element_full"
-            android:backgroundTint="@color/Transparent_color"
-            android:drawableLeft="@drawable/icon_call"
-            android:drawablePadding="10sp"
-            android:fontFamily="@font/montserrat"
-            android:gravity="center_vertical"
-            android:hint="@string/hint_phone"
-            android:inputType="phone"
-            android:maxLength="9"
-            android:padding="10sp"
-            android:textColor="@android:color/white"
-            android:textColorHint="@color/Primary_white"
-            android:textSize="14sp"></EditText>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -138,25 +120,6 @@
                 android:spinnerMode="dropdown"
                 android:prompt="@string/hint_degree" />
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/addDniStudent"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/background_white_element_full"
-            android:backgroundTint="@color/Transparent_color"
-            android:drawableLeft="@drawable/icon_dni"
-            android:drawablePadding="10sp"
-            android:fontFamily="@font/montserrat"
-            android:gravity="center_vertical"
-            android:hint="@string/hint_DNI"
-            android:inputType="number"
-            android:maxLength="8"
-            android:padding="10sp"
-            android:textColor="@android:color/white"
-            android:textColorHint="@color/Primary_white"
-            android:textSize="14sp"></EditText>
 
         <Button
             android:id="@+id/buttonAddStudent"

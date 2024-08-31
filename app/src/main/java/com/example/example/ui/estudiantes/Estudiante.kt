@@ -6,8 +6,6 @@ import java.io.Serializable
     val idEstudiante: String = "",
     val apellidos: String = "",
     val nombres: String = "",
-    val celularApoderado: Long = 0,
-    val dni: Long = 0,
     val grado: Int = 0,
     val seccion: String = "",
     val cantidadIncidencias:Int=0

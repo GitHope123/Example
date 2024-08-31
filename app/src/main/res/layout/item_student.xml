@@ -37,20 +37,6 @@
                     android:textColor="@color/Primary_blue_sky"
                     android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/textViewCelularStudent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:drawableLeft="@drawable/icon_dni"
-                    android:drawablePadding="10dp"
-                    android:drawableTint="@color/Primary_blue_sky"
-                    android:fontFamily="@font/montserrat"
-                    android:gravity="center_vertical"
-                    android:text="ID del Estudiante"
-                    android:textColor="@color/Primary_blue_sky"
-                    android:textSize="12sp" />
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

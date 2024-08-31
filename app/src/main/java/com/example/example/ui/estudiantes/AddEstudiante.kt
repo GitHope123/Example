@@ -14,16 +14,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 class AddEstudiante : AppCompatActivity() {
     private lateinit var edTxtAddName: EditText
     private lateinit var edTxtAddLastName: EditText
-    private lateinit var edTxtAddPhone: EditText
     private lateinit var spinnerAddGrado: Spinner
     private lateinit var spinnerAddSection: Spinner
-    private lateinit var edTxtAddDni: EditText
     private lateinit var addName: String
     private lateinit var addLastName: String
-    private var addPhone: Long = 0
     private var addGrado: Int = 0
     private lateinit var addSection: String
-    private var addDni: Long = 0
     private lateinit var db: FirebaseFirestore
     private lateinit var btnAdd: Button
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,10 +34,8 @@ class AddEstudiante : AppCompatActivity() {
     private fun initComponents() {
         edTxtAddName = findViewById(R.id.addNameStudent)
         edTxtAddLastName = findViewById(R.id.addLastNameStudent)
-        edTxtAddPhone = findViewById(R.id.addPhone)
         spinnerAddGrado = findViewById(R.id.addSpinnerGradoStudent)
         spinnerAddSection = findViewById(R.id.addSpinnerSectionStudent)
-        edTxtAddDni = findViewById(R.id.addDniStudent)
         btnAdd = findViewById(R.id.buttonAddStudent)
         updateGrado()
     }
@@ -89,21 +83,17 @@ class AddEstudiante : AppCompatActivity() {
     private fun saveStudentToFirebase() {
         addName = edTxtAddName.text.toString().trim()
         addLastName = edTxtAddLastName.text.toString().trim()
-        addPhone = edTxtAddPhone.text.toString().trim().toLongOrNull() ?: 0L
-        addDni=edTxtAddDni.text.toString().trim().toLongOrNull()?:0
         addGrado = spinnerAddGrado.selectedItem.toString().trim().toIntOrNull()?:0
         addSection = spinnerAddSection.selectedItem.toString().trim()
         if (addName.isNotEmpty() && addLastName.isNotEmpty() &&
-            addPhone.toString().length == 9 && addDni.toString().length == 8 &&addSection.isNotEmpty()
+           addSection.isNotEmpty()
             ) {
                 val student = Estudiante(
                     idEstudiante = "",
                     nombres = addName,
                     apellidos = addLastName,
-                    dni = addDni,
                     grado = addGrado,
                     seccion = addSection,
-                    celularApoderado = addPhone,
                     cantidadIncidencias = 0,
                 )
                 db.collection("Estudiante")
@@ -132,8 +122,6 @@ class AddEstudiante : AppCompatActivity() {
     private fun clearFields() {
         edTxtAddName.text.clear()
         edTxtAddLastName.text.clear()
-        edTxtAddDni.text.clear()
-        edTxtAddPhone.text.clear()
     }
 
 

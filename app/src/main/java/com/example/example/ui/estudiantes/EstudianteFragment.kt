@@ -27,7 +27,6 @@ class EstudianteFragment : Fragment() {
     private val fullEstudiantesList = mutableListOf<Estudiante>()
     private lateinit var userType: String
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -105,21 +104,17 @@ class EstudianteFragment : Fragment() {
             val coincideNombre = queryWords.all { nombreCompleto.contains(it) }
             coincideNombre && coincideGrado && coincideSeccion
         }
-
         estudianteAdapter.notifyDataSetChanged()
     }
 
     private fun setupRecyclerView() {
-        // Inicializa el adaptador con visibilidad de botón de editar
         estudianteAdapter = EstudianteAdapter(
             estudiantes = filterEstudiantes,
             onEditClickListenerEstudiante = { estudiante ->
-                // Aquí puedes agregar la lógica para editar al estudiante
             },
-            isEditButtonVisible = userType == "Administrador" // Usa el valor de userType
+            isEditButtonVisible = userType == "Administrador"
         )
 
-        // Configura el RecyclerView
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = estudianteAdapter
@@ -131,13 +126,11 @@ class EstudianteFragment : Fragment() {
             binding.searchView.isIconified = false
             binding.searchView.requestFocus()
         }
-
         binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { filterEstudiantes(it) }
                 return true
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let { filterEstudiantes(it) }
                 return true
@@ -167,8 +160,6 @@ class EstudianteFragment : Fragment() {
                 idEstudiante = getString("idEstudiante") ?: "",
                 apellidos = getString("apellidos") ?: "",
                 nombres = getString("nombres") ?: "",
-                celularApoderado = getLong("celularApoderado") ?: 0L,
-                dni = getLong("dni") ?: 0L,
                 grado = getLong("grado")?.toInt() ?: 0,
                 seccion = getString("seccion") ?: "",
                 cantidadIncidencias = getLong("cantidadIncidencias")?.toInt() ?: 0
@@ -180,19 +171,15 @@ class EstudianteFragment : Fragment() {
     }
 
     private fun setupButtons() {
-        // Configura el botón de agregar estudiante
         binding.addButtonEstudiante.setOnClickListener {
             startActivity(Intent(context, AddEstudiante::class.java))
         }
 
-        // Configura la visibilidad del botón de agregar
         val isAddButtonVisible = when (userType) {
             "Administrador" -> View.VISIBLE
             else -> View.INVISIBLE
         }
         binding.addButtonEstudiante.visibility = isAddButtonVisible
-
-        // Actualiza el adaptador con la visibilidad del botón de editar
         estudianteAdapter.isEditButtonVisible = userType == "Administrador"
         estudianteAdapter.notifyDataSetChanged()
     }
@@ -214,6 +201,11 @@ class EstudianteFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         clearSearchView()
+
+        binding.spinnerGrado.setSelection(0)
+        binding.spinnerSeccion.setSelection(0)
+        filterEstudiantes(binding.searchView.query.toString())
+        refreshData()
     }
 
     private fun clearSearchView() {

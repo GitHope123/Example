@@ -29,7 +29,6 @@ class EstudianteAdapter(
 
     inner class EstudianteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val txtViewNombres: TextView = itemView.findViewById(R.id.textViewNombreCompleto)
-        private val textViewCelular: TextView = itemView.findViewById(R.id.textViewCelularStudent)
         private val textViewGradoAndSection: TextView = itemView.findViewById(R.id.studentGradeTextViewItem)
         private val btnEdit: ImageButton = itemView.findViewById(R.id.imageButtonEditStudent)
 
@@ -38,10 +37,8 @@ class EstudianteAdapter(
             val degreeAndSection = "${estudiante.grado} ${estudiante.seccion}"
 
             txtViewNombres.text = completeName
-            textViewCelular.text = estudiante.celularApoderado.toString()
             textViewGradoAndSection.text = degreeAndSection
 
-            // Establece la visibilidad del botón de edición según el parámetro `isEditButtonVisible`
             btnEdit.visibility = if (isEditButtonVisible) View.VISIBLE else View.INVISIBLE
 
             btnEdit.setOnClickListener {
@@ -50,8 +47,6 @@ class EstudianteAdapter(
                     putExtra("idEstudiante", estudiante.idEstudiante)
                     putExtra("nombres", estudiante.nombres)
                     putExtra("apellidos", estudiante.apellidos)
-                    putExtra("celularApoderado", estudiante.celularApoderado)
-                    putExtra("dni", estudiante.dni)
                     putExtra("grado", estudiante.grado)
                     putExtra("seccion", estudiante.seccion)
                     putExtra("cantidadIncidencias", estudiante.cantidadIncidencias)
