@@ -70,6 +70,23 @@
             android:textColorHint="@color/Primary_white"
             android:textSize="14sp"
             android:maxLength="9"/>
+        <EditText
+            android:id="@+id/editTextDni"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/background_white_element_full"
+            android:drawableLeft="@drawable/icon_seccion"
+            android:drawablePadding="10sp"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center_vertical"
+            android:hint="Dni"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/Primary_white"
+            android:textSize="14sp"
+            android:maxLength="8"/>
 
         <EditText
             android:id="@+id/editTextMateria"
@@ -125,7 +142,7 @@
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="70sp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/Secondary_brown"
             android:drawableTint="@color/Secondary_brown"

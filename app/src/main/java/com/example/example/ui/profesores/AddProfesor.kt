@@ -62,9 +62,9 @@ class AddProfesor : AppCompatActivity() {
         val password = editTextPassword.text.toString().trim()
         val dniStr=editTextDni.text.toString().trim()
 
-        // Validate inputs
-        if (nombres.isEmpty() || apellidos.isEmpty() || celularStr.isEmpty() ||
-            cargo.isEmpty() || correo.isEmpty()||celularStr.length!=9||password.isEmpty()||dniStr.length!=8) {
+        if (nombres.trim().isEmpty() || apellidos.trim().isEmpty() || celularStr.trim().isEmpty() ||
+            cargo.trim().isEmpty() || correo.trim().isEmpty() || celularStr.length != 9 ||
+            password.trim().isEmpty() || dniStr.trim().length != 8) {
             showToast("Por favor, complete todos los campos")
             isSaving = false
             return
