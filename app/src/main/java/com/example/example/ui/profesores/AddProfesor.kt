@@ -69,7 +69,7 @@ class AddProfesor : AppCompatActivity() {
             isSaving = false
             return
         }
-        if(!correo.endsWith("@gmail.com")){
+        if(!correo.endsWith("@colegiosparroquiales.com")){
            Toast.makeText(this,"Su correo debe terminar en @gmail.com",Toast.LENGTH_SHORT).show()
             isSaving = false
             return

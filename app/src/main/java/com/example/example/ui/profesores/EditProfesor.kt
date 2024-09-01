@@ -96,7 +96,7 @@
             if (updatedNombres.isNotEmpty() && updatedApellidos.isNotEmpty() &&
                 updatedCelular != null && updatedCargo.isNotEmpty() &&
                 updatedCorreo.isNotEmpty() && updatedCelular.toString().length == 9 && updatePassword.isNotEmpty() && updatedDni.toString().length==8) {
-                if(updatedCorreo.endsWith("@gmail.com")){
+                if(updatedCorreo.endsWith("@colegiosparroquiales.com")){
                     val updatedProfesor = mapOf(
                         "nombres" to updatedNombres,
                         "apellidos" to updatedApellidos,

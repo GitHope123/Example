@@ -17,6 +17,7 @@ class InicioSesion : AppCompatActivity() {
     private lateinit var binding: ActivityInicioSesionBinding
     private lateinit var userType: String
     private lateinit var id: String
+    private  var acces: Boolean=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,9 +85,13 @@ class InicioSesion : AppCompatActivity() {
                                 }
                                 GlobalData.idUsuario = id
                                 GlobalData.datoTipoUsuario = userType
+                            } else {
+                                // Mostrar mensaje si no se encuentran documentos
+                                Toast.makeText(this, "Este correo no se encuentra registrado", Toast.LENGTH_SHORT).show()
                             }
                         } else {
-                            Toast.makeText(this, "Este correo no se encuentra registrado", Toast.LENGTH_SHORT).show()
+                            // En caso de error en la consulta
+                            Toast.makeText(this, "Error al consultar la base de datos", Toast.LENGTH_SHORT).show()
                         }
                     }
                     .addOnFailureListener { exception ->
@@ -94,6 +99,7 @@ class InicioSesion : AppCompatActivity() {
                     }
             }
     }
+
 
     private fun navigateToBarraLateral(userType: String) {
         startActivity(Intent(this, BarraLateral::class.java).apply {
