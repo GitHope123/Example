@@ -18,6 +18,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.time.LocalTime
 
 class BarraLateral : AppCompatActivity() {
 
@@ -124,8 +125,17 @@ class BarraLateral : AppCompatActivity() {
         val emailTextView = headerView.findViewById<TextView>(R.id.textViewEmail)
 
         val formattedText = userName.split(" ").joinToString(" ") { it.capitalize() }
-        userWelcome.text = "Bienvenido, $formattedText!"
+        val saludo = saludoSegunHora()
+        userWelcome.text = "$saludo, $formattedText!"
         emailTextView.text = email
+    }
+    fun saludoSegunHora(): String {
+        val horaActual = LocalTime.now()
+        return when {
+            horaActual.isBefore(LocalTime.NOON) -> "Buenos días"
+            horaActual.isBefore(LocalTime.of(18, 0)) -> "Buenas tardes"
+            else -> "Buenas noches"
+        }
     }
 
     private fun configureMenuBasedOnUserType(userType: String?) {
