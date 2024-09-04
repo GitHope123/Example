@@ -43,8 +43,8 @@ class EstudianteAgregarAdapter(private val estudiantes: MutableList<EstudianteAg
             studentGradeTextView.text = estudiante.grado.toString()
             studentSectionTextView.text = estudiante.seccion
             itemView.setBackgroundColor(
-                if (adapterPosition == selectedPosition) Color.LTGRAY // Color al seleccionar
-                else itemView.resources.getColor(R.color.Primary_blue_black, null)// Color por defecto
+                if (adapterPosition == selectedPosition) Color.rgb(51, 162, 255)//Color al seleccionar
+                else itemView.resources.getColor(R.color.Transparent_blue_black, null)// Color por defecto
             )
         }
     }
