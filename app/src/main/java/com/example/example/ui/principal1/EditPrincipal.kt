@@ -1,8 +1,10 @@
 package com.example.example.ui.principal1
 
 import android.os.Bundle
+import android.text.InputType
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +47,7 @@ class EditPrincipal : AppCompatActivity() {
         init()
         obtenerDatos()
         listener()
+
     }
 
     private fun init() {
@@ -67,11 +70,30 @@ class EditPrincipal : AppCompatActivity() {
         edTextCorreo.setText(correo)
         edTextCelular.setText(celular)
         editTextPassword.setText(password)
+        val ocultarPassword=editTextPassword
+        ocultarPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
     }
 
     private fun listener() {
+        val passwordEditText = editTextPassword
+        val eyeIcon = findViewById<ImageView>(R.id.eyeIcon)
+        var isPasswordVisible = false
+
+        eyeIcon.setOnClickListener {
+            isPasswordVisible = !isPasswordVisible
+            if (isPasswordVisible) {
+                passwordEditText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                eyeIcon.setImageResource(R.drawable.ic_eye_on) // Cambia a un icono visible
+            } else {
+                passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                eyeIcon.setImageResource(R.drawable.ic_eye_off) // Cambia a un icono oculto
+            }
+            passwordEditText.setSelection(passwordEditText.text.length)
+
+        }
         btnGuardar.setOnClickListener {
             val updatedCelularStr = edTextCelular.text.toString()
+            val updatedContra=editTextPassword.text.toString();
             val updatedCelular: Long?
 
             // Convert celular to a number (Long)
@@ -82,18 +104,24 @@ class EditPrincipal : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val updatedProfesor = mapOf("celular" to updatedCelular)
+            val updatedProfesor = mapOf("celular" to updatedCelular,"password" to updatedContra)
 
-            if (updatedCelularStr.isNotEmpty() && updatedCelularStr.length == 9) {
-                firestore.collection("Profesor").document(id)
-                    .update(updatedProfesor)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Datos actualizados con éxito", Toast.LENGTH_SHORT).show()
-                        finish()
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(this, "Error al actualizar datos: ${e.message}", Toast.LENGTH_LONG).show()
-                    }
+            if (updatedCelularStr.isNotEmpty() && updatedCelularStr.length == 9 && updatedContra.length!=0 ) {
+                if(updatedContra.length>=8){
+                    firestore.collection("Profesor").document(id)
+                        .update(updatedProfesor)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Datos actualizados con éxito", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Error al actualizar datos: ${e.message}", Toast.LENGTH_LONG).show()
+                        }
+                }
+                else{
+                    Toast.makeText(this,"Por favor ingrese una contraseña de 8 digitos", Toast.LENGTH_SHORT).show()
+                }
+
             } else {
                 Toast.makeText(this, "Por favor complete todos los campos correctamente", Toast.LENGTH_SHORT).show()
             }

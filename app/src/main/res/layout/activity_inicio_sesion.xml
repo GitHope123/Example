@@ -76,7 +76,8 @@
                 android:text=""
                 android:textColor="@color/Primary_white"
                 android:textColorHint="@color/Primary_white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:maxLength="8"/>
 
             <ImageView
                 android:id="@+id/eyeIcon"

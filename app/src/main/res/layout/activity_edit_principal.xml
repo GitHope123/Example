@@ -159,7 +159,7 @@
                 android:inputType="phone"
                 android:maxLength="9"
                 android:paddingStart="10dp"
-                android:textColor="@color/Primary_blue_sky"
+                android:textColor="@color/Primary_white"
                 android:textSize="13sp"
                 tools:text="" />
         </LinearLayout>
@@ -220,20 +220,37 @@
                 android:text="Password:"
                 android:textColor="@color/Primary_blue_sky" />
 
-            <EditText
-                android:id="@+id/editTextPasswordPrincipal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/background_text_transparent"
-                android:backgroundTint="@color/Transparent_color"
-                android:fontFamily="@font/montserrat"
-                android:gravity="center_vertical"
-                android:inputType="none"
-                android:paddingStart="10dp"
-                android:textColor="@color/Primary_blue_sky"
-                android:textSize="13sp"
-                tools:text="" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editTextPasswordPrincipal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/background_white_element_full"
+                    android:backgroundTint="@color/Transparent_color"
+                    android:drawablePadding="10sp"
+                    android:ems="10"
+                    android:fontFamily="@font/montserrat"
+                    android:padding="10sp"
+                    android:text=""
+                    android:textColor="@color/Primary_white"
+                    android:textColorHint="@color/Primary_white"
+                    android:textSize="14sp"
+                    android:maxLength="8"/>
+
+                <ImageView
+                    android:id="@+id/eyeIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_eye_off"
+                    android:contentDescription="Toggle password visibility" />
+
+            </FrameLayout>
+
         </LinearLayout>
 
         <Button
