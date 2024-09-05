@@ -1,5 +1,6 @@
 package com.example.example.ui.tutores
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -49,24 +50,37 @@ class TutorFragment : Fragment() {
             onEditClickListener = { profesor ->
             },
             onRemoveClickListener = { profesor ->
-                profesor.idProfesor?.let { id ->
-                    db.collection("Profesor").document(id)
-                        .update(
-                            "grado", 0,
-                            "seccion", "",
-                            "tutor", false
-                        )
-                        .addOnSuccessListener {
-                            // Filtra la lista actualizada
-                            val updatedList = tutorAdapter.currentList.filter { it.idProfesor != id }
-                            tutorAdapter.updateList(updatedList)
-                            Toast.makeText(requireContext(), "Tutor removido correctamente", Toast.LENGTH_SHORT).show()
+                // Mostrar el diálogo de confirmación antes de actualizar
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Confirmar")
+                    .setMessage("¿Estás seguro de que deseas quitar al tutor?")
+                    .setPositiveButton("Sí") { dialog, which ->
+                        // Si el usuario confirma, procede con la actualización
+                        profesor.idProfesor?.let { id ->
+                            db.collection("Profesor").document(id)
+                                .update(
+                                    "grado", 0,
+                                    "seccion", "",
+                                    "tutor", false
+                                )
+                                .addOnSuccessListener {
+                                    // Filtra la lista actualizada para remover al profesor
+                                    val updatedList = tutorAdapter.currentList.filter { it.idProfesor != id }
+                                    tutorAdapter.updateList(updatedList)
+                                    Toast.makeText(requireContext(), "Tutor removido correctamente", Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener { exception ->
+                                    Toast.makeText(requireContext(), "Error al remover el tutor: ${exception.message}", Toast.LENGTH_SHORT).show()
+                                }
                         }
-                        .addOnFailureListener { exception ->
-                            Toast.makeText(requireContext(), "Error updating tutor: ${exception.message}", Toast.LENGTH_SHORT).show()
-                        }
-                }
-            },
+                    }
+                    .setNegativeButton("No") { dialog, which ->
+                        // Si el usuario cancela, cierra el diálogo
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
+            ,
             isButtonVisible = userType=="Administrador",
             isTextViewGradosSeccionVisible = true,
             isImageButtonQuitarTutor = isAddButtonVisible,

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Incidencia</string>
+    <string name="app_name">INCIDENT TRACKING</string>
     <string name="title_activity_barra_lateral">barraLateral</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
