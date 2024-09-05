@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -25,11 +26,18 @@ class Reporte : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_reporte, container, false)
 
+        // Obtén referencias a los elementos del layout
         val button = view.findViewById<ImageButton>(R.id.buttonOpenLink)
+        val editText = view.findViewById<EditText>(R.id.editTextLink)
         val compartir = view.findViewById<ImageButton>(R.id.imageButtonCompartir)
 
         // URL que se utilizará
-        val url = "https://lookerstudio.google.com/reporting/55c2d7b2-0d63-4e02-895a-21ab9c7d018c" // Reemplaza con la URL que desees
+        val url = "https://lookerstudio.google.com/reporting/55c2d7b2-0d63-4e02-895a-21ab9c7d018c"
+
+        // Mostrar la URL en el EditText y hacerlo no editable
+        editText.setText(url)
+        editText.isFocusable = false
+        editText.isClickable = false
 
         // Configuración para copiar la URL al portapapeles
         button.setOnClickListener {
