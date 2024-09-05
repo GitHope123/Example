@@ -56,22 +56,6 @@ class TutorAdapter(
             }
 
             imageButtonQuitarTutor.setOnClickListener {
-                profesor.grado = 0
-                profesor.seccion = ""
-                profesor.tutor = false
-                profesor.idProfesor?.let { id ->
-                    db.collection("Profesor").document(id)
-                        .update(
-                            "grado", profesor.grado,
-                            "seccion", profesor.seccion,
-                            "tutor", profesor.tutor
-                        )
-                        .addOnSuccessListener {
-                            updateList(filteredList)
-                        }
-                        .addOnFailureListener { exception ->
-                        }
-                }
                 onRemoveClickListener(profesor)
             }
 
