@@ -25,6 +25,8 @@ class Pendiente : Fragment() {
     private var incidenciasPendiente: MutableList<IncidenciaClass> = mutableListOf()
     private var incidenciasFilter: MutableList<IncidenciaClass> = mutableListOf()
     private lateinit var idUsuario:String
+    private val incidenciaRepository: IncidenciaRepository = IncidenciaRepository()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,55 +48,24 @@ class Pendiente : Fragment() {
     }
     private fun loadAllIncidencias() {
         idUsuario = InicioSesion.GlobalData.idUsuario
-
-        firestore.collection("Incidencia").get().addOnSuccessListener { result ->
-            incidenciasPendiente.clear()
-            for (document in result) {
-                val idProfesor = document.getString("idProfesor") ?: ""
-                val estado = document.getString("estado") ?: ""
-                if (estado == "Pendiente") {
-                    if(idProfesor == idUsuario) {
-                    val id = document.id  // Obtener el ID del documento
-                    val fecha = document.getString("fecha") ?: ""
-                    val hora = document.getString("hora") ?: ""
-                    val nombreEstudiante = document.getString("nombreEstudiante") ?: ""
-                    val apellidoEstudiante = document.getString("apellidoEstudiante") ?: ""
-                    val tipo = document.getString("tipo") ?: ""
-                    val gravedad = document.getString("gravedad") ?: ""
-                    val grado = document.getLong("grado")?.toInt() ?: 0
-                    val seccion = document.getString("seccion") ?: ""
-                    val detalle = document.getString("detalle") ?: ""
-                    val urlImagen = document.getString("urlImagen") ?: ""
-
-                    incidenciasPendiente.add(IncidenciaClass(
-                        id = id,
-                        fecha = fecha,
-                        hora = hora,
-                        nombreEstudiante = nombreEstudiante,
-                        apellidoEstudiante = apellidoEstudiante,
-                        grado = grado,
-                        seccion = seccion,
-                        tipo = tipo,
-                        gravedad = gravedad,
-                        estado = estado,
-                        detalle = detalle,
-                        imageUri = urlImagen
-                    ))
-                }}
-            }
-            val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-            incidenciasPendiente.sortByDescending {
-                try {
-                    dateTimeFormat.parse("${it.fecha} ${it.hora}") ?: Date(0)
-                } catch (e: Exception) {
-                    Date(0)  // Fecha por defecto si ocurre un error
+        incidenciaRepository.getIncidenciaByEstado(idProfesor = idUsuario, estado = "Pendiente") { incidenciasList ->
+            if (isAdded) {
+                incidenciasPendiente.clear()
+                incidenciasPendiente.addAll(incidenciasList)
+                incidenciasPendiente.clear()
+                incidenciasPendiente.addAll(incidenciasList)
+                incidenciaAdapter.notifyDataSetChanged()
+                incidenciasPendiente.sortByDescending {
+                    try {
+                        val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                        dateTimeFormat.parse("${it.fecha} ${it.hora}") ?: Date(0)
+                    } catch (e: Exception) {
+                        Date(0)  // Fecha por defecto si ocurre un error
+                    }
                 }
+                incidenciaAdapter.updateData(incidenciasPendiente)
             }
-            incidenciaAdapter.updateData(incidenciasPendiente)
         }
-            .addOnFailureListener { exception ->
-                exception.printStackTrace()
-            }
     }
     private fun setupSearchView() {
         searchView.setOnClickListener {

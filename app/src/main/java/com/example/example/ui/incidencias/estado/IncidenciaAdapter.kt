@@ -11,7 +11,6 @@ import com.example.example.ui.incidencias.DescripcionIncidencia
 import android.content.Context
 import android.widget.ImageView
 
-
 class IncidenciaAdapter(
     private var incidencias: List<IncidenciaClass>,
     private val context: Context

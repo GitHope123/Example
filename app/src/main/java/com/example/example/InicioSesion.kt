@@ -3,7 +3,6 @@ package com.example.example
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +16,6 @@ class InicioSesion : AppCompatActivity() {
     private lateinit var binding: ActivityInicioSesionBinding
     private lateinit var userType: String
     private lateinit var id: String
-    private  var acces: Boolean=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +46,8 @@ class InicioSesion : AppCompatActivity() {
             val password = binding.editTextPassword.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
-                showToast("Por favor, complete todos los campos.")
+                Toast.makeText(this,"Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show()
+
             } else {
                 iniciarSesionConFirebase(email, password)
 
@@ -59,7 +58,7 @@ class InicioSesion : AppCompatActivity() {
 
     private fun iniciarSesionConFirebase(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener { task1 ->
+            .addOnSuccessListener {
                 userType = "Administrador"
                 navigateToBarraLateral(userType)
                 GlobalData.datoTipoUsuario = userType
@@ -94,7 +93,7 @@ class InicioSesion : AppCompatActivity() {
                             Toast.makeText(this, "Error al consultar la base de datos", Toast.LENGTH_SHORT).show()
                         }
                     }
-                    .addOnFailureListener { exception ->
+                    .addOnFailureListener {
                         Toast.makeText(this, "Este correo no se encuentra registrado", Toast.LENGTH_SHORT).show()
                     }
             }
@@ -109,10 +108,6 @@ class InicioSesion : AppCompatActivity() {
             }
         })
         finish()
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
     object GlobalData {
         var idUsuario: String=""
