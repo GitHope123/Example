@@ -229,6 +229,7 @@ class AgregarIncidencia : AppCompatActivity() {
                 "grado" to studentGrade,
                 "seccion" to studentSection,
                 "estado" to estado,
+                "cargo" to null,
                 "gravedad" to spinnerGravedad.selectedItem.toString(),
                 "tipo" to spinnerTipo.selectedItem.toString(),
                 "detalle" to edMultilinea.text.toString(),
@@ -259,7 +260,7 @@ class AgregarIncidencia : AppCompatActivity() {
                     if (documents.exists()) {
                         val nombresProfesor = documents.getString("nombres") ?: "Nombres no encontrados"
                         val apellidosProfesor = documents.getString("apellidos") ?: "Apellidos no encontrados"
-
+                        val cargo = documents.getString("cargo") ?: "Cargo no encontrados"
                         val incidencia = hashMapOf(
                             "fecha" to obtenerFechaActual(),
                             "hora" to obtenerHoraActual(),
@@ -274,6 +275,7 @@ class AgregarIncidencia : AppCompatActivity() {
                             "detalle" to edMultilinea.text.toString(),
                             "apellidoProfesor" to apellidosProfesor,
                             "nombreProfesor" to nombresProfesor,
+                            "cargo" to cargo,
                             "urlImagen" to urlImagen
                         )
 

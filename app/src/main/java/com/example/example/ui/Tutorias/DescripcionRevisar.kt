@@ -22,6 +22,7 @@ class DescripcionRevisar : AppCompatActivity() {
     private lateinit var tvProfesor:TextView
     private lateinit var tvEstado: TextView
     private lateinit var tvTipo: TextView
+    private lateinit var tvCargo: TextView
     private lateinit var tvGravedad: TextView
     private lateinit var tvDetalle: TextView
     private lateinit var imagen: ImageView
@@ -43,6 +44,7 @@ class DescripcionRevisar : AppCompatActivity() {
         tvNombreEstudiante = findViewById(R.id.tvNombreEstudiante)
         tvFecha = findViewById(R.id.tvFecha)
         tvHora = findViewById(R.id.tvHora)
+        tvCargo = findViewById(R.id.tvCargo)
         checkBoxRevisado = findViewById(R.id.checkBoxRevisado)
         tvGrado = findViewById(R.id.tvGrado)
         tvSeccion = findViewById(R.id.tvSeccion)
@@ -69,6 +71,7 @@ class DescripcionRevisar : AppCompatActivity() {
         tvSeccion.text = tutoria.seccion
         tvEstado.text = tutoria.estado
         tvTipo.text = tutoria.tipo
+        tvCargo.text=tutoria.cargo
         tvProfesor.text = "${tutoria.nombreProfesor} ${tutoria.apellidoProfesor}"
         tvGravedad.text = tutoria.gravedad
         tvDetalle.text = tutoria.detalle

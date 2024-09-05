@@ -16,5 +16,6 @@ data class TutoriaClass(
     val nombreProfesor: String = "",
     val seccion: String = "",
     val tipo: String = "",
-    val urlImagen: String = ""
+    val urlImagen: String = "",
+    val cargo:String=""
 ):Serializable

@@ -62,7 +62,8 @@ class TutoriaRepository {
                         nombreProfesor = document.getString("nombreProfesor") ?: "",
                         seccion = document.getString("seccion") ?: "",
                         tipo = document.getString("tipo") ?: "",
-                        urlImagen = document.getString("urlImagen") ?: ""
+                        urlImagen = document.getString("urlImagen") ?: "",
+                        cargo= document.getString("cargo") ?: "",
                     )
                 }
 
