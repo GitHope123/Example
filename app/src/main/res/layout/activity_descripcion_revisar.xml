@@ -199,15 +199,16 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="140dp"
+                        android:id="@+id/tvCargo"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat_bold"
-                        android:padding="10dp"
+                        android:padding="10sp"
                         android:drawableTint="@color/Primary_blue_sky"
                         android:drawablePadding="10dp"
                         android:drawableLeft="@drawable/icon_docente"
@@ -218,7 +219,7 @@
                     <TextView
                         android:id="@+id/tvProfesor"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat"
                         android:gravity="center_vertical"
                         android:padding="5dp"
