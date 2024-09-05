@@ -15,12 +15,14 @@ class EditPrincipal : AppCompatActivity() {
     private lateinit var edTxtApellido: EditText
     private lateinit var edTextCelular: EditText
     private lateinit var edTextCorreo: EditText
+    private lateinit var editTextPassword: EditText
     private lateinit var btnGuardar: Button
 
     private lateinit var nombre: String
     private lateinit var apellido: String
     private lateinit var celular: String
     private lateinit var correo: String
+    private lateinit var password: String
     private lateinit var id: String
 
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -36,6 +38,7 @@ class EditPrincipal : AppCompatActivity() {
         apellido = intent.getStringExtra("apellido").toString()
         correo = intent.getStringExtra("correo").toString()
         celular = intent.getStringExtra("celular").toString()
+        password = intent.getStringExtra("password").toString()
         id = intent.getStringExtra("id").toString()
 
         // Initialize UI components
@@ -49,6 +52,7 @@ class EditPrincipal : AppCompatActivity() {
         edTxtApellido = findViewById(R.id.edTxtApellido)
         edTextCelular = findViewById(R.id.edTextCelular)
         edTextCorreo = findViewById(R.id.edTextCorreo)
+        editTextPassword = findViewById(R.id.editTextPasswordPrincipal)
         btnGuardar = findViewById(R.id.buttonModificar)
 
         // Make fields non-editable
@@ -62,6 +66,7 @@ class EditPrincipal : AppCompatActivity() {
         edTxtApellido.setText(apellido)
         edTextCorreo.setText(correo)
         edTextCelular.setText(celular)
+        editTextPassword.setText(password)
     }
 
     private fun listener() {
