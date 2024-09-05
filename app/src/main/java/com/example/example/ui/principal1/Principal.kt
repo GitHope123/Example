@@ -26,6 +26,7 @@ class Principal : Fragment() {
     private lateinit var apellido: String
     private lateinit var celular: String
     private lateinit var correo: String
+    private lateinit var password: String
     private lateinit var id: String
     private lateinit var idUsuario:String
     private lateinit var userType:String
@@ -69,6 +70,7 @@ class Principal : Fragment() {
                         apellido = doc.getString("apellidos") ?: "N/A"
                         celular = doc.get("celular").toString()
                         correo = doc.getString("correo") ?: "N/A"
+                        password = doc.getString("password") ?: "N/A"
                         val isTutor = doc.getBoolean("tutor") ?: false
                             binding.apply {
                                 textViewNombreCompletoUsuario.text = nombre
@@ -101,6 +103,7 @@ class Principal : Fragment() {
             putExtra("apellido", apellido)
             putExtra("celular", celular)
             putExtra("correo", correo)
+            putExtra("password", password)
             putExtra("id", id)
         }
         startActivity(intent)
