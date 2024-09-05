@@ -95,7 +95,7 @@ class AgregarIncidencia : AppCompatActivity() {
         adapterGravedad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerGravedad.adapter = adapterGravedad
 
-        val tipo = arrayOf("Conductual", "Académicas", "Vestimenta", "Otros")
+        val tipo = arrayOf("Conductual", "Académicas", "Otros")
         val adapterTipo = ArrayAdapter(this, R.layout.item_spinner, tipo)
         adapterTipo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerTipo.adapter = adapterTipo
