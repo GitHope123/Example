@@ -218,6 +218,7 @@ class AgregarIncidencia : AppCompatActivity() {
         datoTipoUsuario = InicioSesion.GlobalData.datoTipoUsuario
         val estado = "Pendiente"
 
+        if (datoTipoUsuario == "Administrador") {
             // Si es Administrador, el ID de usuario no es necesario
             val incidencia = hashMapOf(
                 "fecha" to obtenerFechaActual(),
@@ -250,7 +251,62 @@ class AgregarIncidencia : AppCompatActivity() {
                     binding.btnRegistrarIncidencia.isEnabled = true
                 }
 
+        } else {
+            // Si no es Administrador, obtén los datos del profesor normalmente
+            firestore.collection("Profesor")
+                .document(idUsuario)
+                .get()
+                .addOnSuccessListener { documents ->
+                    if (documents.exists()) {
+                        val nombresProfesor = documents.getString("nombres") ?: "Nombres no encontrados"
+                        val apellidosProfesor = documents.getString("apellidos") ?: "Apellidos no encontrados"
+                        val cargo = documents.getString("cargo") ?: "Cargo no encontrados"
+                        val incidencia = hashMapOf(
+                            "fecha" to obtenerFechaActual(),
+                            "hora" to obtenerHoraActual(),
+                            "idProfesor" to idUsuario,
+                            "nombreEstudiante" to studentName,
+                            "apellidoEstudiante" to studentLastName,
+                            "grado" to studentGrade,
+                            "seccion" to studentSection,
+                            "estado" to estado,
+                            "gravedad" to spinnerGravedad.selectedItem.toString(),
+                            "tipo" to spinnerTipo.selectedItem.toString(),
+                            "detalle" to edMultilinea.text.toString(),
+                            "apellidoProfesor" to apellidosProfesor,
+                            "nombreProfesor" to nombresProfesor,
+                            "cargo" to cargo,
+                            "urlImagen" to urlImagen
+                        )
 
+                        firestore.collection("Incidencia")
+                            .add(incidencia)
+                            .addOnSuccessListener {
+                                incrementarCantidadIncidencia()
+                                Toast.makeText(this, "Incidencia registrada exitosamente", Toast.LENGTH_SHORT).show()
+                                finish()
+                                binding.btnRegistrarIncidencia.isEnabled = true
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this, "Error al registrar la incidencia", Toast.LENGTH_SHORT).show()
+                                binding.btnRegistrarIncidencia.isEnabled = true
+                            }
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "No se encontró el profesor con el correo proporcionado.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(
+                        this,
+                        "Error al obtener datos del profesor: ${exception.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
     }
 
 
@@ -262,11 +318,6 @@ class AgregarIncidencia : AppCompatActivity() {
             val currentCount = snapshot.getLong("cantidadIncidencias") ?: 0
             transaction.update(studentRef, "cantidadIncidencias", currentCount + 1)
         }.addOnSuccessListener {
-            Toast.makeText(
-                this,
-                "Incidencia registrada y contador actualizado.",
-                Toast.LENGTH_SHORT
-            ).show()
             finish()
         }.addOnFailureListener { e ->
             Toast.makeText(
