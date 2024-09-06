@@ -38,6 +38,11 @@ class Principal : Fragment() {
         val root: View = binding.root
         idUsuario = InicioSesion.GlobalData.idUsuario
         userType = InicioSesion.GlobalData.datoTipoUsuario
+        nombre = InicioSesion.GlobalData.nombresUsuario
+        apellido =InicioSesion.GlobalData.apellidosUsuario
+        celular = InicioSesion.GlobalData.celularUsuario.toString()
+        correo = InicioSesion.GlobalData.correoUsuario
+        isTutor=InicioSesion.GlobalData.tutor
         firestore = FirebaseFirestore.getInstance()
         binding.button.setOnClickListener {
             editPrincipal()
@@ -52,11 +57,7 @@ class Principal : Fragment() {
 
     private fun loadProfessorData() {
         lifecycleScope.launch {
-                        nombre = InicioSesion.GlobalData.nombresUsuario
-                        apellido =InicioSesion.GlobalData.apellidosUsuario
-                        celular = InicioSesion.GlobalData.celularUsuario.toString()
-                        correo = InicioSesion.GlobalData.correoUsuario
-                        isTutor=InicioSesion.GlobalData.tutor
+
                             binding.apply {
                                 textViewNombreCompletoUsuario.text = nombre
                                 textViewApellidosUsuario.text = apellido
