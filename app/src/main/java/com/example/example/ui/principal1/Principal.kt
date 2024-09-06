@@ -25,7 +25,6 @@ class Principal : Fragment() {
     private lateinit var correo: String
     private lateinit var password: String
     private lateinit var id: String
-    private lateinit var idUsuario:String
     private lateinit var userType:String
     private lateinit var firestore: FirebaseFirestore
     private var isTutor:Boolean=false
@@ -36,12 +35,13 @@ class Principal : Fragment() {
     ): View {
         _binding = FragmentPrincipalBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        idUsuario = InicioSesion.GlobalData.idUsuario
+        id = InicioSesion.GlobalData.idUsuario
         userType = InicioSesion.GlobalData.datoTipoUsuario
         nombre = InicioSesion.GlobalData.nombresUsuario
         apellido =InicioSesion.GlobalData.apellidosUsuario
         celular = InicioSesion.GlobalData.celularUsuario.toString()
         correo = InicioSesion.GlobalData.correoUsuario
+        password= InicioSesion.GlobalData.passwordUsuario
         isTutor=InicioSesion.GlobalData.tutor
         firestore = FirebaseFirestore.getInstance()
         binding.button.setOnClickListener {
