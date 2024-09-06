@@ -150,7 +150,7 @@ class BarraLateral : AppCompatActivity() {
     private fun showTutorMenuItems(navMenu: Menu) {
         navMenu.findItem(R.id.nav_principal).isVisible = true
         navMenu.findItem(R.id.nav_profesor).isVisible = true
-        navMenu.findItem(R.id.nav_estudiantes).isVisible = true
+        navMenu.findItem(R.id.nav_estudiantes).isVisible = false
         navMenu.findItem(R.id.nav_tutor).isVisible = true
         navMenu.findItem(R.id.nav_incidencia).isVisible = true
         navMenu.findItem(R.id.nav_tutoria).isVisible = true
@@ -160,7 +160,7 @@ class BarraLateral : AppCompatActivity() {
     private fun showProfesorMenuItems(navMenu: Menu) {
         navMenu.findItem(R.id.nav_principal).isVisible = true
         navMenu.findItem(R.id.nav_profesor).isVisible = true
-        navMenu.findItem(R.id.nav_estudiantes).isVisible = true
+        navMenu.findItem(R.id.nav_estudiantes).isVisible = false
         navMenu.findItem(R.id.nav_tutor).isVisible = true
         navMenu.findItem(R.id.nav_incidencia).isVisible = true
         navMenu.findItem(R.id.nav_tutoria).isVisible = false
