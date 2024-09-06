@@ -26,7 +26,6 @@ class EstudianteFragment : Fragment() {
     private val fullEstudiantesList = mutableListOf<Estudiante>()
     private lateinit var userType: String
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -139,6 +138,7 @@ class EstudianteFragment : Fragment() {
     }
 
     private fun fetchEstudiantes() {
+
         firestore.collection("Estudiante")
             .get()
             .addOnSuccessListener { result ->
