@@ -9,31 +9,30 @@
     android:orientation="vertical"
     tools:context=".ui.incidencias.AgregarEstudiantes">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
         android:background="@drawable/background_white_element_full"
         android:backgroundTint="@color/Primary_white"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginStart="25dp"
             android:fontFamily="@font/montserrat_bold"
             android:text="Grado"
             android:textColor="@color/Primary_blue_sky" />
 
         <Spinner
             android:id="@+id/spinnerGrado"
-            android:layout_width="90dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
             android:background="@drawable/background_spinner"
-            android:backgroundTint="@color/transparent_color"
-            android:layout_marginEnd="15dp" />
+            android:backgroundTint="@color/transparent_color" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -45,11 +44,12 @@
 
         <Spinner
             android:id="@+id/spinnerSeccion"
-            android:layout_width="90dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_spinner"
-            android:backgroundTint="@color/transparent_color"/>
+            android:backgroundTint="@color/transparent_color" />
     </LinearLayout>
+
     <SearchView
         android:id="@+id/searchViewEstudiante"
         android:layout_width="match_parent"

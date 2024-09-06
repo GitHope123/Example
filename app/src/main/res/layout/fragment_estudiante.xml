@@ -15,18 +15,18 @@
         android:padding="10dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
             android:background="@drawable/background_white_element_full"
             android:backgroundTint="@color/Primary_white"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginEnd="10dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="Grado"
@@ -34,7 +34,7 @@
 
             <Spinner
                 android:id="@+id/spinnerGrado"
-                android:layout_width="90dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
                 android:background="@drawable/background_spinner"
@@ -50,7 +50,7 @@
 
             <Spinner
                 android:id="@+id/spinnerSeccion"
-                android:layout_width="90dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_spinner"
                 android:backgroundTint="@color/transparent_color" />
