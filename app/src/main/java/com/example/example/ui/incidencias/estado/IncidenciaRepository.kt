@@ -1,6 +1,4 @@
 package com.example.example.ui.incidencias.estado
-
-import com.example.example.ui.Tutorias.TutoriaClass
 import com.google.firebase.firestore.FirebaseFirestore
 
 class IncidenciaRepository {
