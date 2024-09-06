@@ -87,5 +87,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.firebase.storage)
     implementation("com.github.bumptech.glide:glide:4.12.0")
+
 }
 
