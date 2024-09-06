@@ -27,7 +27,6 @@ class Pendiente : Fragment() {
     private lateinit var idUsuario:String
     private val incidenciaRepository: IncidenciaRepository = IncidenciaRepository()
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,9 +51,6 @@ class Pendiente : Fragment() {
             if (isAdded) {
                 incidenciasPendiente.clear()
                 incidenciasPendiente.addAll(incidenciasList)
-                incidenciasPendiente.clear()
-                incidenciasPendiente.addAll(incidenciasList)
-                incidenciaAdapter.notifyDataSetChanged()
                 incidenciasPendiente.sortByDescending {
                     try {
                         val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())

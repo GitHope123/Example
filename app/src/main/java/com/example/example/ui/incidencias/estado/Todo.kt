@@ -1,7 +1,6 @@
 package com.example.example.ui.incidencias.estado
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +8,8 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.example.ui.incidencias.estado.IncidenciaRepository
 import com.example.example.InicioSesion
 import com.example.example.R
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -22,7 +18,6 @@ class Todo : Fragment() {
 
     private lateinit var recyclerViewIncidencia: RecyclerView
     private lateinit var incidenciaAdapter: IncidenciaAdapter
-    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private var incidencias: MutableList<IncidenciaClass> = mutableListOf()
     private var incidenciasFilter: MutableList<IncidenciaClass> = mutableListOf()
     private lateinit var searchView: SearchView
@@ -56,10 +51,6 @@ class Todo : Fragment() {
             if (isAdded) {
                 incidencias.clear()
                 incidencias.addAll(incidenciasList)
-                incidencias.clear()
-                incidencias.addAll(incidenciasList)
-                Log.d("Incidencias", "Número de incidencias cargadas: ${incidencias.size}")
-                incidenciaAdapter.notifyDataSetChanged()
                 incidencias.sortByDescending {
                     try {
                         val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
