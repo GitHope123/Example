@@ -159,7 +159,11 @@ class AgregarEstudiantes : AppCompatActivity() {
             val coincideNombre = queryWords.all { nombreCompleto.contains(it) }
             coincideNombre && coincideGrado && coincideSeccion
         }
-
+        filterEstudianteList.sortWith { e1, e2 ->
+            val nombreCompleto1 = "${e1.apellidos} ${e1.nombres}".lowercase()
+            val nombreCompleto2 = "${e2.apellidos} ${e2.nombres}".lowercase()
+            nombreCompleto1.compareTo(nombreCompleto2)
+        }
         estudianteAdapter.notifyDataSetChanged()
     }
     private fun clearSearchView() {
