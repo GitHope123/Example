@@ -1,6 +1,7 @@
 package com.example.example.ui.incidencias.estado
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,8 @@ class Revisado : Fragment() {
     private var incidenciasRevisado: MutableList<IncidenciaClass> = mutableListOf()
     private var incidenciasFilter: MutableList<IncidenciaClass> = mutableListOf()
     private lateinit var idUsuario:String
+    private val incidenciaRepository: IncidenciaRepository = IncidenciaRepository()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -45,56 +48,24 @@ class Revisado : Fragment() {
     }
     private fun loadAllIncidencias() {
         idUsuario = InicioSesion.GlobalData.idUsuario
-        firestore.collection("Incidencia").get().addOnSuccessListener { result ->
-            incidenciasRevisado.clear()
-            for (document in result) {
-                val idProfesor = document.getString("idProfesor") ?: ""
-                val estado = document.getString("estado") ?: ""
-                if (estado == "Revisado") {
-                    if(idProfesor == idUsuario) {
-                        val id = document.id  // Obtener el ID del documento
-                        val fecha = document.getString("fecha") ?: ""
-                        val hora = document.getString("hora") ?: ""
-                        val nombreEstudiante = document.getString("nombreEstudiante") ?: ""
-                        val apellidoEstudiante = document.getString("apellidoEstudiante") ?: ""
-                        val tipo = document.getString("tipo") ?: ""
-                        val gravedad = document.getString("gravedad") ?: ""
-                        val grado = document.getLong("grado")?.toInt() ?: 0
-                        val seccion = document.getString("seccion") ?: ""
-                        val detalle = document.getString("detalle") ?: ""
-                        val urlImagen = document.getString("urlImagen") ?: ""
-
-                        incidenciasRevisado.add(
-                            IncidenciaClass(
-                                id = id,
-                                fecha = fecha,
-                                hora = hora,
-                                nombreEstudiante = nombreEstudiante,
-                                apellidoEstudiante = apellidoEstudiante,
-                                grado = grado,
-                                seccion = seccion,
-                                tipo = tipo,
-                                gravedad = gravedad,
-                                estado = estado,
-                                detalle = detalle,
-                                imageUri = urlImagen
-                            )
-                        )
-                    } }
-            }
-            val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-            incidenciasRevisado.sortByDescending {
-                try {
-                    dateTimeFormat.parse("${it.fecha} ${it.hora}") ?: Date(0)
-                } catch (e: Exception) {
-                    Date(0)  // Fecha por defecto si ocurre un error
+        incidenciaRepository.getIncidenciaByEstado(idProfesor = idUsuario, estado = "Revisado") { incidenciasList ->
+            if (isAdded) {
+                incidenciasRevisado.clear()
+                incidenciasRevisado.addAll(incidenciasList)
+                incidenciasRevisado.clear()
+                incidenciasRevisado.addAll(incidenciasList)
+                incidenciaAdapter.notifyDataSetChanged()
+                incidenciasRevisado.sortByDescending {
+                    try {
+                        val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                        dateTimeFormat.parse("${it.fecha} ${it.hora}") ?: Date(0)
+                    } catch (e: Exception) {
+                        Date(0)  // Fecha por defecto si ocurre un error
+                    }
                 }
+                incidenciaAdapter.updateData(incidenciasRevisado)
             }
-            incidenciaAdapter.updateData(incidenciasRevisado)
         }
-            .addOnFailureListener { exception ->
-                exception.printStackTrace()
-            }
     }
     private fun setupSearchView() {
         searchView.setOnClickListener {

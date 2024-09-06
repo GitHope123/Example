@@ -1,5 +1,4 @@
 package com.example.example.ui.principal1
-
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,14 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.example.example.BarraLateral
 import com.example.example.InicioSesion
 import com.example.example.databinding.FragmentPrincipalBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class Principal : Fragment() {
@@ -30,9 +27,8 @@ class Principal : Fragment() {
     private lateinit var id: String
     private lateinit var idUsuario:String
     private lateinit var userType:String
-
-    private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private var isTutor:Boolean=false
 
 
     override fun onCreateView(
@@ -43,12 +39,9 @@ class Principal : Fragment() {
         idUsuario = InicioSesion.GlobalData.idUsuario
         userType = InicioSesion.GlobalData.datoTipoUsuario
         firestore = FirebaseFirestore.getInstance()
-
-        // No cargar datos aquí para evitar operaciones innecesarias
         binding.button.setOnClickListener {
             editPrincipal()
         }
-
         return root
     }
 
@@ -58,20 +51,12 @@ class Principal : Fragment() {
     }
 
     private fun loadProfessorData() {
-
         lifecycleScope.launch {
-            try {
-                firestore.collection("Profesor")
-                    .document(idUsuario)
-                    .get()
-                    .addOnSuccessListener {doc->
-                        id = doc.getString("id") ?: "N/A"
-                        nombre = doc.getString("nombres") ?: "N/A"
-                        apellido = doc.getString("apellidos") ?: "N/A"
-                        celular = doc.get("celular").toString()
-                        correo = doc.getString("correo") ?: "N/A"
-                        password = doc.getString("password") ?: "N/A"
-                        val isTutor = doc.getBoolean("tutor") ?: false
+                        nombre = InicioSesion.GlobalData.nombresUsuario
+                        apellido =InicioSesion.GlobalData.apellidosUsuario
+                        celular = InicioSesion.GlobalData.celularUsuario.toString()
+                        correo = InicioSesion.GlobalData.correoUsuario
+                        isTutor=InicioSesion.GlobalData.tutor
                             binding.apply {
                                 textViewNombreCompletoUsuario.text = nombre
                                 textViewApellidosUsuario.text = apellido
@@ -79,16 +64,6 @@ class Principal : Fragment() {
                                 textViewCorreoUsuario.text = correo
                                 textViewTutorBooleam.text = if (isTutor) "Tutor" else "Docente"
                             }
-                    }
-
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-                // Manejo de errores adicional, como mostrar un mensaje al usuario
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, "Error al cargar los datos del profesor", Toast.LENGTH_SHORT).show()
-                }
-            }
         }
     }
 
