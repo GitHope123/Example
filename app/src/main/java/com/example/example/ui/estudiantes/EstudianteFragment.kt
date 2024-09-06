@@ -35,58 +35,56 @@ class EstudianteFragment : Fragment() {
         updateGrado()
         setupRecyclerView()
         setupSearchView()
-        fetchEstudiantes()
         setupButtons()
         return binding.root
     }
 
     private fun updateGrado() {
-        val grados = arrayOf("Todas", "1", "2", "3", "4", "5")
+        val grados = arrayOf("Selecione", "1", "2", "3", "4", "5")
         val adapterGrados = ArrayAdapter(requireContext(), R.layout.spinner_item_selected, grados)
         adapterGrados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerGrado.adapter = adapterGrados
+
         binding.spinnerGrado.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
                 val gradoSeleccionado = binding.spinnerGrado.selectedItem.toString()
                 updateSecciones(gradoSeleccionado)
-                filterEstudiantes(binding.searchView.query.toString())
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-        binding.spinnerSeccion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                filterEstudiantes(binding.searchView.query.toString())
+            override fun onNothingSelected(parent: AdapterView<*>?) {
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
     private fun updateSecciones(gradoSeleccionado: String) {
-        val secciones = if (gradoSeleccionado == "Todas") {
-            arrayOf("Todas")
-        } else {
-            if (gradoSeleccionado == "1") {
-                arrayOf("Todas", "A", "B", "C", "D", "E")
-            } else {
-                arrayOf("Todas", "A", "B", "C", "D")
-            }
+        val secciones = when (gradoSeleccionado) {
+            "Seleccione" -> arrayOf("Seleccione")
+            "1" -> arrayOf("Seleccione", "A", "B", "C", "D", "E")
+            else -> arrayOf("Seleccione", "A", "B", "C", "D")
         }
         val adapterSecciones = ArrayAdapter(requireContext(), R.layout.spinner_item_selected, secciones)
         adapterSecciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerSeccion.adapter = adapterSecciones
-        binding.spinnerSeccion.isEnabled = gradoSeleccionado != "Todas"
+        binding.spinnerSeccion.isEnabled = gradoSeleccionado != "Selecione"
+        binding.spinnerSeccion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
+            ) {
+                val gradoSeleccionado = binding.spinnerGrado.selectedItem.toString()
+                val seccionSeleccionada = binding.spinnerSeccion.selectedItem.toString()
+                if (gradoSeleccionado != "Seleccione" && seccionSeleccionada != "Seleccione") {
+                    fetchEstudiantes(gradoSeleccionado, seccionSeleccionada)
+                } else {
+                    filterEstudiantes.clear()
+                    estudianteAdapter.notifyDataSetChanged()
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
     }
 
     private fun filterEstudiantes(query: String) {
@@ -102,6 +100,11 @@ class EstudianteFragment : Fragment() {
             val nombreCompleto = "${estudiante.nombres ?: ""} ${estudiante.apellidos ?: ""}".lowercase()
             val coincideNombre = queryWords.all { nombreCompleto.contains(it) }
             coincideNombre && coincideGrado && coincideSeccion
+        }
+        filterEstudiantes.sortWith { e1, e2 ->
+            val nombreCompleto1 = "${e1.apellidos} ${e1.nombres}".lowercase()
+            val nombreCompleto2 = "${e2.apellidos} ${e2.nombres}".lowercase()
+            nombreCompleto1.compareTo(nombreCompleto2)
         }
         estudianteAdapter.notifyDataSetChanged()
     }
@@ -137,9 +140,11 @@ class EstudianteFragment : Fragment() {
         })
     }
 
-    private fun fetchEstudiantes() {
+    private fun fetchEstudiantes(grado: String, seccion: String) {
 
         firestore.collection("Estudiante")
+            .whereEqualTo("grado", grado.toInt())
+            .whereEqualTo("seccion", seccion)
             .get()
             .addOnSuccessListener { result ->
                 fullEstudiantesList.clear()
@@ -148,9 +153,7 @@ class EstudianteFragment : Fragment() {
                         fullEstudiantesList.add(it)
                     }
                 }
-                filterEstudiantes.clear()
-                filterEstudiantes.addAll(fullEstudiantesList)
-                estudianteAdapter.notifyDataSetChanged()
+                filterEstudiantes(binding.searchView.query.toString())
             }
     }
 
@@ -184,8 +187,12 @@ class EstudianteFragment : Fragment() {
         estudianteAdapter.notifyDataSetChanged()
     }
 
-    fun refreshData() {
-        fetchEstudiantes()
+   fun refreshData() {
+        val gradoSeleccionado = binding.spinnerGrado.selectedItem.toString()
+        val seccionSeleccionada = binding.spinnerSeccion.selectedItem.toString()
+        if (gradoSeleccionado != "Seleccione" && seccionSeleccionada != "Seleccione") {
+            fetchEstudiantes(gradoSeleccionado, seccionSeleccionada)
+        }
     }
 
     override fun onResume() {
