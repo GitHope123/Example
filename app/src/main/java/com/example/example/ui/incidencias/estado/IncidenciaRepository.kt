@@ -37,7 +37,7 @@ class IncidenciaRepository {
             }
             .addOnFailureListener { exception ->
                 exception.printStackTrace()
-                onComplete(emptyList())  // Retorna lista vacía si falla
+                onComplete(emptyList())
             }
     }
 }
