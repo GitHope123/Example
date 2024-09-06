@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.InicioSesion
 import com.example.example.R
 import com.example.example.databinding.FragmentEstudianteBinding
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -139,6 +138,7 @@ class EstudianteFragment : Fragment() {
     }
 
     private fun fetchEstudiantes() {
+
         firestore.collection("Estudiante")
             .get()
             .addOnSuccessListener { result ->

@@ -36,10 +36,10 @@ class BarraLateral : AppCompatActivity() {
         binding = ActivityBarraLateralBinding.inflate(layoutInflater)
         setContentView(binding.root)
         firestore = FirebaseFirestore.getInstance()
-
+        var nombres=InicioSesion.GlobalData.nombresUsuario
+        var correo=InicioSesion.GlobalData.correoUsuario
         datoId= intent.getStringExtra("ID").toString()
         datoTipoUsuario=intent.getStringExtra("USER_TYPE").toString()
-
 
         if(datoTipoUsuario=="Administrador"){
             var username1="Administrador"
@@ -47,26 +47,7 @@ class BarraLateral : AppCompatActivity() {
             updateHeader(username1,correo1)
         }
         else{
-            firestore.collection("Profesor")
-                .document(datoId)
-                .get()
-                .addOnCompleteListener{ task->
-                    if(task.isSuccessful){
-                        val document=task.result
-                        if(document.exists()){
-                            val nombre=document.getString("nombres")
-                            val correo=document.getString("correo")
-                            updateHeader(nombre.toString(),correo.toString())
-                        }
-                    }
-                    else{
-                        Toast.makeText(this,"Este correo no se encuentra registrado", Toast.LENGTH_SHORT).show()
-                    }
-                    }
-                .addOnFailureListener {
-                    Toast.makeText(this,"ERROR", Toast.LENGTH_SHORT).show()
-
-                }
+            updateHeader(nombres,correo)
                 }
       //  auth.addAuthStateListener(authStateListener)
         setSupportActionBar(binding.appBarBarraLateral.toolbar)
@@ -169,7 +150,7 @@ class BarraLateral : AppCompatActivity() {
     private fun showTutorMenuItems(navMenu: Menu) {
         navMenu.findItem(R.id.nav_principal).isVisible = true
         navMenu.findItem(R.id.nav_profesor).isVisible = true
-        navMenu.findItem(R.id.nav_estudiantes).isVisible = true
+        navMenu.findItem(R.id.nav_estudiantes).isVisible = false
         navMenu.findItem(R.id.nav_tutor).isVisible = true
         navMenu.findItem(R.id.nav_incidencia).isVisible = true
         navMenu.findItem(R.id.nav_tutoria).isVisible = true
@@ -179,7 +160,7 @@ class BarraLateral : AppCompatActivity() {
     private fun showProfesorMenuItems(navMenu: Menu) {
         navMenu.findItem(R.id.nav_principal).isVisible = true
         navMenu.findItem(R.id.nav_profesor).isVisible = true
-        navMenu.findItem(R.id.nav_estudiantes).isVisible = true
+        navMenu.findItem(R.id.nav_estudiantes).isVisible = false
         navMenu.findItem(R.id.nav_tutor).isVisible = true
         navMenu.findItem(R.id.nav_incidencia).isVisible = true
         navMenu.findItem(R.id.nav_tutoria).isVisible = false

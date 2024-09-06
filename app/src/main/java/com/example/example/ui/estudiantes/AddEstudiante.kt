@@ -28,7 +28,6 @@ class AddEstudiante : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
         initComponents()
         listener()
-
     }
 
     private fun initComponents() {

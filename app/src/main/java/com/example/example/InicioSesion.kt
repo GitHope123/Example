@@ -2,7 +2,9 @@ package com.example.example
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings.Global
 import android.text.InputType
+import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -46,8 +48,7 @@ class InicioSesion : AppCompatActivity() {
             val password = binding.editTextPassword.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this,"Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show()
-
+                showToast("Por favor, complete todos los campos.")
             } else {
                 iniciarSesionConFirebase(email, password)
 
@@ -73,8 +74,18 @@ class InicioSesion : AppCompatActivity() {
                             val document = task.result
                             if (!document.isEmpty) {
                                 val doc = document.first()
-                                val tutor = doc.getBoolean("tutor")
+                                val nombres=doc.getString("nombres")?:""
+                                val apellidos=doc.getString("apellidos") ?:""
+                                val celular=doc.getLong("celular")?:0
+                                val cargo=doc.getString("cargo")?:""
+                                val correo=doc.getString("correo")?:""
+                                val tutor = doc.getBoolean("tutor")?:false
+                                val grado=doc.getLong("grado")?:0
+                                val seccion=doc.getString("seccion")?:""
+                                val password=doc.getString("password")?:""
+                                val dni=doc.getLong("dni")?:0
                                 id = doc.getString("id").toString()
+
                                 if (tutor == true) {
                                     userType = "Tutor"
                                     navigateToBarraLateral(userType)
@@ -82,10 +93,16 @@ class InicioSesion : AppCompatActivity() {
                                     userType = "Profesor"
                                     navigateToBarraLateral(userType)
                                 }
+                                GlobalData.celularUsuario=celular
+                                GlobalData.correoUsuario=correo
                                 GlobalData.idUsuario = id
                                 GlobalData.datoTipoUsuario = userType
+                                GlobalData.nombresUsuario=nombres
+                                GlobalData.apellidosUsuario=apellidos
+                                GlobalData.passwordUsuario=password
+                                GlobalData.tutor=tutor
+
                             } else {
-                                // Mostrar mensaje si no se encuentran documentos
                                 Toast.makeText(this, "Este correo no se encuentra registrado", Toast.LENGTH_SHORT).show()
                             }
                         } else {
@@ -93,7 +110,7 @@ class InicioSesion : AppCompatActivity() {
                             Toast.makeText(this, "Error al consultar la base de datos", Toast.LENGTH_SHORT).show()
                         }
                     }
-                    .addOnFailureListener {
+                    .addOnFailureListener { exception ->
                         Toast.makeText(this, "Este correo no se encuentra registrado", Toast.LENGTH_SHORT).show()
                     }
             }
@@ -109,8 +126,23 @@ class InicioSesion : AppCompatActivity() {
         })
         finish()
     }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
     object GlobalData {
-        var idUsuario: String=""
         var datoTipoUsuario: String=""
+        //infoUsuario
+        var idUsuario: String=""
+        var nombresUsuario:String=""
+        var apellidosUsuario:String=""
+        var celularUsuario:Long=0
+        var cargoUsuario:String=""
+        var correoUsuario:String=""
+        var tutor:Boolean = false
+        var gradoUsuario:Long=0
+        var seccionUsuario:String=""
+        var passwordUsuario:String=""
+        var dniUsuario:Long=0
     }
 }
