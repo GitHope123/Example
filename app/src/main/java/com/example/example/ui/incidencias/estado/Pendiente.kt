@@ -10,15 +10,7 @@ import android.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.example.BarraLateral
-import com.example.example.InicioSesion
 import com.example.example.R
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-
 class Pendiente : Fragment() {
     private lateinit var recyclerViewIncidencia: RecyclerView
     private lateinit var incidenciaAdapter: IncidenciaAdapter

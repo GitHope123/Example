@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.InicioSesion
 import com.example.example.R
@@ -20,10 +21,12 @@ class TodosTutoria : Fragment() {
     private var _binding: FragmentTodosTutoriaBinding? = null
     private val binding get() = _binding!!
     private lateinit var tutoriaAdapter: TutoriaAdapter
-    private val listaTutorias = mutableListOf<TutoriaClass>()
+    private val listaTutorias  : MutableList<TutoriaClass> = mutableListOf()
+    private val listaFilter  : MutableList<TutoriaClass> = mutableListOf()
     private val tutoriaRepository = TutoriaRepository()
     private var currentFilter: String = "Todos"
     private lateinit var idUsuario:String
+    private lateinit var tutoriaViewModel: TutoriaViewModel
 
 
     override fun onCreateView(
@@ -31,6 +34,8 @@ class TodosTutoria : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentTodosTutoriaBinding.inflate(inflater, container, false)
+        tutoriaViewModel = ViewModelProvider(requireParentFragment()).get(TutoriaViewModel::class.java)
+
         init()
         resetAutoComplete()
         val email = FirebaseAuth.getInstance().currentUser?.email
@@ -67,22 +72,11 @@ class TodosTutoria : Fragment() {
     }
 
     private fun loadTutoriasForTutor(id: String, filtroFecha: String) {
-        tutoriaRepository.getGradoSeccionTutorByEmail(id) { grado, seccion ->
-            tutoriaRepository.getIncidenciasPorGradoSeccion(grado, seccion, "", filtroFecha) { incidencias ->
-                if (isAdded) {
-                    listaTutorias.clear()
-                    listaTutorias.addAll(incidencias)
-                    tutoriaAdapter.notifyDataSetChanged()
-                }
-                listaTutorias.sortByDescending {
-                    try {
-                        val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                        dateTimeFormat.parse("${it.fecha} ${it.hora}") ?: Date(0)
-                    } catch (e: Exception) {
-                        Date(0)  // Fecha por defecto si ocurre un error
-                    }
-                }
-            }
+        tutoriaViewModel.filtrarIncidenciasPorEstado("",filtroFecha)
+        tutoriaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidencias ->
+            listaTutorias.clear() // Asegurarse de limpiar la lista antes
+            listaTutorias.addAll(incidencias) // Agregar los datos cargados
+            tutoriaAdapter.updateData(listaTutorias) // Actualizar la vista
         }
     }
 

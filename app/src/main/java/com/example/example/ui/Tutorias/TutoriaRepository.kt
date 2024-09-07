@@ -9,41 +9,16 @@ import java.util.Locale
 class TutoriaRepository {
 
     private val firestore = FirebaseFirestore.getInstance()
-    private val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
 
-    fun getGradoSeccionTutorByEmail(idUsuario: String, callback: (grado: Int, seccion: String) -> Unit) {
-        firestore.collection("Profesor")
-            .document(idUsuario)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val grado = document.getLong("grado")?.toInt() ?: 0
-                    val seccion = document.getString("seccion") ?: ""
-                    callback(grado, seccion)
-                } else {
-                    callback(0, "") // No se encontró el profesor
-                }
-            }
-            .addOnFailureListener { exception ->
-                exception.printStackTrace()
-                callback(0, "") // Error en la búsqueda
-            }
-    }
 
     fun getIncidenciasPorGradoSeccion(
         grado: Int,
         seccion: String,
-        estado: String,
-        filtroFecha: String,
         callback: (List<TutoriaClass>) -> Unit
     ) {
         var query = firestore.collection("Incidencia")
             .whereEqualTo("grado", grado)
             .whereEqualTo("seccion", seccion)
-
-        if (estado.isNotEmpty()) {
-            query = query.whereEqualTo("estado", estado)
-        }
 
         query.get()
             .addOnSuccessListener { querySnapshot ->
@@ -66,7 +41,13 @@ class TutoriaRepository {
                         cargo= document.getString("cargo") ?: "",
                     )
                 }
-
+                callback(incidencias)
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+                callback(emptyList())
+            }
+/*
                 val filteredList = when (filtroFecha) {
                     "Hoy" -> filterByToday(incidencias)
                     "Ultimos 7 dias" -> filterByLast7Days(incidencias)
@@ -81,8 +62,9 @@ class TutoriaRepository {
                 exception.printStackTrace()
                 callback(emptyList())
             }
+            */
     }
-
+/*
     private fun filterByToday(incidencias: List<TutoriaClass>): List<TutoriaClass> {
         val today = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0)
@@ -137,5 +119,5 @@ class TutoriaRepository {
             e.printStackTrace()
             null
         }
-    }
+    }*/
 }

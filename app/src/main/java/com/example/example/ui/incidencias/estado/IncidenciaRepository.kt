@@ -5,7 +5,7 @@ class IncidenciaRepository {
     private val firestore = FirebaseFirestore.getInstance()
 
     fun getIncidenciaByEstado(
-        idProfesor: String,
+        idProfesor: String ,
         onComplete: (List<IncidenciaClass>) -> Unit
     ) {
         var query = firestore.collection("Incidencia")
