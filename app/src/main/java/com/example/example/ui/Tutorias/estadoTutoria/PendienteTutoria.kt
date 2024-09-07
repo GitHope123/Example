@@ -15,6 +15,9 @@ import com.example.example.ui.Tutorias.TutoriaAdapter
 import com.example.example.ui.Tutorias.TutoriaClass
 import com.example.example.ui.Tutorias.TutoriaRepository
 import com.google.firebase.auth.FirebaseAuth
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class PendienteTutoria : Fragment() {
     private var _binding: FragmentPendienteTutoriaBinding? = null
@@ -73,6 +76,14 @@ class PendienteTutoria : Fragment() {
                     listaTutorias.clear()
                     listaTutorias.addAll(incidencias)
                     tutoriaAdapter.notifyDataSetChanged()
+                }
+                listaTutorias.sortByDescending {
+                    try {
+                        val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                        dateTimeFormat.parse("${it.fecha} ${it.hora}") ?: Date(0)
+                    } catch (e: Exception) {
+                        Date(0)  // Fecha por defecto si ocurre un error
+                    }
                 }
             }
         }

@@ -11,6 +11,9 @@ import com.example.example.InicioSesion
 import com.example.example.R
 import com.example.example.databinding.FragmentTodosTutoriaBinding
 import com.google.firebase.auth.FirebaseAuth
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class TodosTutoria : Fragment() {
 
@@ -70,6 +73,14 @@ class TodosTutoria : Fragment() {
                     listaTutorias.clear()
                     listaTutorias.addAll(incidencias)
                     tutoriaAdapter.notifyDataSetChanged()
+                }
+                listaTutorias.sortByDescending {
+                    try {
+                        val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                        dateTimeFormat.parse("${it.fecha} ${it.hora}") ?: Date(0)
+                    } catch (e: Exception) {
+                        Date(0)  // Fecha por defecto si ocurre un error
+                    }
                 }
             }
         }

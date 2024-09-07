@@ -26,7 +26,7 @@ class TutoriaAdapter(private var listaTutorias: List<TutoriaClass>) :
         fun bind(tutoria: TutoriaClass) {
             textViewFecha.text = tutoria.fecha
             textViewHora.text = tutoria.hora
-            textViewEstudiante.text = "${tutoria.nombreEstudiante} ${tutoria.apellidoEstudiante}"
+            textViewEstudiante.text = "${tutoria.apellidoEstudiante} ${tutoria.nombreEstudiante}"
             textViewProfesor.text = "${tutoria.nombreProfesor} ${tutoria.apellidoProfesor}"
             textViewCurso.text = "${tutoria.grado} ${tutoria.seccion}"
             textViewEstado.text = tutoria.estado
