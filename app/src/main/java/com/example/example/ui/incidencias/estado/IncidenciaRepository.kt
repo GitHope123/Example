@@ -6,15 +6,10 @@ class IncidenciaRepository {
 
     fun getIncidenciaByEstado(
         idProfesor: String,
-        estado: String,
         onComplete: (List<IncidenciaClass>) -> Unit
     ) {
         var query = firestore.collection("Incidencia")
             .whereEqualTo("idProfesor", idProfesor)
-
-        if (estado.isNotEmpty()) {
-            query = query.whereEqualTo("estado", estado)
-        }
             query.get()
             .addOnSuccessListener { querySnapshot ->
                 val incidencias = querySnapshot.documents.mapNotNull { document ->

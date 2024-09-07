@@ -1,11 +1,13 @@
 package com.example.example.ui.incidencias.estado
 
+import IncidenciaViewModel
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.BarraLateral
@@ -21,47 +23,41 @@ class Pendiente : Fragment() {
     private lateinit var recyclerViewIncidencia: RecyclerView
     private lateinit var incidenciaAdapter: IncidenciaAdapter
     private lateinit var searchView: SearchView
-    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private var incidenciasPendiente: MutableList<IncidenciaClass> = mutableListOf()
     private var incidenciasFilter: MutableList<IncidenciaClass> = mutableListOf()
     private lateinit var idUsuario:String
-    private val incidenciaRepository: IncidenciaRepository = IncidenciaRepository()
+    private lateinit var incidenciaViewModel: IncidenciaViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_pendiente, container, false)
+        incidenciaViewModel = ViewModelProvider(requireParentFragment()).get(IncidenciaViewModel::class.java)
+        loadAllIncidencias()
         init(view)
         setupSearchView()
         return view
     }
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loadAllIncidencias()
+    }
     private fun init(view: View) {
         recyclerViewIncidencia = view.findViewById(R.id.recyclerViewIncidencia)
         recyclerViewIncidencia.layoutManager = LinearLayoutManager(context)
         searchView = view.findViewById(R.id.searchView)
         incidenciaAdapter = IncidenciaAdapter(incidenciasPendiente, requireContext())
         recyclerViewIncidencia.adapter = incidenciaAdapter
-        loadAllIncidencias()
     }
     private fun loadAllIncidencias() {
-        idUsuario = InicioSesion.GlobalData.idUsuario
-        incidenciaRepository.getIncidenciaByEstado(idProfesor = idUsuario, estado = "Pendiente") { incidenciasList ->
-            if (isAdded) {
-                incidenciasPendiente.clear()
-                incidenciasPendiente.addAll(incidenciasList)
-                incidenciasPendiente.sortByDescending {
-                    try {
-                        val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                        dateTimeFormat.parse("${it.fecha} ${it.hora}") ?: Date(0)
-                    } catch (e: Exception) {
-                        Date(0)  // Fecha por defecto si ocurre un error
-                    }
-                }
-                incidenciaAdapter.updateData(incidenciasPendiente)
-            }
+        incidenciaViewModel.filtrarIncidenciasPorEstado("Pendiente")
+        incidenciaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidencias ->
+            incidenciasPendiente.clear() // Asegurarse de limpiar la lista antes
+            incidenciasPendiente.addAll(incidencias) // Agregar los datos cargados
+            incidenciaAdapter.updateData(incidenciasPendiente) // Actualizar la vista
         }
+
     }
     private fun setupSearchView() {
         searchView.setOnClickListener {
