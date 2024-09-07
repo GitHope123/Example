@@ -76,15 +76,9 @@ class InicioSesion : AppCompatActivity() {
                             if (!document.isEmpty) {
                                 val doc = document.first()
                                 val nombres=doc.getString("nombres")?:""
-                                val apellidos=doc.getString("apellidos") ?:""
-                                val celular=doc.getLong("celular")?:0
-                                val cargo=doc.getString("cargo")?:""
+                                val apellidos=doc.getString("apellidos")?:""
                                 val correo=doc.getString("correo")?:""
                                 val tutor = doc.getBoolean("tutor")?:false
-                                val grado=doc.getLong("grado")?:0
-                                val seccion=doc.getString("seccion")?:""
-                                val password=doc.getString("password")?:""
-                                val dni=doc.getLong("dni")?:0
                                 id = doc.getString("id").toString()
 
                                 if (tutor == true) {
@@ -94,14 +88,12 @@ class InicioSesion : AppCompatActivity() {
                                     userType = "Profesor"
                                     navigateToBarraLateral(userType)
                                 }
-                                GlobalData.celularUsuario=celular
                                 GlobalData.correoUsuario=correo
                                 GlobalData.idUsuario = id
                                 GlobalData.datoTipoUsuario = userType
                                 GlobalData.nombresUsuario=nombres
-                                GlobalData.apellidosUsuario=apellidos
-                                GlobalData.passwordUsuario=password
                                 GlobalData.tutor=tutor
+                                GlobalData.apellidosUsuario=apellidos
 
                             } else {
                                 Toast.makeText(this, "Este correo no se encuentra registrado", Toast.LENGTH_SHORT).show()
@@ -136,14 +128,9 @@ class InicioSesion : AppCompatActivity() {
         //infoUsuario
         var idUsuario: String=""
         var nombresUsuario:String=""
-        var apellidosUsuario:String=""
-        var celularUsuario:Long=0
-        var cargoUsuario:String=""
         var correoUsuario:String=""
         var tutor:Boolean = false
-        var gradoUsuario:Long=0
-        var seccionUsuario:String=""
-        var passwordUsuario:String=""
-        var dniUsuario:Long=0
+        var apellidosUsuario:String=""
+
     }
 }
