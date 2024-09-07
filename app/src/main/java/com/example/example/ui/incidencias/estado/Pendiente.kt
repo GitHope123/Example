@@ -26,8 +26,8 @@ class Pendiente : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_pendiente, container, false)
         incidenciaViewModel = ViewModelProvider(requireParentFragment()).get(IncidenciaViewModel::class.java)
-        loadAllIncidencias()
         init(view)
+        loadAllIncidencias()
         setupSearchView()
         return view
     }
@@ -43,9 +43,9 @@ class Pendiente : Fragment() {
         recyclerViewIncidencia.adapter = incidenciaAdapter
     }
     private fun loadAllIncidencias() {
+        incidenciasPendiente.clear()
         incidenciaViewModel.filtrarIncidenciasPorEstado("Pendiente")
         incidenciaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidencias ->
-            incidenciasPendiente.clear() // Asegurarse de limpiar la lista antes
             incidenciasPendiente.addAll(incidencias) // Agregar los datos cargados
             incidenciaAdapter.updateData(incidenciasPendiente) // Actualizar la vista
         }

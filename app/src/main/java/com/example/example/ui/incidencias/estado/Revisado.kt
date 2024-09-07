@@ -35,6 +35,7 @@ class Revisado : Fragment() {
         val view= inflater.inflate(R.layout.fragment_revisado, container, false)
         incidenciaViewModel = ViewModelProvider(requireParentFragment()).get(IncidenciaViewModel::class.java)
         init(view)
+        loadAllIncidencias()
         setupSearchView()
         return view
     }
@@ -45,20 +46,14 @@ class Revisado : Fragment() {
         searchView = view.findViewById(R.id.searchView)
         incidenciaAdapter = IncidenciaAdapter(incidenciasRevisado, requireContext())
         recyclerViewIncidencia.adapter = incidenciaAdapter
-        progressBar = view.findViewById(R.id.progressBar)
-        loadAllIncidencias()
     }
     private fun loadAllIncidencias() {
-        progressBar.visibility = View.VISIBLE
-        recyclerViewIncidencia.visibility = View.GONE
+        incidenciasRevisado.clear()
         incidenciaViewModel.filtrarIncidenciasPorEstado("Revisado")
         incidenciaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidencias ->
-            incidenciasRevisado.clear() // Asegurarse de limpiar la lista antes
             incidenciasRevisado.addAll(incidencias) // Agregar los datos cargados
             incidenciaAdapter.updateData(incidenciasRevisado) // Actualizar la vista
 
-            progressBar.visibility = View.GONE
-            recyclerViewIncidencia.visibility = View.VISIBLE
         }
 
     }

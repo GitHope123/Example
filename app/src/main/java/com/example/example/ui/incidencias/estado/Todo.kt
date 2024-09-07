@@ -44,8 +44,8 @@ class Todo : Fragment() {
     }
 
     private fun loadAllIncidencias() {
+        incidencias.clear()
         incidenciaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidenciasList ->
-            incidencias.clear()
             incidencias.addAll(incidenciasList)  // Actualizar la lista de incidencias para filtrar
             incidenciaAdapter.updateData(incidencias)
         }
