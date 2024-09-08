@@ -15,7 +15,6 @@ class IncidenciaViewModel : ViewModel() {
     val incidenciasLiveData: LiveData<List<IncidenciaClass>> get() = _incidenciasLiveData
     val incidenciasFiltradasLiveData: LiveData<List<IncidenciaClass>> get() = _incidenciasFiltradasLiveData
 
-    // Cargar incidencias desde el repositorio y actualizar LiveData
     fun cargarIncidencias(idProfesor: String, repositorio: IncidenciaRepository) {
         repositorio.getIncidenciaByEstado(idProfesor) { incidencias ->
             _incidenciasLiveData.value = incidencias
@@ -28,14 +27,11 @@ class IncidenciaViewModel : ViewModel() {
     fun filtrarIncidenciasPorEstado(estado: String) {
         _incidenciasLiveData.value?.let { incidencias ->
             val incidenciasFiltradas = if (estado.isEmpty()) {
-                // Si no hay estado, mostrar todas
                 incidencias
             } else {
-                // Filtrar por estado
                 incidencias.filter { it.estado == estado }
             }
 
-            // Ordenar las incidencias filtradas por fecha y hora
             _incidenciasFiltradasLiveData.value = incidenciasFiltradas.sortedByDescending {
                 parseDateTime(it.fecha, it.hora)
             }

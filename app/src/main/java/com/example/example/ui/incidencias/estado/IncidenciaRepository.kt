@@ -9,13 +9,13 @@ class IncidenciaRepository {
         idProfesor: String,
         onComplete: (List<IncidenciaClass>) -> Unit
     ) {
-        // Consulta para obtener incidencias por el idProfesor
+
         val query = firestore.collection("Incidencia")
             .whereEqualTo("idProfesor", idProfesor)
 
         query.get()
             .addOnSuccessListener { querySnapshot ->
-                // Mapear los documentos a objetos IncidenciaClass
+
                 val incidencias = querySnapshot.documents.mapNotNull { document ->
                     try {
                         IncidenciaClass(
@@ -37,11 +37,11 @@ class IncidenciaRepository {
                         null
                     }
                 }
-                onComplete(incidencias) // Pasar los datos al callback
+                onComplete(incidencias)
             }
             .addOnFailureListener { exception ->
                 exception.printStackTrace()
-                onComplete(emptyList()) // En caso de error, pasar una lista vacía
+                onComplete(emptyList())
             }
     }
 }
