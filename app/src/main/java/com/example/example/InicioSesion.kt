@@ -63,6 +63,7 @@ class InicioSesion : AppCompatActivity() {
                 userType = "Administrador"
                 navigateToBarraLateral(userType)
                 GlobalData.datoTipoUsuario = userType
+                GlobalData.idUsuario = "Administrador"
             }
             .addOnFailureListener {
                 firestore.collection("Profesor")
@@ -98,6 +99,8 @@ class InicioSesion : AppCompatActivity() {
                                 GlobalData.idUsuario = id
                                 GlobalData.datoTipoUsuario = userType
                                 GlobalData.nombresUsuario=nombres
+                                GlobalData.gradoUsuario = grado
+                                GlobalData.seccionUsuario=seccion
                                 GlobalData.apellidosUsuario=apellidos
                                 GlobalData.passwordUsuario=password
                                 GlobalData.tutor=tutor

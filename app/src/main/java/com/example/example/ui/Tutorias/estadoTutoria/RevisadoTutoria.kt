@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.BarraLateral
 import com.example.example.InicioSesion
@@ -15,16 +16,22 @@ import com.example.example.databinding.FragmentTodosTutoriaBinding
 import com.example.example.ui.Tutorias.TutoriaAdapter
 import com.example.example.ui.Tutorias.TutoriaClass
 import com.example.example.ui.Tutorias.TutoriaRepository
+import com.example.example.ui.Tutorias.TutoriaViewModel
 import com.google.firebase.auth.FirebaseAuth
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class RevisadoTutoria : Fragment() {
     private var _binding: FragmentRevisadoTutoriaBinding? = null
     private val binding get() = _binding!!
     private lateinit var tutoriaAdapter: TutoriaAdapter
-    private val listaTutorias = mutableListOf<TutoriaClass>()
+    private val listaTutorias  : MutableList<TutoriaClass> = mutableListOf()
+    private val listaFilter  : MutableList<TutoriaClass> = mutableListOf()
     private val tutoriaRepository = TutoriaRepository()
     private var currentFilter: String = "Todos"
     private lateinit var idUsuario:String
+    private lateinit var tutoriaViewModel: TutoriaViewModel
 
 
     override fun onCreateView(
@@ -32,6 +39,8 @@ class RevisadoTutoria : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentRevisadoTutoriaBinding.inflate(inflater, container, false)
+        tutoriaViewModel = ViewModelProvider(requireParentFragment()).get(TutoriaViewModel::class.java)
+
         init()
         resetAutoComplete()
         val email = FirebaseAuth.getInstance().currentUser?.email
@@ -65,19 +74,14 @@ class RevisadoTutoria : Fragment() {
         idUsuario = InicioSesion.GlobalData.idUsuario
         loadTutoriasForTutor(idUsuario, selection)
     }
-
     private fun loadTutoriasForTutor(id: String, filtroFecha: String) {
-        tutoriaRepository.getGradoSeccionTutorByEmail(id) { grado, seccion ->
-            tutoriaRepository.getIncidenciasPorGradoSeccion(grado, seccion, "Revisado", filtroFecha) { incidencias ->
-                if (isAdded) {
-                    listaTutorias.clear()
-                    listaTutorias.addAll(incidencias)
-                    tutoriaAdapter.notifyDataSetChanged()
-                }
-            }
+        tutoriaViewModel.filtrarIncidenciasPorEstado("Revisado",filtroFecha)
+        tutoriaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidencias ->
+            listaTutorias.clear() // Asegurarse de limpiar la lista antes
+            listaTutorias.addAll(incidencias) // Agregar los datos cargados
+            tutoriaAdapter.updateData(listaTutorias) // Actualizar la vista
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -223,7 +223,7 @@ class AgregarIncidencia : AppCompatActivity() {
             val incidencia = hashMapOf(
                 "fecha" to obtenerFechaActual(),
                 "hora" to obtenerHoraActual(),
-                "idProfesor" to null,  // O puedes usar "" si prefieres no tener un campo nulo
+                "idProfesor" to idUsuario,  // O puedes usar "" si prefieres no tener un campo nulo
                 "nombreEstudiante" to studentName,
                 "apellidoEstudiante" to studentLastName,
                 "grado" to studentGrade,
@@ -318,11 +318,6 @@ class AgregarIncidencia : AppCompatActivity() {
             val currentCount = snapshot.getLong("cantidadIncidencias") ?: 0
             transaction.update(studentRef, "cantidadIncidencias", currentCount + 1)
         }.addOnSuccessListener {
-            Toast.makeText(
-                this,
-                "Incidencia registrada y contador actualizado.",
-                Toast.LENGTH_SHORT
-            ).show()
             finish()
         }.addOnFailureListener { e ->
             Toast.makeText(

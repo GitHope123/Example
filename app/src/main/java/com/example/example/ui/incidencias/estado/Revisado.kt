@@ -1,12 +1,14 @@
 package com.example.example.ui.incidencias.estado
 
+import IncidenciaViewModel
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.BarraLateral
@@ -22,17 +24,16 @@ class Revisado : Fragment() {
     private lateinit var recyclerViewIncidencia: RecyclerView
     private lateinit var incidenciaAdapter: IncidenciaAdapter
     private lateinit var searchView: SearchView
-    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+    private lateinit var progressBar: ProgressBar
     private var incidenciasRevisado: MutableList<IncidenciaClass> = mutableListOf()
     private var incidenciasFilter: MutableList<IncidenciaClass> = mutableListOf()
-    private lateinit var idUsuario:String
-    private val incidenciaRepository: IncidenciaRepository = IncidenciaRepository()
-
+    private lateinit var incidenciaViewModel: IncidenciaViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view= inflater.inflate(R.layout.fragment_revisado, container, false)
+        incidenciaViewModel = ViewModelProvider(requireParentFragment()).get(IncidenciaViewModel::class.java)
         init(view)
         setupSearchView()
         return view
@@ -44,28 +45,22 @@ class Revisado : Fragment() {
         searchView = view.findViewById(R.id.searchView)
         incidenciaAdapter = IncidenciaAdapter(incidenciasRevisado, requireContext())
         recyclerViewIncidencia.adapter = incidenciaAdapter
+        progressBar = view.findViewById(R.id.progressBar)
         loadAllIncidencias()
     }
     private fun loadAllIncidencias() {
-        idUsuario = InicioSesion.GlobalData.idUsuario
-        incidenciaRepository.getIncidenciaByEstado(idProfesor = idUsuario, estado = "Revisado") { incidenciasList ->
-            if (isAdded) {
-                incidenciasRevisado.clear()
-                incidenciasRevisado.addAll(incidenciasList)
-                incidenciasRevisado.clear()
-                incidenciasRevisado.addAll(incidenciasList)
-                incidenciaAdapter.notifyDataSetChanged()
-                incidenciasRevisado.sortByDescending {
-                    try {
-                        val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                        dateTimeFormat.parse("${it.fecha} ${it.hora}") ?: Date(0)
-                    } catch (e: Exception) {
-                        Date(0)  // Fecha por defecto si ocurre un error
-                    }
-                }
-                incidenciaAdapter.updateData(incidenciasRevisado)
-            }
+        progressBar.visibility = View.VISIBLE
+        recyclerViewIncidencia.visibility = View.GONE
+        incidenciaViewModel.filtrarIncidenciasPorEstado("Revisado")
+        incidenciaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidencias ->
+            incidenciasRevisado.clear() // Asegurarse de limpiar la lista antes
+            incidenciasRevisado.addAll(incidencias) // Agregar los datos cargados
+            incidenciaAdapter.updateData(incidenciasRevisado) // Actualizar la vista
+
+            progressBar.visibility = View.GONE
+            recyclerViewIncidencia.visibility = View.VISIBLE
         }
+
     }
     private fun setupSearchView() {
         searchView.setOnClickListener {
@@ -105,8 +100,6 @@ class Revisado : Fragment() {
 
         incidenciaAdapter.updateData(incidenciasFilter)
     }
-
-
     override fun onResume() {
         super.onResume()
         loadAllIncidencias()  // Recargar los datos cuando el fragmento se reanuda

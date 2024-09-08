@@ -1,22 +1,15 @@
 package com.example.example.ui.incidencias.estado
-
-import com.example.example.ui.Tutorias.TutoriaClass
 import com.google.firebase.firestore.FirebaseFirestore
 
 class IncidenciaRepository {
     private val firestore = FirebaseFirestore.getInstance()
 
     fun getIncidenciaByEstado(
-        idProfesor: String,
-        estado: String,
+        idProfesor: String ,
         onComplete: (List<IncidenciaClass>) -> Unit
     ) {
         var query = firestore.collection("Incidencia")
             .whereEqualTo("idProfesor", idProfesor)
-
-        if (estado.isNotEmpty()) {
-            query = query.whereEqualTo("estado", estado)
-        }
             query.get()
             .addOnSuccessListener { querySnapshot ->
                 val incidencias = querySnapshot.documents.mapNotNull { document ->
@@ -39,7 +32,7 @@ class IncidenciaRepository {
             }
             .addOnFailureListener { exception ->
                 exception.printStackTrace()
-                onComplete(emptyList())  // Retorna lista vacía si falla
+                onComplete(emptyList())
             }
     }
 }

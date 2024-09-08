@@ -1,42 +1,37 @@
 package com.example.example.ui.incidencias.estado
 
+import IncidenciaViewModel
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.example.ui.incidencias.estado.IncidenciaRepository
-import com.example.example.InicioSesion
 import com.example.example.R
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class Todo : Fragment() {
 
     private lateinit var recyclerViewIncidencia: RecyclerView
     private lateinit var incidenciaAdapter: IncidenciaAdapter
-    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
     private var incidencias: MutableList<IncidenciaClass> = mutableListOf()
-    private var incidenciasFilter: MutableList<IncidenciaClass> = mutableListOf()
+    private lateinit var incidenciaViewModel: IncidenciaViewModel
     private lateinit var searchView: SearchView
-    private lateinit var idUsuario:String
-    private val incidenciaRepository: IncidenciaRepository = IncidenciaRepository()
-
+    private var incidenciasFilter: MutableList<IncidenciaClass> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_todo, container, false)
+        incidenciaViewModel = ViewModelProvider(requireParentFragment()).get(IncidenciaViewModel::class.java)
+
         init(view)
+        loadAllIncidencias()
         setupSearchView()
+
         return view
     }
 
@@ -46,31 +41,17 @@ class Todo : Fragment() {
         recyclerViewIncidencia.layoutManager = LinearLayoutManager(context)
         incidenciaAdapter = IncidenciaAdapter(incidencias, requireContext())
         recyclerViewIncidencia.adapter = incidenciaAdapter
-        loadAllIncidencias()
-
     }
 
     private fun loadAllIncidencias() {
-        idUsuario = InicioSesion.GlobalData.idUsuario
-        incidenciaRepository.getIncidenciaByEstado(idProfesor = idUsuario, estado = "") { incidenciasList ->
-            if (isAdded) {
-                incidencias.clear()
-                incidencias.addAll(incidenciasList)
-                incidencias.clear()
-                incidencias.addAll(incidenciasList)
-                Log.d("Incidencias", "Número de incidencias cargadas: ${incidencias.size}")
-                incidenciaAdapter.notifyDataSetChanged()
-                incidencias.sortByDescending {
-                    try {
-                        val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                        dateTimeFormat.parse("${it.fecha} ${it.hora}") ?: Date(0)
-                    } catch (e: Exception) {
-                        Date(0)  // Fecha por defecto si ocurre un error
-                    }
-                }
-                incidenciaAdapter.updateData(incidencias)
-            }
+        incidenciaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidenciasList ->
+            incidencias.clear()
+            incidencias.addAll(incidenciasList)  // Actualizar la lista de incidencias para filtrar
+            incidenciaAdapter.updateData(incidencias)
         }
+
+        // Cargar todas las incidencias (sin filtrar)
+        incidenciaViewModel.filtrarIncidenciasPorEstado("")  // Cargar todos los datos sin filtrar
     }
 
     private fun setupSearchView() {
@@ -100,8 +81,7 @@ class Todo : Fragment() {
         if (query.isNotEmpty()) {
             incidenciasFilter.addAll(
                 incidencias.filter { incidencia ->
-                    val nombreCompleto =
-                        "${incidencia.nombreEstudiante} ${incidencia.apellidoEstudiante}".lowercase()
+                    val nombreCompleto = "${incidencia.nombreEstudiante} ${incidencia.apellidoEstudiante}".lowercase()
                     queryWords.all { nombreCompleto.contains(it) }
                 }
             )
@@ -111,7 +91,6 @@ class Todo : Fragment() {
 
         incidenciaAdapter.updateData(incidenciasFilter)
     }
-
 
     override fun onResume() {
         super.onResume()
@@ -123,5 +102,4 @@ class Todo : Fragment() {
         searchView.setQuery("", false)  // Limpiar el texto de búsqueda sin disparar la búsqueda
         searchView.clearFocus()         // Quitar el foco del SearchView
     }
-
 }
