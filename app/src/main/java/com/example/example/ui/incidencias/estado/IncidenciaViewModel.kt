@@ -1,10 +1,11 @@
+package com.example.example.ui.incidencias.estado
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.example.ui.incidencias.estado.IncidenciaClass
-import com.example.example.ui.incidencias.estado.IncidenciaRepository
-import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.Locale
 
 class IncidenciaViewModel : ViewModel() {
@@ -19,12 +20,7 @@ class IncidenciaViewModel : ViewModel() {
         repositorio.getIncidenciaByEstado(idProfesor) { incidencias ->
             _incidenciasLiveData.value = incidencias
             _incidenciasFiltradasLiveData.value = incidencias.sortedByDescending {
-                try {
-                    val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                    dateTimeFormat.parse("${it.fecha} ${it.hora}") ?: Date(0)
-                } catch (e: Exception) {
-                    Date(0)
-                }
+                parseDateTime(it.fecha, it.hora)
             }
         }
     }
@@ -41,13 +37,17 @@ class IncidenciaViewModel : ViewModel() {
 
             // Ordenar las incidencias filtradas por fecha y hora
             _incidenciasFiltradasLiveData.value = incidenciasFiltradas.sortedByDescending {
-                try {
-                    val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-                    dateTimeFormat.parse("${it.fecha} ${it.hora}") ?: Date(0)
-                } catch (e: Exception) {
-                    Date(0)
-                }
+                parseDateTime(it.fecha, it.hora)
             }
+        }
+    }
+
+    private fun parseDateTime(fecha: String, hora: String): LocalDateTime {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm", Locale.getDefault())
+        return try {
+            LocalDateTime.parse("$fecha $hora", formatter)
+        } catch (e: DateTimeParseException) {
+            LocalDateTime.MIN
         }
     }
 }

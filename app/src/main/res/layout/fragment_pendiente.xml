@@ -25,7 +25,7 @@
             app:showAsAction="always" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewIncidencia"
+            android:id="@+id/recyclerViewIncidenciaPendiente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:listitem="@layout/item_incidencia" />

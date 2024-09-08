@@ -1,6 +1,5 @@
 package com.example.example.ui.incidencias.estado
 
-import IncidenciaViewModel
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -36,7 +35,7 @@ class Todo : Fragment() {
     }
 
     private fun init(view: View) {
-        recyclerViewIncidencia = view.findViewById(R.id.recyclerViewIncidencia)
+        recyclerViewIncidencia = view.findViewById(R.id.recyclerViewIncidenciaTodo)
         searchView = view.findViewById(R.id.searchView)
         recyclerViewIncidencia.layoutManager = LinearLayoutManager(context)
         incidenciaAdapter = IncidenciaAdapter(incidencias, requireContext())
@@ -103,3 +102,4 @@ class Todo : Fragment() {
         searchView.clearFocus()         // Quitar el foco del SearchView
     }
 }
+

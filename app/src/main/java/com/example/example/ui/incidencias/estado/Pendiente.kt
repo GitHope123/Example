@@ -1,6 +1,5 @@
 package com.example.example.ui.incidencias.estado
 
-import IncidenciaViewModel
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
+
 class Pendiente : Fragment() {
     private lateinit var recyclerViewIncidencia: RecyclerView
     private lateinit var incidenciaAdapter: IncidenciaAdapter
@@ -36,7 +36,7 @@ class Pendiente : Fragment() {
         loadAllIncidencias()
     }
     private fun init(view: View) {
-        recyclerViewIncidencia = view.findViewById(R.id.recyclerViewIncidencia)
+        recyclerViewIncidencia = view.findViewById(R.id.recyclerViewIncidenciaPendiente)
         recyclerViewIncidencia.layoutManager = LinearLayoutManager(context)
         searchView = view.findViewById(R.id.searchView)
         incidenciaAdapter = IncidenciaAdapter(incidenciasPendiente, requireContext())
