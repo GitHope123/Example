@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -82,6 +82,20 @@
                     android:background="@color/transparent_color"
                     android:padding="5dp"
                     app:srcCompat="@drawable/icon_edit" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"/>
+
+                <ImageButton
+                    android:id="@+id/imageButtonLlamada"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:tint="@color/Primary_blue_sky"
+                    android:backgroundTint="@color/Primary_blue_sky"
+                    android:background="@drawable/etiqueta_background"
+                    android:src="@drawable/icon_llamada" />
             </LinearLayout>
 
         </LinearLayout>

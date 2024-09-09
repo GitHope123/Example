@@ -1,6 +1,9 @@
 package com.example.example.ui.profesores
 
+import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.example.InicioSesion
@@ -27,7 +32,6 @@ class ProfesorFragment : Fragment() {
     private lateinit var userType: String
     private var visibilityUser:Boolean=false
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,11 +50,10 @@ class ProfesorFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-
         profesorAdapter = ProfesorAdapter(
+            context = requireContext(),
             profesores = filteredProfesorList,
-            onEditClickListener = { profesor ->
-            },
+            onEditClickListener = { profesor -> },
             isEditButtonVisible = visibilityUser
         )
 
@@ -59,7 +62,6 @@ class ProfesorFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
     }
-
 
     private fun setupSearchView() {
         binding.searchView.setOnClickListener {
@@ -112,27 +114,16 @@ class ProfesorFragment : Fragment() {
             }
     }
 
-
     private fun setupButtons() {
         binding.addButtomProfesor.setOnClickListener {
             startActivity(Intent(context, AddProfesor::class.java))
         }
 
         val isAddButtonVisible = when (userType) {
-            "Administrador"-> View.VISIBLE
+            "Administrador" -> View.VISIBLE
             else -> View.GONE
         }
         binding.addButtomProfesor.visibility = isAddButtonVisible
-
-
-
-        profesorAdapter = ProfesorAdapter(
-            profesores = filteredProfesorList,
-            onEditClickListener = { profesor -> },
-            isEditButtonVisible =visibilityUser
-        )
-
-        binding.recyclerViewProfesores.adapter = profesorAdapter
     }
 
     private fun DocumentSnapshot.toProfesor(): Profesor? {
@@ -146,9 +137,8 @@ class ProfesorFragment : Fragment() {
                 correo = getString("correo") ?: "",
                 grado = getLong("grado") ?: 0L,
                 seccion = getString("seccion") ?: "",
-                password = getString("password")?:"",
-                dni=getLong("dni")?:0L
-
+                password = getString("password") ?: "",
+                dni = getLong("dni") ?: 0L
             )
         } catch (e: Exception) {
             Log.e("ProfesorFragment", "Error converting document to Profesor", e)
@@ -178,5 +168,37 @@ class ProfesorFragment : Fragment() {
     private fun clearSearchView() {
         binding.searchView.setQuery("", false)
         binding.searchView.clearFocus()
+    }
+
+    // Manejo de permisos
+    fun requestCallPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.CALL_PHONE)) {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Permiso de llamada")
+                .setMessage("Esta aplicación necesita acceso para realizar llamadas.")
+                .setPositiveButton("Aceptar") { _, _ ->
+                    ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CALL_PHONE), PERMISSION_REQUEST_CODE)
+                }
+                .setNegativeButton("Cancelar", null)
+                .create()
+                .show()
+        } else {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CALL_PHONE), PERMISSION_REQUEST_CODE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permiso concedido
+            } else {
+                Toast.makeText(context, "Permiso de llamada denegado", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    companion object {
+        private const val PERMISSION_REQUEST_CODE = 100
     }
 }
