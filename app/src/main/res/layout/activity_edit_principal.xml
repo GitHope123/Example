@@ -26,9 +26,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/icon_user_barra_lateral"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textViewTutorBooleam"
@@ -38,8 +38,8 @@
                 android:backgroundTint="@color/Primary_yellow"
                 android:fontFamily="@font/montserrat"
                 android:padding="5dp"
-                android:textColor="@color/Primary_white"
                 android:text="Docente"
+                android:textColor="@color/Primary_white"
                 android:textSize="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -54,8 +54,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:backgroundTint="@color/Transparent_color"
             android:background="@drawable/background_blue_transparent"
+            android:backgroundTint="@color/Transparent_color"
             android:orientation="horizontal">
 
             <TextView
@@ -92,8 +92,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:backgroundTint="@color/Transparent_color"
             android:background="@drawable/background_blue_transparent"
+            android:backgroundTint="@color/Transparent_color"
             android:orientation="horizontal">
 
             <TextView
@@ -107,8 +107,7 @@
                 android:gravity="center_vertical"
                 android:padding="10sp"
                 android:text="Apellidos:"
-                android:textColor="@color/Primary_blue_sky"
-                />
+                android:textColor="@color/Primary_blue_sky" />
 
             <EditText
                 android:id="@+id/edTxtApellido"
@@ -129,8 +128,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:backgroundTint="@color/Transparent_color"
             android:background="@drawable/background_blue_transparent"
+            android:backgroundTint="@color/Transparent_color"
             android:orientation="horizontal">
 
             <TextView
@@ -145,7 +144,7 @@
                 android:padding="10sp"
                 android:text="Celular:"
                 android:textColor="@color/Primary_blue_sky"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/edTextCelular"
@@ -167,8 +166,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:backgroundTint="@color/Transparent_color"
             android:background="@drawable/background_blue_transparent"
+            android:backgroundTint="@color/Transparent_color"
             android:orientation="horizontal">
 
             <TextView
@@ -203,8 +202,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:backgroundTint="@color/Transparent_color"
             android:background="@drawable/background_blue_transparent"
+            android:backgroundTint="@color/Transparent_color"
             android:orientation="horizontal">
 
             <TextView
@@ -222,23 +221,24 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="70dp">
 
                 <EditText
                     android:id="@+id/editTextPasswordPrincipal"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/background_white_element_full"
                     android:backgroundTint="@color/Transparent_color"
                     android:drawablePadding="10sp"
                     android:ems="10"
                     android:fontFamily="@font/montserrat"
-                    android:padding="10sp"
+                    android:maxLength="8"
+                    android:padding="10dp"
                     android:text=""
                     android:textColor="@color/Primary_white"
                     android:textColorHint="@color/Primary_white"
-                    android:textSize="14sp"
-                    android:maxLength="8"/>
+                    android:textSize="14sp" />
 
                 <ImageView
                     android:id="@+id/eyeIcon"
@@ -246,23 +246,34 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/ic_eye_off"
-                    android:contentDescription="Toggle password visibility" />
+                    android:contentDescription="Toggle password visibility"
+                    android:src="@drawable/ic_eye_off" />
 
             </FrameLayout>
 
         </LinearLayout>
 
-        <Button
-            android:layout_marginTop="80dp"
-            android:id="@+id/buttonModificar"
+        <LinearLayout
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="70sp"
-            android:layout_marginHorizontal="30dp"
-            android:background="@drawable/background_yellow_buttom"
-            android:fontFamily="@font/montserrat_bold"
-            android:text="Modificar"
-            android:textColor="@color/Secondary_brown" />
+            android:layout_height="70dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonModificar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                style="@style/ButtonStyle"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Modificar"
+                android:drawableLeft="@drawable/icon_modificar"
+                android:drawableTint="@color/Secondary_brown"
+                android:backgroundTint="@color/Primary_yellow"
+                android:textColor="@color/Secondary_brown" />
+
+        </LinearLayout>
 
     </LinearLayout>
+
 </FrameLayout>

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.example.InicioSesion
+import com.example.example.R
 import com.example.example.databinding.FragmentPrincipalBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
@@ -91,4 +92,5 @@ class Principal : Fragment() {
         // Actualizar datos cuando el fragmento vuelve a ser visible
         loadProfessorData()
     }
+
 }

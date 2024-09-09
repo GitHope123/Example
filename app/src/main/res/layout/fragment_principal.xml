@@ -66,21 +66,22 @@
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_marginStart="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/textViewNombreCompleto"
-                        android:layout_width="80dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/search_view_query_background"
+                        android:background="@drawable/etiqueta_background"
                         android:fontFamily="@font/montserrat_bold"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="3dp"
                         android:text="Nombres"
                         android:textAlignment="center"
                         android:textColor="@color/Primary_blue_sky"
-                        android:textSize="12dp"
+                        android:textSize="10dp"
                         tools:ignore="MissingConstraints" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -134,21 +135,22 @@
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_marginStart="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/textViewApellidos"
-                        android:layout_width="80dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/search_view_query_background"
+                        android:background="@drawable/etiqueta_background"
                         android:fontFamily="@font/montserrat_bold"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="3dp"
                         android:text="Apellidos"
                         android:textAlignment="center"
                         android:textColor="@color/Primary_blue_sky"
-                        android:textSize="12dp"
+                        android:textSize="10dp"
                         tools:ignore="MissingConstraints" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -202,21 +204,22 @@
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_marginStart="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/textViewCelular"
-                        android:layout_width="80dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/search_view_query_background"
+                        android:background="@drawable/etiqueta_background"
                         android:fontFamily="@font/montserrat_bold"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="3dp"
                         android:text="Celular"
                         android:textAlignment="center"
                         android:textColor="@color/Primary_blue_sky"
-                        android:textSize="12dp"
+                        android:textSize="10dp"
                         tools:ignore="MissingConstraints" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -270,21 +273,22 @@
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_marginStart="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/textView"
-                        android:layout_width="80dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/search_view_query_background"
+                        android:background="@drawable/etiqueta_background"
                         android:fontFamily="@font/montserrat_bold"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="3dp"
                         android:text="Correo"
                         android:textAlignment="center"
                         android:textColor="@color/Primary_blue_sky"
-                        android:textSize="12dp"
+                        android:textSize="10dp"
                         tools:ignore="MissingConstraints" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
