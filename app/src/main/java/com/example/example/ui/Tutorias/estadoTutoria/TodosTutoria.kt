@@ -72,9 +72,9 @@ class TodosTutoria : Fragment() {
     }
 
     private fun loadTutoriasForTutor(id: String, filtroFecha: String) {
+        listaTutorias.clear()
         tutoriaViewModel.filtrarIncidenciasPorEstado("",filtroFecha)
         tutoriaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidencias ->
-            listaTutorias.clear() // Asegurarse de limpiar la lista antes
             listaTutorias.addAll(incidencias) // Agregar los datos cargados
             tutoriaAdapter.updateData(listaTutorias) // Actualizar la vista
         }

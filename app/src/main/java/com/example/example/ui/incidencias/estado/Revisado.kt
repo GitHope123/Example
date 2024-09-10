@@ -48,9 +48,9 @@ class Revisado : Fragment() {
         recyclerViewIncidencia.adapter = incidenciaAdapter
     }
     private fun loadAllIncidencias() {
-        incidenciasRevisado.clear()
         incidenciaViewModel.filtrarIncidenciasPorEstado("Revisado")
         incidenciaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidencias ->
+            incidenciasRevisado.clear()
             incidenciasRevisado.addAll(incidencias) // Agregar los datos cargados
             incidenciaAdapter.updateData(incidenciasRevisado) // Actualizar la vista
 

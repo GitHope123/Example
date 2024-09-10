@@ -43,9 +43,9 @@ class Pendiente : Fragment() {
         recyclerViewIncidencia.adapter = incidenciaAdapter
     }
     private fun loadAllIncidencias() {
-        incidenciasPendiente.clear()
         incidenciaViewModel.filtrarIncidenciasPorEstado("Pendiente")
         incidenciaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidencias ->
+            incidenciasPendiente.clear()
             incidenciasPendiente.addAll(incidencias) // Agregar los datos cargados
             incidenciaAdapter.updateData(incidenciasPendiente) // Actualizar la vista
         }
