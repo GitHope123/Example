@@ -12,11 +12,13 @@
     android:gravity="center_vertical">
 
     <ImageView
-        android:id="@+id/imageViewTutor"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:id="@+id/imageViewTutorLlamada"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/etiqueta_background"
         android:tint="@color/Primary_blue_sky"
-        android:src="@drawable/icon_tutor"
+        android:padding="10dp"
+        android:src="@drawable/icon_llamada"
         android:contentDescription="@string/desc_tutor_image"
         tools:ignore="UseAppTint" />
 

@@ -36,8 +36,7 @@ class ProfesorAdapter(
     override fun getItemCount(): Int = profesores.size
 
     inner class ProfesorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val textViewNombreCompleto: TextView =
-            itemView.findViewById(R.id.textViewNombreCompletos)
+        private val textViewNombreCompleto: TextView = itemView.findViewById(R.id.textViewNombreCompletos)
         private val textViewTelefono: TextView = itemView.findViewById(R.id.textViewTelefono)
         private val textViewCorreo: TextView = itemView.findViewById(R.id.textViewCargo)
         private val editButton: ImageButton = itemView.findViewById(R.id.imageButtonEdit)
