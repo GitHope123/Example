@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.example.R
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 
 class DescripcionIncidencia : AppCompatActivity() {
     private lateinit var id: String
@@ -23,6 +25,7 @@ class DescripcionIncidencia : AppCompatActivity() {
     private lateinit var estado: String
     private lateinit var detalle: String
     private lateinit var imageUri: String
+    private val firestore: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
     //
     private lateinit var tvFecha: TextView
@@ -35,7 +38,9 @@ class DescripcionIncidencia : AppCompatActivity() {
     private lateinit var tvGravedad: TextView
     private lateinit var tvDetalle: TextView
     private lateinit var imagen: ImageView
+    private lateinit var eliminar: ImageView
     private var grado: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_descripcion_incidencia)
@@ -57,6 +62,7 @@ class DescripcionIncidencia : AppCompatActivity() {
         estado = intent.getStringExtra("INCIDENCIA_ESTADO") ?: ""
         detalle = intent.getStringExtra("INCIDENCIA_DETALLE") ?: ""
         imageUri = intent.getStringExtra("INCIDENCIA_FOTO_URL") ?: ""
+
     }
 
     private fun init() {
@@ -70,6 +76,13 @@ class DescripcionIncidencia : AppCompatActivity() {
         tvGravedad = findViewById(R.id.tvGravedad)
         tvDetalle = findViewById(R.id.tvDetalle)
         imagen = findViewById(R.id.imagen)
+        eliminar = findViewById(R.id.eliminarIncidencia)
+        if (estado == "Pendiente") {
+            eliminar.visibility = View.VISIBLE
+        }else{
+            eliminar.visibility = View.GONE
+
+        }
         imageUri?.let { uri ->
             Glide.with(this)
                 .load(uri)
@@ -89,6 +102,55 @@ class DescripcionIncidencia : AppCompatActivity() {
         tvGravedad.text = gravedad
         tvDetalle.text = detalle
 
+        eliminar.setOnClickListener {
+            deleteIncidencia()
+        }
+    }
+    private fun deleteIncidencia() {
+        if (id.isNotEmpty() && nombreEstudiante.isNotEmpty() && apellidoEstudiante.isNotEmpty()) {
+            firestore.collection("Incidencia")
+                .document(id)
+                .delete()
+                .addOnSuccessListener {
+                    // Actualizar el conteo de incidencias del estudiante
+                    updateStudentIncidenciaCount()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error al eliminar incidencia: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            Toast.makeText(this, "ID de incidencia o datos del estudiante inválidos", Toast.LENGTH_SHORT).show()
+        }
     }
 
+    private fun updateStudentIncidenciaCount() {
+        // Buscar el estudiante por nombre y apellido
+        firestore.collection("Estudiante")
+            .whereEqualTo("nombres", nombreEstudiante)
+            .whereEqualTo("apellidos", apellidoEstudiante)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    val estudianteDocument = querySnapshot.documents.first()
+                    val idEstudiante = estudianteDocument.id
+
+                    // Reducir el conteo de incidencias en 1
+                    firestore.collection("Estudiante")
+                        .document(idEstudiante)
+                        .update("cantidadIncidencias", FieldValue.increment(-1))
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Incidencia eliminada y conteo actualizado", Toast.LENGTH_SHORT).show()
+                            finish() // Cierra la actividad después de eliminar
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Error al actualizar el conteo de incidencias: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                } else {
+                    Toast.makeText(this, "No se encontró al estudiante", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error al buscar al estudiante: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 }
