@@ -22,7 +22,8 @@
                 android:layout_height="40dp"
                 android:padding="6sp"
                 android:inputType="none"
-                android:background="@color/Primary_white"
+                style="@style/SpinnerStyleBlack"
+                android:background="@drawable/background_spinner"
                 android:textSize="15sp" />
 
         </com.google.android.material.textfield.TextInputLayout>

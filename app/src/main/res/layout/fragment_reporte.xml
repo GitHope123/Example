@@ -17,25 +17,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:backgroundTint="@color/Primary_blue"
+            android:backgroundTint="@color/Transparent_color"
             android:background="@drawable/background_white_element_full"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="180sp"
-                android:layout_height="180sp"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="350dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="50sp"
-                android:background="@drawable/icon_report">
 
-            </TextView>
-
-            <ImageView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
-                android:layout_height="139dp"
-                android:layout_gravity="center"
-                android:src="@drawable/icon_looker" />
-
+                android:src="@drawable/icon_dashboard">
+            </ImageView>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -48,7 +40,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:background="@drawable/background_white_element_full"
-                    android:backgroundTint="@color/Primary_white"
+                    android:backgroundTint="@color/Transparent_color"
                     android:orientation="horizontal">
 
                     <ImageButton
@@ -67,6 +59,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginEnd="10dp"
                         android:inputType="text"
+                        android:backgroundTint="@color/Primary_blue_sky"
                         android:text="https://lookerstudio.google.com/reporting/55c2d7b2-0d63-4e02-895a-21ab9c7d018c"
                         android:textColor="@color/Primary_white" />
                 </LinearLayout>
@@ -79,7 +72,8 @@
                     android:id="@+id/imageButtonCompartir"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:background="@drawable/search_view_query_background"
+                    android:backgroundTint="@color/Transparent_color"
+                    android:background="@drawable/background_white_element_full"
                     android:src="@drawable/icon_share_report" />
 
             </LinearLayout>
@@ -91,16 +85,16 @@
             android:id="@+id/textView6"
             android:layout_width="match_parent"
             android:paddingVertical="30dp"
-            android:paddingHorizontal="10dp"
+            android:paddingHorizontal="15dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAlignment="center"
-            android:textSize="12dp"
+            android:textSize="14dp"
             android:fontFamily="@font/montserrat"
-            android:backgroundTint="@color/Primary_blue"
+            android:backgroundTint="@color/Transparent_color"
             android:background="@drawable/background_white_element_full"
             android:textColor="@color/Primary_blue_sky"
-            android:text="Con Looker, tendrás acceso a un resumen detallado de la información de las incidencias." />
+            android:text="Comparte este enlace para que puedas visualizar los reportes detalladamente desde tu computadora." />
 
 
     </LinearLayout>
