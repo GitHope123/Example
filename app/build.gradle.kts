@@ -57,17 +57,15 @@ dependencies {
     implementation (libs.play.services.auth.v2120)
     // Material Design Components
     implementation(libs.material)
-
     // AndroidX Activity library
     implementation(libs.androidx.activity)
-
     // ConstraintLayout for flexible layouts
     implementation(libs.androidx.constraintlayout)
-
     // LiveData and ViewModel libraries
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-
     // Navigation Component libraries
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
@@ -77,11 +75,8 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.storage.ktx)
     implementation(libs.androidx.recyclerview)
-
-
     // Unit testing library
     testImplementation(libs.junit)
-
     // AndroidX JUnit and Espresso libraries for testing
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

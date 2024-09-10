@@ -1,11 +1,16 @@
 package com.example.example.ui.tutores
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
@@ -33,6 +38,7 @@ class TutorAdapter(
         private val imageButtonSeleccionar: ImageButton = itemView.findViewById(R.id.imageButtonSeleccionar)
         private val textViewGradosSeccionTutor: TextView = itemView.findViewById(R.id.textViewGradosSeccionTutor)
         private val imageButtonQuitarTutor: ImageButton = itemView.findViewById(R.id.imageButtonQuitarTutor)
+        private val imageButtonLlamadaTutor: ImageView = itemView.findViewById(R.id.imageViewTutorLlamada)
 
         fun bind(profesor: Profesor) {
             textViewNombre.text = "${profesor.nombres} ${profesor.apellidos}"
@@ -64,6 +70,24 @@ class TutorAdapter(
                 toggleSelection(idProfesor)
                 onEditClickListener(profesor)
             }
+            imageButtonLlamadaTutor.setOnClickListener {
+                val phoneNumber = profesor.celular.toString()
+                if (phoneNumber.isNotBlank()) {
+                    try {
+                        val callIntent = Intent(Intent.ACTION_DIAL).apply {
+                            data = Uri.parse("tel:$phoneNumber")
+                        }
+                        // Usamos el contexto desde itemView
+                        itemView.context.startActivity(callIntent)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Toast.makeText(itemView.context, "Error al intentar realizar la llamada", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(itemView.context, "Número de teléfono no válido", Toast.LENGTH_SHORT).show()
+                }
+            }
+
         }
 
         private fun toggleSelection(idProfesor: String) {

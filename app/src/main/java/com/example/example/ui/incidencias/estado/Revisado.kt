@@ -1,6 +1,5 @@
 package com.example.example.ui.incidencias.estado
 
-import IncidenciaViewModel
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,14 +10,7 @@ import android.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.example.BarraLateral
-import com.example.example.InicioSesion
 import com.example.example.R
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class Revisado : Fragment() {
     private lateinit var recyclerViewIncidencia: RecyclerView
@@ -41,7 +33,7 @@ class Revisado : Fragment() {
     }
 
     private fun init(view: View) {
-        recyclerViewIncidencia = view.findViewById(R.id.recyclerViewIncidencia)
+        recyclerViewIncidencia = view.findViewById(R.id.recyclerViewIncidenciaRevisado)
         recyclerViewIncidencia.layoutManager = LinearLayoutManager(context)
         searchView = view.findViewById(R.id.searchView)
         incidenciaAdapter = IncidenciaAdapter(incidenciasRevisado, requireContext())

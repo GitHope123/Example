@@ -1,20 +1,21 @@
 package com.example.example.ui.incidencias.estado
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.example.R
 import com.example.example.ui.incidencias.DescripcionIncidencia
-import android.content.Context
-import android.widget.ImageView
 
 class IncidenciaAdapter(
     private var incidencias: List<IncidenciaClass>,
     private val context: Context
 ) : RecyclerView.Adapter<IncidenciaAdapter.IncidenciaViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IncidenciaViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_incidencia, parent, false)
@@ -25,20 +26,21 @@ class IncidenciaAdapter(
         val incidencia = incidencias[position]
         holder.bind(incidencia)
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, DescripcionIncidencia::class.java)
-            intent.putExtra("INCIDENCIA_ID", incidencia.id) // Asegúrate de enviar el ID si es necesario
-            intent.putExtra("INCIDENCIA_FECHA", incidencia.fecha)
-            intent.putExtra("INCIDENCIA_HORA", incidencia.hora)
-            intent.putExtra("INCIDENCIA_NOMBRE", incidencia.nombreEstudiante)
-            intent.putExtra("INCIDENCIA_APELLIDO", incidencia.apellidoEstudiante)
-            intent.putExtra("INCIDENCIA_GRADO", incidencia.grado)
-            intent.putExtra("INCIDENCIA_SECCION", incidencia.seccion)
-            intent.putExtra("INCIDENCIA_TIPO", incidencia.tipo)
-            intent.putExtra("INCIDENCIA_GRAVEDAD", incidencia.gravedad)
-            intent.putExtra("INCIDENCIA_ESTADO", incidencia.estado)
-            intent.putExtra("INCIDENCIA_DETALLE", incidencia.detalle)
-            incidencia.imageUri?.let { uri ->
-                intent.putExtra("INCIDENCIA_FOTO_URL", uri)
+            val intent = Intent(context, DescripcionIncidencia::class.java).apply {
+                putExtra("INCIDENCIA_ID", incidencia.id)
+                putExtra("INCIDENCIA_FECHA", incidencia.fecha)
+                putExtra("INCIDENCIA_HORA", incidencia.hora)
+                putExtra("INCIDENCIA_NOMBRE", incidencia.nombreEstudiante)
+                putExtra("INCIDENCIA_APELLIDO", incidencia.apellidoEstudiante)
+                putExtra("INCIDENCIA_GRADO", incidencia.grado)
+                putExtra("INCIDENCIA_SECCION", incidencia.seccion)
+                putExtra("INCIDENCIA_TIPO", incidencia.tipo)
+                putExtra("INCIDENCIA_GRAVEDAD", incidencia.gravedad)
+                putExtra("INCIDENCIA_ESTADO", incidencia.estado)
+                putExtra("INCIDENCIA_DETALLE", incidencia.detalle)
+                incidencia.imageUri?.let { uri ->
+                    putExtra("INCIDENCIA_FOTO_URL", uri)
+                }
             }
             context.startActivity(intent)
         }
@@ -62,7 +64,6 @@ class IncidenciaAdapter(
         private val tvSeccion: TextView = itemView.findViewById(R.id.tvSeccion)
         private val tvTipo: TextView = itemView.findViewById(R.id.tvTipo)
 
-
         fun bind(incidencia: IncidenciaClass) {
             tvNombre.text = "${incidencia.apellidoEstudiante} ${incidencia.nombreEstudiante}"
             tvGravedad.text = incidencia.gravedad
@@ -72,27 +73,28 @@ class IncidenciaAdapter(
             tvGrado.text = incidencia.grado.toString()
             tvSeccion.text = incidencia.seccion
             tvTipo.text = incidencia.tipo
-            when (incidencia.estado) {
-                "Revisado" -> tvEstado.setTextColor(itemView.context.getColor(R.color.Green))
-                else -> tvEstado.setTextColor(itemView.context.getColor(R.color.color_red))
-            }
+
+            tvEstado.setTextColor(
+                if (incidencia.estado == "Revisado")
+                    itemView.context.getColor(R.color.Green)
+                else
+                    itemView.context.getColor(R.color.color_red)
+            )
+
             when (incidencia.gravedad) {
                 "Moderado" -> {
                     tvGravedad.setTextColor(itemView.context.getColor(R.color.Primary_yellow))
                     tvImagenGravedad.setColorFilter(itemView.context.getColor(R.color.Primary_yellow))
                 }
-
                 "Grave" -> {
                     tvGravedad.setTextColor(itemView.context.getColor(R.color.color_orange))
                     tvImagenGravedad.setColorFilter(itemView.context.getColor(R.color.color_orange))
                 }
-
                 else -> {
                     tvGravedad.setTextColor(itemView.context.getColor(R.color.color_red))
                     tvImagenGravedad.setColorFilter(itemView.context.getColor(R.color.color_red))
                 }
             }
-
         }
     }
 }

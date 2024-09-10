@@ -39,7 +39,7 @@ class IncidenciaViewModel : ViewModel() {
                 incidencias.filter { it.estado == estado }
             }
 
-            // Ordenar las incidencias z por fecha y hora
+            // Ordenar las incidencias filtradas por fecha y hora
             _incidenciasFiltradasLiveData.value = incidenciasFiltradas.sortedByDescending {
                 try {
                     val dateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())

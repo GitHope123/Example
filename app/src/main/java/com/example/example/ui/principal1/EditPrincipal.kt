@@ -1,5 +1,6 @@
 package com.example.example.ui.principal1
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.widget.Button
@@ -91,6 +92,7 @@ class EditPrincipal : AppCompatActivity() {
             passwordEditText.setSelection(passwordEditText.text.length)
 
         }
+
         btnGuardar.setOnClickListener {
             val updatedCelularStr = edTextCelular.text.toString()
             val updatedContra=editTextPassword.text.toString();

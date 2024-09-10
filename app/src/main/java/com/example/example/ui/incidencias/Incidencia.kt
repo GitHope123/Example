@@ -1,34 +1,35 @@
 package com.example.example.ui.incidencias
 
-import IncidenciaViewModel
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager.widget.ViewPager
 import com.example.example.InicioSesion
-import com.example.example.R
+import com.example.example.databinding.FragmentIncidenciaBinding
 import com.example.example.ui.incidencias.estado.AdapterEstado
 import com.example.example.ui.incidencias.estado.IncidenciaRepository
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.tabs.TabLayout
+import com.example.example.ui.incidencias.estado.IncidenciaViewModel
 
 class Incidencia : Fragment() {
 
-    private lateinit var btnAgregar: FloatingActionButton
     private lateinit var incidenciaViewModel: IncidenciaViewModel
-    private var tabLayout: TabLayout? = null
-    private var viewPager: ViewPager? = null
     private lateinit var idUsuario: String
+
+    // Usamos View Binding para gestionar las vistas
+    private var _binding: FragmentIncidenciaBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Asegurarse de que el ID de usuario esté disponible antes de que se cree la vista
+
+        // Asegurarse de que el ID de usuario esté disponible
         idUsuario = InicioSesion.GlobalData.idUsuario
-        incidenciaViewModel = ViewModelProvider(this).get(IncidenciaViewModel::class.java)
+
+        // Inicializar el ViewModel
+        incidenciaViewModel = ViewModelProvider(this)[IncidenciaViewModel::class.java]
         incidenciaViewModel.cargarIncidencias(idUsuario, IncidenciaRepository())
     }
 
@@ -36,26 +37,30 @@ class Incidencia : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_incidencia, container, false)
+        // Inflar el diseño usando View Binding
+        _binding = FragmentIncidenciaBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        tabLayout = view.findViewById(R.id.tabLayout)
-        viewPager = view.findViewById(R.id.viewPager)
-        btnAgregar = view.findViewById(R.id.btnAgregarIncidencia)!!
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        viewPager?.adapter = AdapterEstado(childFragmentManager)
-        tabLayout?.setupWithViewPager(viewPager)
+        // Configurar el ViewPager y el TabLayout
+        binding.viewPager.adapter = AdapterEstado(childFragmentManager)
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
 
         // Establecer la pestaña "Todos" como la predeterminada
-        viewPager?.post {
-            viewPager?.currentItem = 0
+        binding.viewPager.post {
+            binding.viewPager.currentItem = 0
         }
 
+        // Inicializar el botón para agregar incidencias
         init()
-        return view
     }
 
     private fun init() {
-        btnAgregar.setOnClickListener {
+        // Configurar el botón de agregar incidencia
+        binding.btnAgregarIncidencia.setOnClickListener {
             val intent = Intent(requireContext(), AgregarEstudiantes::class.java)
             startActivity(intent)
         }
@@ -63,12 +68,22 @@ class Incidencia : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // Recargar incidencias y asegurarse de que la pestaña "Todos" esté seleccionada
-        incidenciaViewModel.cargarIncidencias(idUsuario, IncidenciaRepository())
 
-        // Asegurarse de que siempre se seleccione la pestaña "Todos" al regresar
-        viewPager?.post {
-            viewPager?.currentItem = 0
+        // Recargar incidencias
+        recargarIncidencias()
+
+        // Asegurarse de que la pestaña "Todos" esté seleccionada al volver
+        binding.viewPager.post {
+            binding.viewPager.currentItem = 0
         }
+    }
+
+    private fun recargarIncidencias() {
+        incidenciaViewModel.cargarIncidencias(idUsuario, IncidenciaRepository())
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

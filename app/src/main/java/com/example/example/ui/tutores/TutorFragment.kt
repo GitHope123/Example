@@ -2,6 +2,7 @@ package com.example.example.ui.tutores
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -163,6 +164,20 @@ class TutorFragment : Fragment() {
         if (requestCode == ADD_TUTOR_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             fetchProfesores() // Refresh the list after adding a new tutor
         }
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permiso concedido
+            } else {
+                Toast.makeText(context, "Permiso de llamada denegado", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    companion object {
+        private const val PERMISSION_REQUEST_CODE = 100
     }
     fun refreshData() {
         fetchProfesores()
