@@ -287,7 +287,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:backgroundTint="@color/Transparent_color"
                 android:background="@drawable/background_white_element_full"
                 android:orientation="vertical">
@@ -321,13 +320,17 @@
                         android:scaleType="fitCenter" />
                 </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/eliminarIncidencia"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_margin="10dp"
-                        android:src="@drawable/ic_delete"
-                        app:tint="@color/Secondary_red" />
+                <ImageView
+                    android:id="@+id/eliminarIncidencia"
+                    android:layout_width="250dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="10dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/background_white_element_full"
+                    android:backgroundTint="@color/Secondary_red"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_delete"
+                    app:tint="@color/Secondary_red" />
 
             </LinearLayout>
 
