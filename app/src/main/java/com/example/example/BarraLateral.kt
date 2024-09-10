@@ -42,8 +42,8 @@ class BarraLateral : AppCompatActivity() {
         datoTipoUsuario=intent.getStringExtra("USER_TYPE").toString()
 
         if(datoTipoUsuario=="Administrador"){
-            var username1="Administrador"
-            var correo1="administrador@gmail.com"
+            var username1="Director"
+            var correo1="wguzman@colegiosparroquiales.com"
             updateHeader(username1,correo1)
         }
         else{
