@@ -1,5 +1,6 @@
 package com.example.example.ui.incidencias.estado
 
+import IncidenciaViewModel
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -26,8 +27,8 @@ class Pendiente : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_pendiente, container, false)
         incidenciaViewModel = ViewModelProvider(requireParentFragment()).get(IncidenciaViewModel::class.java)
-        loadAllIncidencias()
         init(view)
+        loadAllIncidencias()
         setupSearchView()
         return view
     }
@@ -45,7 +46,7 @@ class Pendiente : Fragment() {
     private fun loadAllIncidencias() {
         incidenciaViewModel.filtrarIncidenciasPorEstado("Pendiente")
         incidenciaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidencias ->
-            incidenciasPendiente.clear() // Asegurarse de limpiar la lista antes
+            incidenciasPendiente.clear()
             incidenciasPendiente.addAll(incidencias) // Agregar los datos cargados
             incidenciaAdapter.updateData(incidenciasPendiente) // Actualizar la vista
         }

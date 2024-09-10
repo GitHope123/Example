@@ -75,9 +75,9 @@ class RevisadoTutoria : Fragment() {
         loadTutoriasForTutor(idUsuario, selection)
     }
     private fun loadTutoriasForTutor(id: String, filtroFecha: String) {
+        listaTutorias.clear() // Asegurarse de limpiar la lista antes
         tutoriaViewModel.filtrarIncidenciasPorEstado("Revisado",filtroFecha)
         tutoriaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidencias ->
-            listaTutorias.clear() // Asegurarse de limpiar la lista antes
             listaTutorias.addAll(incidencias) // Agregar los datos cargados
             tutoriaAdapter.updateData(listaTutorias) // Actualizar la vista
         }

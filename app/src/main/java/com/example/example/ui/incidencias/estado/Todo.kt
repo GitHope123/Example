@@ -1,5 +1,6 @@
 package com.example.example.ui.incidencias.estado
 
+import IncidenciaViewModel
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -43,14 +44,13 @@ class Todo : Fragment() {
     }
 
     private fun loadAllIncidencias() {
+        incidenciaViewModel.filtrarIncidenciasPorEstado("")  // Cargar todos los datos sin filtrar
+
         incidenciaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidenciasList ->
             incidencias.clear()
             incidencias.addAll(incidenciasList)  // Actualizar la lista de incidencias para filtrar
             incidenciaAdapter.updateData(incidencias)
         }
-
-        // Cargar todas las incidencias (sin filtrar)
-        incidenciaViewModel.filtrarIncidenciasPorEstado("")  // Cargar todos los datos sin filtrar
     }
 
     private fun setupSearchView() {

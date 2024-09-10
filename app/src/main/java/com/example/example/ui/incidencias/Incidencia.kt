@@ -1,5 +1,6 @@
 package com.example.example.ui.incidencias
 
+import IncidenciaViewModel
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +12,6 @@ import com.example.example.InicioSesion
 import com.example.example.databinding.FragmentIncidenciaBinding
 import com.example.example.ui.incidencias.estado.AdapterEstado
 import com.example.example.ui.incidencias.estado.IncidenciaRepository
-import com.example.example.ui.incidencias.estado.IncidenciaViewModel
 
 class Incidencia : Fragment() {
 

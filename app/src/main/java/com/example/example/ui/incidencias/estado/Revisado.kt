@@ -1,5 +1,6 @@
 package com.example.example.ui.incidencias.estado
 
+import IncidenciaViewModel
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -27,30 +28,25 @@ class Revisado : Fragment() {
         val view= inflater.inflate(R.layout.fragment_revisado, container, false)
         incidenciaViewModel = ViewModelProvider(requireParentFragment()).get(IncidenciaViewModel::class.java)
         init(view)
+        loadAllIncidencias()
         setupSearchView()
         return view
     }
 
     private fun init(view: View) {
-        recyclerViewIncidencia = view.findViewById(R.id.recyclerViewIncidenciaRevisado)
+        recyclerViewIncidencia = view.findViewById(R.id.recyclerViewIncidencia)
         recyclerViewIncidencia.layoutManager = LinearLayoutManager(context)
         searchView = view.findViewById(R.id.searchView)
         incidenciaAdapter = IncidenciaAdapter(incidenciasRevisado, requireContext())
         recyclerViewIncidencia.adapter = incidenciaAdapter
-        progressBar = view.findViewById(R.id.progressBar)
-        loadAllIncidencias()
     }
     private fun loadAllIncidencias() {
-        progressBar.visibility = View.VISIBLE
-        recyclerViewIncidencia.visibility = View.GONE
         incidenciaViewModel.filtrarIncidenciasPorEstado("Revisado")
         incidenciaViewModel.incidenciasFiltradasLiveData.observe(viewLifecycleOwner) { incidencias ->
-            incidenciasRevisado.clear() // Asegurarse de limpiar la lista antes
+            incidenciasRevisado.clear()
             incidenciasRevisado.addAll(incidencias) // Agregar los datos cargados
             incidenciaAdapter.updateData(incidenciasRevisado) // Actualizar la vista
 
-            progressBar.visibility = View.GONE
-            recyclerViewIncidencia.visibility = View.VISIBLE
         }
 
     }
