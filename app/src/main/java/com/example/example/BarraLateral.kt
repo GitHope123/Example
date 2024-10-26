@@ -29,8 +29,6 @@ class BarraLateral : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
 
-/*Bienvenido*/
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBarraLateralBinding.inflate(layoutInflater)
