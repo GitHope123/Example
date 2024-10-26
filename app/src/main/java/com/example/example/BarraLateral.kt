@@ -19,7 +19,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.time.LocalTime
-//hello
+
 class BarraLateral : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
